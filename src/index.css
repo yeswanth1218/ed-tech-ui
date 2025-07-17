@@ -1,0 +1,163 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Lexend', 'Noto Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.chart-bar {
+  background-color: #4CAF50;
+  transition: height 0.5s ease-in-out;
+}
+
+.drop-zone {
+  border: 2px dashed #d1d5db;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.drop-zone.drag-over {
+  background-color: #e0f2f1;
+  border-color: #2dd4bf;
+}
+
+#evaluateBtn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+#evaluateBtn:disabled:hover {
+  background-color: #9ca3af;
+}
+
+/* Dark Mode Styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #0f172a !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-gray-200 {
+  background-color: #334155 !important;
+}
+
+.dark .text-gray-900 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-gray-800 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-gray-700 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-gray-600 {
+  color: #64748b !important;
+}
+
+.dark .text-gray-500 {
+  color: #475569 !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #334155 !important;
+}
+
+.dark .border-gray-300 {
+  border-color: #475569 !important;
+}
+
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #334155 !important;
+}
+
+.dark .hover\:bg-gray-50:hover {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: #475569 !important;
+}
+
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .text-\[\#101418\] {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-\[\#5c728a\] {
+  color: #94a3b8 !important;
+}
+
+.dark .bg-gradient-to-br {
+  background: linear-gradient(to bottom right, #1e293b, #334155) !important;
+}
+
+.dark .from-white {
+  --tw-gradient-from: #1e293b !important;
+}
+
+.dark .to-blue-50 {
+  --tw-gradient-to: #1e3a8a !important;
+}
+
+.dark .to-green-50 {
+  --tw-gradient-to: #166534 !important;
+}
+
+.dark .to-purple-50 {
+  --tw-gradient-to: #6b21a8 !important;
+}
+
+.dark .to-orange-50 {
+  --tw-gradient-to: #c2410c !important;
+}
+
+.dark .hover\:from-gray-50:hover {
+  --tw-gradient-from: #334155 !important;
+}
+
+.dark .hover\:to-blue-100:hover {
+  --tw-gradient-to: #1e40af !important;
+}
+
+.dark .hover\:to-green-100:hover {
+  --tw-gradient-to: #15803d !important;
+}
+
+.dark .hover\:to-purple-100:hover {
+  --tw-gradient-to: #7c3aed !important;
+}
+
+.dark .hover\:to-orange-100:hover {
+  --tw-gradient-to: #ea580c !important;
+}
