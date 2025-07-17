@@ -148,4 +148,3 @@ yarn-error.log*
 
 # Static HTML files (keeping only React components)
 *.html
-!public/index.html
