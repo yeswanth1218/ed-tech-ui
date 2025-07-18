@@ -13,6 +13,7 @@ import StudentNews from './components/StudentNews';
 import StudentResults from './components/StudentResults';
 import StudentAnalytics from './components/StudentAnalytics';
 import StudentArchive from './components/StudentArchive';
+import StudentTimetable from './components/StudentTimetable';
 import StudentFees from './components/StudentFees';
 import StudentSettings from './components/StudentSettings';
 import UploadPage from './components/UploadPage';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/student-news" element={<StudentNews />} />
           <Route path="/student-results" element={<StudentResults />} />
           <Route path="/student-analytics" element={<StudentAnalytics />} />
+          <Route path="/student-timetable" element={<StudentTimetable />} />
           <Route path="/student-archive" element={<StudentArchive />} />
           <Route path="/student-fees" element={<StudentFees />} />
           <Route path="/student-settings" element={<StudentSettings />} />

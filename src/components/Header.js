@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
-const Header = ({ title = "EduAssess" }) => {
+const Header = ({ title = "Skool" }) => {
   const { darkMode, toggleDarkMode } = useTheme();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
