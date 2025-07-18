@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import Sidebar from './Sidebar';
+import StudentSidebar from './StudentSidebar';
 import Header from './Header';
 import PermissionModal from './PermissionModal';
 
@@ -50,12 +50,7 @@ const StudentProfile = () => {
     totalStudents: 45
   };
 
-  const getScoreColor = (score) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 80) return 'text-blue-600';
-    if (score >= 70) return 'text-yellow-600';
-    return 'text-red-600';
-  };
+
 
   const getScoreBadgeColor = (score) => {
     if (score >= 90) return 'bg-green-100 text-green-800';
@@ -67,8 +62,9 @@ const StudentProfile = () => {
   return (
     <div className="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style={{fontFamily: 'Lexend, "Noto Sans", sans-serif'}}>
       <div className="layout-container flex h-full grow flex-col">
+        <Header title="Student Portal" />
         <div className="gap-1 px-6 flex flex-1 justify-start py-5">
-          <Sidebar />
+          <StudentSidebar />
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
             {/* Student Header */}
             <div className="flex flex-wrap justify-between gap-3 p-4">

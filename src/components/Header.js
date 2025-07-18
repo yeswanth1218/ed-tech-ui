@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Header = ({ title = "EduAssess" }) => {
   const { darkMode, toggleDarkMode } = useTheme();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    // Clear any stored authentication data
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userInfo');
+    sessionStorage.clear();
+    
+    // Close the dropdown
+    setIsProfileOpen(false);
+    
+    // Navigate to login page
+    navigate('/login');
+  };
   return (
     <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#eaedf1] px-10 py-3">
       <div className="flex items-center gap-8">
@@ -80,7 +94,7 @@ const Header = ({ title = "EduAssess" }) => {
                 <hr className="my-1" />
                 <button
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setIsProfileOpen(false)}
+                  onClick={handleSignOut}
                 >
                   Sign Out
                 </button>

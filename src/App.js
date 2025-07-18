@@ -9,6 +9,12 @@ import DepartmentDetail from './components/DepartmentDetail';
 import AdminPanel from './components/AdminPanel';
 import StudentPerformance from './components/StudentPerformance';
 import StudentProfile from './components/StudentProfile';
+import StudentNews from './components/StudentNews';
+import StudentResults from './components/StudentResults';
+import StudentAnalytics from './components/StudentAnalytics';
+import StudentArchive from './components/StudentArchive';
+import StudentFees from './components/StudentFees';
+import StudentSettings from './components/StudentSettings';
 import UploadPage from './components/UploadPage';
 import UserProfile from './components/UserProfile';
 import Evaluation from './components/Evaluation';
@@ -33,6 +39,12 @@ function App() {
           <Route path="/student-performance" element={<StudentPerformance />} />
           <Route path="/student/:id" element={<StudentProfile />} />
           <Route path="/student-profile" element={<StudentProfile />} />
+          <Route path="/student-news" element={<StudentNews />} />
+          <Route path="/student-results" element={<StudentResults />} />
+          <Route path="/student-analytics" element={<StudentAnalytics />} />
+          <Route path="/student-archive" element={<StudentArchive />} />
+          <Route path="/student-fees" element={<StudentFees />} />
+          <Route path="/student-settings" element={<StudentSettings />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
