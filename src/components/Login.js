@@ -32,11 +32,11 @@ const Login = () => {
 
       // Navigate based on role
       switch (user.role) {
-        case 'student':
+        case 'STUDENT':
           navigate('/student-profile');
           break;
-        case 'teacher':
-        case 'admin':
+        case 'TEACHER':
+        case 'ADMIN':
           navigate('/dashboard');
           break;
         default:
