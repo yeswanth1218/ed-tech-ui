@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import StudentSidebar from './StudentSidebar';
+import Header from './Header';
 
 const StudentArchive = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -147,10 +148,11 @@ const StudentArchive = () => {
   const averageScore = archiveItems.reduce((sum, item) => sum + item.score, 0) / archiveItems.length;
 
   return (
-    <div className="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style={{fontFamily: 'Lexend, "Noto Sans", sans-serif'}}>
-      <div className="layout-container flex h-full grow flex-col">
-        <div className="gap-1 px-6 flex flex-1 justify-start py-5">
-          <StudentSidebar />
+    <div className="flex h-screen bg-gray-50">
+      <StudentSidebar />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header title="Student Portal" />
+        <div className="flex-1 overflow-auto p-6">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
             {/* Header */}
             <div className="flex flex-wrap justify-between gap-3 p-4">

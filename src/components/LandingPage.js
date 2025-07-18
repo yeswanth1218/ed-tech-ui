@@ -37,7 +37,7 @@ const LandingPage = () => {
                 ></path>
               </svg>
             </div>
-            <h2 className="text-[#0d141c] text-xl font-bold leading-tight tracking-[-0.015em]">EduTrack</h2>
+            <h2 className="text-[#0d141c] text-xl font-bold leading-tight tracking-[-0.015em]">Skool</h2>
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-8">
@@ -124,7 +124,7 @@ const LandingPage = () => {
         {/* Features Section */}
         <section id="features" className="relative z-10 py-20 px-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-[#0d141c] mb-16">Why Choose EduTrack?</h2>
+            <h2 className="text-3xl font-bold text-[#0d141c] mb-16">Why Choose Skool?</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/80 transition-all duration-300 transform hover:scale-105">
@@ -175,11 +175,11 @@ const LandingPage = () => {
                 ></path>
               </svg>
             </div>
-            <span className="text-[#0d141c] text-base font-bold">EduTrack</span>
+            <span className="text-[#0d141c] text-base font-bold">Skool</span>
           </div>
           
           <div className="text-[#49719c] text-sm">
-            © 2024 EduTrack. Made with ❤️ for education.
+            © 2024 Skool. Made with ❤️ for education.
           </div>
         </div>
       </footer>

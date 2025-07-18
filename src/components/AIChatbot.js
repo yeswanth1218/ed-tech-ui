@@ -27,7 +27,7 @@ const AIChatbot = () => {
     setTimeout(() => {
       const botResponse = {
         id: messages.length + 2,
-        text: "I understand your question. As an AI assistant for EduAssess, I can help you with navigation, features, and general questions about the platform. What specific information would you like to know?",
+        text: "I understand your question. As an AI assistant for Skool, I can help you with navigation, features, and general questions about the platform. What specific information would you like to know?",
         sender: 'bot'
       };
       setMessages(prev => [...prev, botResponse]);
@@ -101,7 +101,7 @@ const AIChatbot = () => {
                 <MagicSparkles />
               </div>
               <div>
-                <h3 className="font-bold text-lg">EduAssess AI</h3>
+                <h3 className="font-bold text-lg">Skool AI</h3>
                 <p className="text-white/80 text-sm">Always here to help</p>
               </div>
             </div>

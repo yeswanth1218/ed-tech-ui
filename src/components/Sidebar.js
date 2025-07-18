@@ -19,7 +19,7 @@ const Sidebar = () => {
       <div className="flex h-full min-h-[700px] flex-col justify-between bg-gray-50 p-4">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col">
-            <h1 className="text-[#101418] text-base font-medium leading-normal">EduAssess</h1>
+            <h1 className="text-[#101418] text-base font-medium leading-normal">Skool</h1>
             <p className="text-[#5c728a] text-sm font-normal leading-normal">Admin</p>
           </div>
           <div className="flex flex-col gap-2">

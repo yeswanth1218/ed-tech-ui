@@ -9,6 +9,7 @@ const StudentSidebar = () => {
     { path: '/student-news', label: 'News & Announcements', icon: 'campaign' },
     { path: '/student-results', label: 'Department Results', icon: 'assessment' },
     { path: '/student-analytics', label: 'AI Analytics', icon: 'analytics' },
+    { path: '/student-timetable', label: 'Class Timetable', icon: 'schedule' },
     { path: '/student-archive', label: 'Academic Archive', icon: 'folder' },
     { path: '/student-fees', label: 'Fees & Payments', icon: 'payment' },
     { path: '/student-settings', label: 'Settings', icon: 'settings' }
@@ -19,7 +20,7 @@ const StudentSidebar = () => {
       <div className="flex h-full min-h-[700px] flex-col justify-between bg-gray-50 p-4">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col">
-            <h1 className="text-[#101418] text-base font-medium leading-normal">EduAssess</h1>
+            <h1 className="text-[#101418] text-base font-medium leading-normal">Skool</h1>
             <p className="text-[#5c728a] text-sm font-normal leading-normal">Student Portal</p>
           </div>
           <div className="flex flex-col gap-2">
