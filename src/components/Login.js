@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   const [loginType, setLoginType] = useState('student');
@@ -7,7 +8,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get login type from URL params if passed from landing page
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const type = params.get('type');
@@ -16,42 +16,39 @@ const Login = () => {
     }
   }, [location]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    // Dummy authentication logic
-    const validCredentials = {
-      student: { username: 'student123', password: 'password' },
-      teacher: { username: 'teacher123', password: 'password' },
-      org: { username: 'admin123', password: 'password' }
-    };
 
-    const valid = validCredentials[loginType];
-    if (credentials.username === valid.username && credentials.password === valid.password) {
-      // Navigate based on login type
-      switch(loginType) {
+    try {
+      const res = await axios.post(
+        'http://localhost:9000/api/login',
+        credentials,
+        { withCredentials: true } // crucial to receive/set HttpOnly cookie
+      );
+
+      const user = res.data.user;
+      // Optionally store user info in local state/global context
+      console.log('Login successful:', user);
+
+      // Navigate based on role
+      switch (user.role) {
         case 'student':
           navigate('/student-profile');
           break;
         case 'teacher':
-          navigate('/dashboard');
-          break;
-        case 'org':
+        case 'admin':
           navigate('/dashboard');
           break;
         default:
-          navigate('/dashboard');
+          navigate('/');
       }
-    } else {
-      alert('Invalid credentials');
+    } catch (err) {
+      alert(err?.response?.data?.error || 'Login failed');
     }
   };
 
-
-
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{fontFamily: 'Lexend, "Noto Sans", sans-serif'}}>
-      {/* Fun Background */}
+    <div className="min-h-screen relative overflow-hidden" style={{ fontFamily: 'Lexend, "Noto Sans", sans-serif' }}>
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <div className="absolute top-20 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-60 animate-pulse"></div>
         <div className="absolute top-40 right-20 w-16 h-16 bg-purple-200 rotate-45 opacity-50 animate-bounce"></div>
@@ -60,25 +57,19 @@ const Login = () => {
         <div className="absolute top-60 left-1/3 w-8 h-8 bg-yellow-200 rounded-full opacity-60 animate-ping"></div>
         <div className="absolute top-80 right-1/3 w-14 h-14 bg-green-200 rotate-45 opacity-50"></div>
       </div>
-      
+
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-white/20 w-full max-w-md">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="size-8">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
+                <svg viewBox="0 0 48 48" fill="none">
+                  <path fillRule="evenodd" clipRule="evenodd"
                     d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z"
-                    fill="currentColor"
-                  ></path>
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
+                    fill="currentColor" />
+                  <path fillRule="evenodd" clipRule="evenodd"
                     d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z"
-                    fill="currentColor"
-                  ></path>
+                    fill="currentColor" />
                 </svg>
               </div>
               <h1 className="text-2xl font-bold text-[#0d141c]">EduTrack</h1>
@@ -87,32 +78,29 @@ const Login = () => {
             <p className="text-[#49719c]">Sign in to your account</p>
           </div>
 
-        {/* Login Type Toggle */}
-        <div className="flex bg-[#e7edf4] rounded-lg p-1 mb-6">
-          {['student', 'teacher', 'org'].map((type) => (
-            <button
-              key={type}
-              onClick={() => setLoginType(type)}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                loginType === type
-                  ? 'bg-white text-[#0d141c] shadow-sm'
-                  : 'text-[#49719c] hover:text-[#0d141c]'
-              }`}
-            >
-              {type.charAt(0).toUpperCase() + type.slice(1)}
-            </button>
-          ))}
-        </div>
+          <div className="flex bg-[#e7edf4] rounded-lg p-1 mb-6">
+            {['student', 'teacher', 'org'].map((type) => (
+              <button
+                key={type}
+                onClick={() => setLoginType(type)}
+                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                  loginType === type
+                    ? 'bg-white text-[#0d141c] shadow-sm'
+                    : 'text-[#49719c] hover:text-[#0d141c]'
+                }`}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </button>
+            ))}
+          </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#0d141c] mb-2">
-                Username
-              </label>
+              <label className="block text-sm font-medium text-[#0d141c] mb-2">Username</label>
               <input
                 type="text"
                 value={credentials.username}
-                onChange={(e) => setCredentials({...credentials, username: e.target.value})}
+                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                 className="w-full px-3 py-2 border border-[#e7edf4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0b79ee] focus:border-transparent bg-white/70"
                 placeholder={`Enter ${loginType} username`}
                 required
@@ -120,13 +108,11 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#0d141c] mb-2">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-[#0d141c] mb-2">Password</label>
               <input
                 type="password"
                 value={credentials.password}
-                onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                 className="w-full px-3 py-2 border border-[#e7edf4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0b79ee] focus:border-transparent bg-white/70"
                 placeholder="Enter password"
                 required
@@ -141,19 +127,8 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <div className="bg-blue-50 rounded-lg p-3">
-              <p className="text-sm text-[#49719c] font-medium">
-                Demo credentials:
-              </p>
-              <p className="text-sm text-[#0d141c] font-mono">
-                {loginType}123 / password
-              </p>
-            </div>
-          </div>
-          
           <div className="mt-4 text-center">
-            <button 
+            <button
               onClick={() => navigate('/')}
               className="text-sm text-[#49719c] hover:text-[#0d141c] transition-colors"
             >
