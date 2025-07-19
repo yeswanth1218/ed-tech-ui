@@ -27,28 +27,28 @@ const Login = () => {
     };
 
     // Check if using demo credentials
-    const isDemoLogin = credentials.username === demoCredentials[loginType]?.username && 
-                       credentials.password === demoCredentials[loginType]?.password;
+    // const isDemoLogin = credentials.username === demoCredentials[loginType]?.username && 
+    //                    credentials.password === demoCredentials[loginType]?.password;
 
-    if (isDemoLogin) {
-      // Demo login - navigate directly to appropriate portal
-      console.log(`Demo login successful for ${loginType}`);
+    // if (isDemoLogin) {
+    //   // Demo login - navigate directly to appropriate portal
+    //   console.log(`Demo login successful for ${loginType}`);
       
-      switch (loginType) {
-        case 'STUDENT':
-          navigate('/student-profile');
-          break;
-        case 'TEACHER':
-          navigate('/teacher-dashboard');
-          break;
-        case 'ADMIN':
-          navigate('/dashboard');
-          break;
-        default:
-          navigate('/');
-      }
-      return;
-    }
+    //   switch (loginType) {
+    //     case 'STUDENT':
+    //       navigate('/student-profile');
+    //       break;
+    //     case 'TEACHER':
+    //       navigate('/teacher-dashboard');
+    //       break;
+    //     case 'ADMIN':
+    //       navigate('/dashboard');
+    //       break;
+    //     default:
+    //       navigate('/');
+    //   }
+    //   return;
+    // }
 
     // Try actual API login
     try {
@@ -64,13 +64,13 @@ const Login = () => {
 
       // Navigate based on role
       switch (user.role) {
-        case 'student':
+        case 'STUDENT':
           navigate('/student-profile');
           break;
-        case 'teacher':
+        case 'TEACHER':
           navigate('/teacher-dashboard');
           break;
-        case 'admin':
+        case 'ADMIN':
           navigate('/dashboard');
           break;
         default:
