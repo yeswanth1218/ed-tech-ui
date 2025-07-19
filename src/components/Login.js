@@ -35,13 +35,13 @@ const Login = () => {
       console.log(`Demo login successful for ${loginType}`);
       
       switch (loginType) {
-        case 'student':
+        case 'STUDENT':
           navigate('/student-profile');
           break;
-        case 'teacher':
+        case 'TEACHER':
           navigate('/teacher-dashboard');
           break;
-        case 'org':
+        case 'ADMIN':
           navigate('/dashboard');
           break;
         default:
