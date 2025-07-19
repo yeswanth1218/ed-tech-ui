@@ -19,15 +19,47 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Demo credentials for testing
+    const demoCredentials = {
+      student: { username: 'student', password: 'demo' },
+      teacher: { username: 'teacher', password: 'demo' },
+      org: { username: 'admin', password: 'demo' }
+    };
+
+    // Check if using demo credentials
+    const isDemoLogin = credentials.username === demoCredentials[loginType]?.username && 
+                       credentials.password === demoCredentials[loginType]?.password;
+
+    if (isDemoLogin) {
+      // Demo login - navigate directly to appropriate portal
+      console.log(`Demo login successful for ${loginType}`);
+      
+      switch (loginType) {
+        case 'student':
+          navigate('/student-profile');
+          break;
+        case 'teacher':
+          navigate('/teacher-dashboard');
+          break;
+        case 'org':
+          navigate('/dashboard');
+          break;
+        default:
+          navigate('/');
+      }
+      return;
+    }
+
+    // Try actual API login
     try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:9000/api';
       const res = await axios.post(
-        'http://localhost:9000/api/login',
+        `${apiUrl}/login`,
         credentials,
-        { withCredentials: true } // crucial to receive/set HttpOnly cookie
+        { withCredentials: true }
       );
 
       const user = res.data.user;
-      // Optionally store user info in local state/global context
       console.log('Login successful:', user);
 
       // Navigate based on role
@@ -36,6 +68,8 @@ const Login = () => {
           navigate('/student-profile');
           break;
         case 'teacher':
+          navigate('/teacher-dashboard');
+          break;
         case 'admin':
           navigate('/dashboard');
           break;
@@ -43,7 +77,8 @@ const Login = () => {
           navigate('/');
       }
     } catch (err) {
-      alert(err?.response?.data?.error || 'Login failed');
+      console.error('Login error:', err);
+      alert(err?.response?.data?.error || 'Login failed. Try demo credentials: username="student/teacher/admin", password="demo"');
     }
   };
 
@@ -75,7 +110,12 @@ const Login = () => {
               <h1 className="text-2xl font-bold text-[#0d141c]">Skool</h1>
             </div>
             <h2 className="text-xl font-semibold text-[#0d141c] mb-2">Welcome Back</h2>
-            <p className="text-[#49719c]">Sign in to your account</p>
+            <p className="text-[#49719c] mb-2">Sign in to your account</p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
+              <p className="text-blue-800 font-medium mb-1">Demo Credentials:</p>
+              <p className="text-blue-700">Username: <span className="font-mono bg-blue-100 px-1 rounded">student/teacher/admin</span></p>
+              <p className="text-blue-700">Password: <span className="font-mono bg-blue-100 px-1 rounded">demo</span></p>
+            </div>
           </div>
 
           <div className="flex bg-[#e7edf4] rounded-lg p-1 mb-6">
