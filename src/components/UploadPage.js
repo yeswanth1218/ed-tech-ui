@@ -20,6 +20,8 @@ const UploadPage = () => {
     answerKey: [],
     rubrics: []
   });
+  const [showModal, setShowModal] = useState(false);
+  const [examNameInput, setExamNameInput] = useState('');
 
   const phases = [
     { id: 'landing', title: 'AI Evaluation Overview', icon: 'home' },
@@ -212,6 +214,38 @@ const UploadPage = () => {
     }
   };
 
+  const handleExamCreationClick = () => {
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setExamNameInput('');
+  };
+
+  const handleSaveExamName = async () => {
+    if (!examNameInput.trim()) return;
+    try {
+      const response = await fetch('http://34.93.230.130:9000/api/admin/add_exam_name', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: examNameInput }),
+      });
+      if (response.ok) {
+        // Optionally handle success (e.g., show a message, move to next phase)
+        setShowModal(false);
+        setExamNameInput('');
+      } else {
+        // Optionally handle error
+        alert('Failed to add exam name');
+      }
+    } catch (error) {
+      alert('Error connecting to server');
+    }
+  };
+
   const renderLandingPage = () => (
     <div className="space-y-6">
       {/* Hero Section */}
@@ -234,7 +268,10 @@ const UploadPage = () => {
 
       {/* Key Features */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+        <div
+          className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow cursor-pointer"
+          onClick={handleExamCreationClick}
+        >
           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
             <span className="material-icons text-green-600 text-2xl">add_circle</span>
           </div>
@@ -366,6 +403,36 @@ const UploadPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-xl p-6 shadow-lg w-full max-w-sm">
+            <h2 className="text-xl font-semibold mb-4">Enter Exam Name</h2>
+            <input
+              type="text"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4"
+              value={examNameInput}
+              onChange={e => setExamNameInput(e.target.value)}
+              placeholder="Exam Name"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 bg-gray-200 rounded-lg"
+                onClick={handleModalClose}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                onClick={handleSaveExamName}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
