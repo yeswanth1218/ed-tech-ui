@@ -84,7 +84,7 @@ const Login = () => {
       console.log('⚙️ Request Config:', { withCredentials: true });
       
       const res = await axios.post(
-        `${apiUrl}/login`,
+        `${apiUrl}/auth/login`,
         credentials,
         { withCredentials: true }
       );
