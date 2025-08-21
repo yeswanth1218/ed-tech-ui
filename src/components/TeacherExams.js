@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import TeacherSidebar from './TeacherSidebar';
 
 const TeacherExams = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('pending');
   const [selectedExam, setSelectedExam] = useState(null);
   const [showQuestionPaper, setShowQuestionPaper] = useState(false);
@@ -308,6 +310,56 @@ const TeacherExams = () => {
                         </select>
                       </div>
                     </div>
+                    
+                    {/* Upload Answer Sheets Block */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 hover:shadow-md transition-all">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="p-2 bg-blue-100 rounded-lg">
+                              <span className="material-icons text-blue-600" style={{fontSize: '24px'}}>upload_file</span>
+                            </div>
+                            <h3 className="text-lg font-semibold text-[#101418]">Upload Answer Sheets for Evaluation</h3>
+                          </div>
+                          <p className="text-[#5c728a] mb-3">
+                            Upload student answer sheets to start AI-powered evaluation process
+                          </p>
+                          <div className="flex items-center gap-4 text-sm text-[#5c728a]">
+                            <span className="flex items-center gap-1">
+                              <span className="material-icons" style={{fontSize: '16px'}}>smart_toy</span>
+                              AI Evaluation Ready
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <span className="material-icons" style={{fontSize: '16px'}}>speed</span>
+                              Fast Processing
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <span className="material-icons" style={{fontSize: '16px'}}>verified</span>
+                              High Accuracy
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="px-3 py-1 rounded-full text-xs font-medium text-green-600 bg-green-50">
+                            Ready to Upload
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-3">
+                        <button 
+                          onClick={() => navigate('/answer-sheet-upload')}
+                          className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
+                        >
+                          <span className="material-icons" style={{fontSize: '18px'}}>upload</span>
+                          Upload Sheets
+                        </button>
+                        <button className="px-4 py-3 border border-blue-200 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+                          View Guidelines
+                        </button>
+                      </div>
+                    </div>
+                    
                     {pendingExams.map(exam => (
                       <ExamCard key={exam.id} exam={exam} type="pending" />
                     ))}
