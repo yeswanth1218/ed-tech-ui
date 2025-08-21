@@ -175,11 +175,6 @@ const Login = () => {
             </div>
             <h2 className="text-xl font-semibold text-[#0d141c] mb-2">Welcome Back</h2>
             <p className="text-[#49719c] mb-2">Sign in to your account</p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
-              <p className="text-blue-800 font-medium mb-1">Demo Credentials:</p>
-              <p className="text-blue-700">Username: <span className="font-mono bg-blue-100 px-1 rounded">student/teacher/admin</span></p>
-              <p className="text-blue-700">Password: <span className="font-mono bg-blue-100 px-1 rounded">demo</span></p>
-            </div>
           </div>
 
           <div className="flex bg-[#e7edf4] rounded-lg p-1 mb-6">
