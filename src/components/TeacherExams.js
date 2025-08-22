@@ -288,6 +288,19 @@ const TeacherExams = () => {
                     AI Performance
                   </div>
                 </button>
+                <button
+                  className={`px-6 py-4 font-medium transition-colors ${
+                    activeTab === 'questionPaper'
+                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+                      : 'text-[#5c728a] hover:text-[#101418]'
+                  }`}
+                  onClick={() => setActiveTab('questionPaper')}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="material-icons" style={{fontSize: '20px'}}>assignment</span>
+                    Set Question Paper
+                  </div>
+                </button>
               </div>
 
               <div className="p-6">
@@ -416,6 +429,58 @@ const TeacherExams = () => {
                           <span className="text-[#101418]">Statistics - Data Analysis</span>
                           <span className="text-yellow-600 font-medium">89.1% Accuracy</span>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'questionPaper' && (
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h2 className="text-lg font-semibold text-[#101418]">Upcoming Examinations</h2>
+                    </div>
+                    
+                    {/* Exam Details Card */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-blue-100 rounded-lg">
+                              <span className="material-icons text-blue-600" style={{fontSize: '24px'}}>assignment</span>
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-bold text-[#101418]">Unit Test 1</h3>
+                              <p className="text-[#5c728a]">Environmental Science (EVS)</p>
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            <div>
+                              <p className="text-[#5c728a]">Exam ID</p>
+                              <p className="font-medium text-[#101418]">1</p>
+                            </div>
+                            <div>
+                              <p className="text-[#5c728a]">Class</p>
+                              <p className="font-medium text-[#101418]">3-B</p>
+                            </div>
+                            <div>
+                              <p className="text-[#5c728a]">Date</p>
+                              <p className="font-medium text-[#101418]">Aug 18, 2025</p>
+                            </div>
+                            <div>
+                              <p className="text-[#5c728a]">Class ID</p>
+                              <p className="font-medium text-[#101418]">23</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          onClick={() => navigate('/set-question-paper')}
+                          className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
+                        >
+                          <span className="material-icons" style={{fontSize: '18px'}}>edit</span>
+                          Set Question Paper
+                        </button>
                       </div>
                     </div>
                   </div>

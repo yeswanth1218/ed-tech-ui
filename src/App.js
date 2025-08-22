@@ -32,6 +32,7 @@ import TeacherAssessments from './components/TeacherAssessments';
 import TeacherArchive from './components/TeacherArchive';
 import TeacherLeaderboard from './components/TeacherLeaderboard';
 import AnswerSheetUpload from './components/AnswerSheetUpload';
+import SetQuestionPaper from './components/SetQuestionPaper';
 
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
           <Route path="/teacher-archive" element={<TeacherArchive />} />
           <Route path="/teacher-leaderboard" element={<TeacherLeaderboard />} />
           <Route path="/answer-sheet-upload" element={<AnswerSheetUpload />} />
+          <Route path="/set-question-paper" element={<SetQuestionPaper />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
         <AIChatbot />
