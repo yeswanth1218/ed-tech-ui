@@ -27,7 +27,10 @@ const TeacherSidebar = () => {
           </div>
           <div className="flex flex-col gap-2">
             {menuItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              // Check for exact match or related paths for Exams & Evaluations
+              const isActive = location.pathname === item.path || 
+                (item.path === '/teacher-exams' && 
+                 (location.pathname === '/answer-sheet-upload' || location.pathname === '/set-question-paper'));
               return (
                 <Link
                   key={item.path}

@@ -4,15 +4,35 @@ import TeacherSidebar from './TeacherSidebar';
 
 const AnswerSheetUpload = () => {
   const [selectedExam, setSelectedExam] = useState('');
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedStudentId, setSelectedStudentId] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [dragActive, setDragActive] = useState(false);
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
   const availableExams = [
-    { id: 1, title: 'Mid-term Mathematics Exam', class: '12-A', date: '2024-02-15' },
-    { id: 2, title: 'Algebra Unit Test', class: '11-B', date: '2024-02-12' },
-    { id: 3, title: 'Statistics Assessment', class: '11-A', date: '2024-02-18' }
+    { id: 'UN_250807', title: 'unit test1 - UN_250807' },
+    { id: 'AN_250807', title: 'annual exam - AN_250807' }
+  ];
+
+  const availableClasses = ['10', '11', '12'];
+  
+  const availableSubjects = [
+    'Social Studies',
+    'Physics', 
+    'Biology',
+    'History',
+    'Civics',
+    'Economics'
+  ];
+  
+  const availableStudentIds = [
+    'std_123',
+    'std_111', 
+    'std_222',
+    'std_555'
   ];
 
   const handleDrag = (e) => {
@@ -61,8 +81,8 @@ const AnswerSheetUpload = () => {
   };
 
   const handleUpload = async () => {
-    if (!selectedExam || uploadedFiles.length === 0) {
-      alert('Please select an exam and upload at least one file.');
+    if (!selectedExam || !selectedClass || !selectedSubject || !selectedStudentId || uploadedFiles.length === 0) {
+      alert('Please select exam, class, subject, student ID and upload at least one file.');
       return;
     }
     
@@ -181,32 +201,99 @@ const AnswerSheetUpload = () => {
                   <div className="p-2 bg-blue-100 rounded-lg">
                     <span className="material-icons text-blue-600" style={{fontSize: '24px'}}>quiz</span>
                   </div>
-                  <h2 className="text-xl font-bold text-[#101418]">Select Exam</h2>
+                  <h2 className="text-xl font-bold text-[#101418]">Exam Selection Details</h2>
                 </div>
                 
-                <div className="relative">
-                  <select 
-                    value={selectedExam} 
-                    onChange={(e) => setSelectedExam(e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-lg bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
-                  >
-                    <option value="">Choose an exam to evaluate...</option>
-                    {availableExams.map(exam => (
-                      <option key={exam.id} value={exam.id}>
-                        {exam.title} - {exam.class} ({new Date(exam.date).toLocaleDateString()})
-                      </option>
-                    ))}
-                  </select>
-                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                    <span className="material-icons text-gray-400" style={{fontSize: '24px'}}>expand_more</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Select Exam */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-[#5c728a] mb-2">Select Exam</label>
+                    <select 
+                      value={selectedExam} 
+                      onChange={(e) => setSelectedExam(e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                    >
+                      <option value="">Choose an exam...</option>
+                      {availableExams.map(exam => (
+                        <option key={exam.id} value={exam.id}>
+                          {exam.title}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                      <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                    </div>
+                  </div>
+
+                  {/* Select Class */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-[#5c728a] mb-2">Class</label>
+                    <select 
+                      value={selectedClass} 
+                      onChange={(e) => setSelectedClass(e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                    >
+                      <option value="">Choose class...</option>
+                      {availableClasses.map(cls => (
+                        <option key={cls} value={cls}>
+                          {cls}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                      <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                    </div>
+                  </div>
+
+                  {/* Select Subject */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-[#5c728a] mb-2">Subject</label>
+                    <select 
+                      value={selectedSubject} 
+                      onChange={(e) => setSelectedSubject(e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                    >
+                      <option value="">Choose subject...</option>
+                      {availableSubjects.map(subject => (
+                        <option key={subject} value={subject}>
+                          {subject}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                      <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                    </div>
+                  </div>
+
+                  {/* Select Student ID */}
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-[#5c728a] mb-2">Student ID</label>
+                    <select 
+                      value={selectedStudentId} 
+                      onChange={(e) => setSelectedStudentId(e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                    >
+                      <option value="">Choose student ID...</option>
+                      {availableStudentIds.map(studentId => (
+                        <option key={studentId} value={studentId}>
+                          {studentId}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                      <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                    </div>
                   </div>
                 </div>
                 
-                {selectedExam && (
-                  <div className="mt-4 p-4 bg-green-50 rounded-xl border border-green-200">
+                {selectedExam && selectedClass && selectedSubject && selectedStudentId && (
+                  <div className="mt-6 p-4 bg-green-50 rounded-xl border border-green-200">
                     <div className="flex items-center gap-2">
                       <span className="material-icons text-green-600" style={{fontSize: '20px'}}>check_circle</span>
-                      <span className="text-green-800 font-medium">Exam selected successfully!</span>
+                      <span className="text-green-800 font-medium">All selections completed successfully!</span>
+                    </div>
+                    <div className="mt-2 text-sm text-green-700">
+                      <strong>Selected:</strong> {selectedExam} | Class {selectedClass} | {selectedSubject} | {selectedStudentId}
                     </div>
                   </div>
                 )}
