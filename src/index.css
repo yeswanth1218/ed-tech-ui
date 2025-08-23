@@ -5,11 +5,78 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Status Badge Styles from Design Reference */
+.status-upcoming {
+  background-color: #E0E7FF;
+  color: #4338CA;
+}
+
+.status-completed {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.status-evaluated {
+  background-color: #E0E7FF;
+  color: #4338CA;
+}
+
+.status-submitted {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+.status-pending {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+/* Card Styles */
+.card {
+  background-color: #ffffff;
+  border-radius: 16px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  background-color: #ffffff;
+}
+
+.sidebar-item {
+  border-radius: 8px;
+}
+
+.sidebar-item.active {
+  background-color: #8B5CF6;
+  color: white;
+}
+
+.sidebar-item:hover {
+  background-color: #EDE9FE;
+}
+
+.sidebar-item.active:hover {
+  background-color: #8B5CF6;
+}
+
+/* Modal Animation */
+@keyframes modalSlideIn {
+  0% {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 .chart-bar {

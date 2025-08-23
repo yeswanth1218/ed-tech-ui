@@ -215,7 +215,7 @@ const TeacherClass = () => {
       <TeacherSidebar />
       <div className="flex-1 flex flex-col">
         <Header />
-        <div className="flex-1 overflow-auto bg-gray-50">
+        <div className="flex-1 overflow-auto" style={{backgroundColor: '#f0f2f5'}}>
           <div className="p-6">
             {/* Header */}
             <div className="mb-6">
@@ -224,32 +224,32 @@ const TeacherClass = () => {
             </div>
 
             {/* Class Overview */}
-            <div className="bg-white rounded-xl p-6 border border-[#d4dbe2] mb-6">
+            <div className="bg-white rounded-xl p-6 border border-[#d4dbe2] mb-6 hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="material-icons text-blue-600 text-2xl">school</span>
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-blue-200 hover:scale-110 transition-all duration-200 cursor-pointer">
+                    <span className="material-icons text-blue-600 text-2xl hover:text-blue-800 transition-colors duration-200">school</span>
                   </div>
                   <h3 className="font-semibold text-[#101418] mb-1">Class {classInfo.className}</h3>
                   <p className="text-sm text-[#5c728a]">{classInfo.totalStudents} Students</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="material-icons text-green-600 text-2xl">how_to_reg</span>
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-green-200 hover:scale-110 transition-all duration-200 cursor-pointer">
+                    <span className="material-icons text-green-600 text-2xl hover:text-green-800 transition-colors duration-200">how_to_reg</span>
                   </div>
                   <h3 className="font-semibold text-[#101418] mb-1">{classStats.avgAttendance}%</h3>
                   <p className="text-sm text-[#5c728a]">Avg Attendance</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="material-icons text-purple-600 text-2xl">star</span>
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-purple-200 hover:scale-110 transition-all duration-200 cursor-pointer">
+                    <span className="material-icons text-purple-600 text-2xl hover:text-purple-800 transition-colors duration-200">star</span>
                   </div>
                   <h3 className="font-semibold text-[#101418] mb-1">{classStats.topPerformers}</h3>
                   <p className="text-sm text-[#5c728a]">Top Performers</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="material-icons text-orange-600 text-2xl">warning</span>
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 hover:bg-orange-200 hover:scale-110 transition-all duration-200 cursor-pointer">
+                    <span className="material-icons text-orange-600 text-2xl hover:text-orange-800 transition-colors duration-200">warning</span>
                   </div>
                   <h3 className="font-semibold text-[#101418] mb-1">{classStats.needsAttention}</h3>
                   <p className="text-sm text-[#5c728a]">Need Attention</p>

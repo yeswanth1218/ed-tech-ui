@@ -6,67 +6,69 @@ const TeacherSidebar = () => {
   
   const menuItems = [
     { path: '/teacher-dashboard', label: 'Dashboard', icon: 'dashboard' },
-    { path: '/teacher-class', label: 'Responsible Class', icon: 'school' },
+    { path: '/teacher-class', label: 'Responsible Class', icon: 'group' },
     { path: '/teacher-timetable', label: 'My Timetable', icon: 'schedule' },
-    { path: '/teacher-exams', label: 'Exams & Evaluations', icon: 'quiz' },
-    { path: '/teacher-requests', label: 'Requests & Issues', icon: 'support_agent' },
-    { path: '/teacher-attendance', label: 'Attendance', icon: 'how_to_reg' },
-    { path: '/teacher-assessments', label: 'Create Assessments', icon: 'assignment' },
-    { path: '/teacher-archive', label: 'Academic Archive', icon: 'folder' },
+    { path: '/teacher-exams', label: 'Exams & Evaluations', icon: 'assessment' },
+    { path: '/teacher-requests', label: 'Requests & Issues', icon: 'report_problem' },
+    { path: '/teacher-attendance', label: 'Attendance', icon: 'check_circle_outline' },
+    { path: '/teacher-assessments', label: 'Create Assessments', icon: 'create' },
+    { path: '/teacher-archive', label: 'Academic Archive', icon: 'archive' },
     { path: '/teacher-analytics', label: 'AI Analytics', icon: 'analytics' },
     { path: '/teacher-leaderboard', label: 'Leaderboard & Rankings', icon: 'leaderboard' }
   ];
 
   return (
-    <div className="layout-content-container flex flex-col w-80">
-      <div className="flex h-full min-h-[700px] flex-col justify-between bg-gray-50 p-4">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col">
-            <h1 className="text-[#101418] text-base font-medium leading-normal">Skool</h1>
-            <p className="text-[#5c728a] text-sm font-normal leading-normal">Teacher Portal</p>
+    <aside className="w-80 min-h-screen p-4 flex flex-col bg-white">
+      <div className="flex items-center mb-8">
+        <span className="material-icons text-3xl text-purple-600">school</span>
+        <span className="text-xl font-bold ml-2">SKOOL</span>
+      </div>
+      
+      <nav className="space-y-2 mb-6">
+        {menuItems.map((item) => {
+          // Check for exact match or related paths for Exams & Evaluations
+          const isActive = location.pathname === item.path || 
+            (item.path === '/teacher-exams' && 
+             (location.pathname === '/answer-sheet-upload' || location.pathname === '/set-question-paper'));
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex items-center p-3 rounded-lg transition-colors ${
+                isActive 
+                  ? 'bg-purple-600 text-white hover:bg-purple-600' 
+                  : 'text-gray-700 hover:bg-purple-50'
+              }`}
+            >
+              <span className="material-icons">{item.icon}</span>
+              <span className="ml-4">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+      
+      {/* Teacher Info Section */}
+      <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4">
+        <div className="flex items-center">
+          <div className="relative">
+            <img 
+              alt="Dr. Sarah Wilson's profile picture" 
+              className="w-10 h-10 rounded-full" 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_hgYuD47Bm8DNrH_31086GQPy2f4wsD6lBgawozH7CyXMmPWOIq7EKIpjQ-jKauvYo0Pj6IYjLOzg0fyPnOQzg5iIgLVq7xdyfgIE2ZlW9NCcHil7nJY1e-fOwRRgYvG34daNJ1xWEsxz8X71s833qCAwhB_5v2fSzYxV1YvHAJbuwaEMK0CBlvtfaUDY5JjlcxAl1c455Mdq4Z2McUMlnKkTfrslL9hZjy2uBAglo3qsP5skkipqa6k2lvFRkfbox7XuV3ThAlhG"
+            />
+            <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-400 border-2 border-white"></span>
           </div>
-          <div className="flex flex-col gap-2">
-            {menuItems.map((item) => {
-              // Check for exact match or related paths for Exams & Evaluations
-              const isActive = location.pathname === item.path || 
-                (item.path === '/teacher-exams' && 
-                 (location.pathname === '/answer-sheet-upload' || location.pathname === '/set-question-paper'));
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-full transition-colors ${
-                    isActive ? 'bg-[#eaedf1]' : 'hover:bg-[#f5f5f5]'
-                  }`}
-                >
-                  <div className="text-[#101418]">
-                    <span className="material-icons" style={{fontSize: '24px'}}>{item.icon}</span>
-                  </div>
-                  <p className="text-[#101418] text-sm font-medium leading-normal">{item.label}</p>
-                </Link>
-              );
-            })}
+          <div className="ml-3">
+            <p className="font-semibold text-sm">Dr. Sarah Wilson</p>
+            <p className="text-xs text-gray-500">TCH-2024-015</p>
           </div>
         </div>
-        
-        {/* Teacher Info Section */}
-        <div className="flex flex-col gap-3 p-3 bg-white rounded-xl border border-[#d4dbe2]">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <span className="material-icons text-green-600" style={{fontSize: '20px'}}>person</span>
-            </div>
-            <div className="flex-1">
-              <p className="text-[#101418] text-sm font-medium">Dr. Sarah Wilson</p>
-              <p className="text-[#5c728a] text-xs">TCH-2024-015</p>
-            </div>
-          </div>
-          <div className="flex justify-between text-xs text-[#5c728a]">
-            <span>Mathematics Dept.</span>
-            <span>Class Teacher: 12-A</span>
-          </div>
+        <div className="mt-2 text-xs text-gray-500 flex justify-between">
+          <span>Mathematics Dept.</span>
+          <span>Class Teacher: 12-A</span>
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 

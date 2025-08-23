@@ -343,7 +343,7 @@ const TeacherArchive = () => {
       <TeacherSidebar />
       <div className="flex-1 flex flex-col">
         <Header />
-        <div className="flex-1 overflow-auto bg-gray-50">
+        <div className="flex-1 overflow-auto" style={{backgroundColor: '#f0f2f5'}}>
           <div className="p-6">
             {/* Header */}
             <div className="mb-6">
