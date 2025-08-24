@@ -34,7 +34,7 @@ const TeacherSidebar = () => {
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center p-3 rounded-lg transition-colors ${
+              className={`flex items-center p-3 rounded-full transition-colors ${
                 isActive 
                   ? 'bg-purple-600 text-white hover:bg-purple-600' 
                   : 'text-gray-700 hover:bg-purple-50'

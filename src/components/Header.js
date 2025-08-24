@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Header = ({ title = "Skool" }) => {
   const { darkMode, toggleDarkMode } = useTheme();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignOut = () => {
     // Clear any stored authentication data
@@ -35,7 +36,16 @@ const Header = ({ title = "Skool" }) => {
         </div>
         <div className="flex items-center gap-9">
           <Link className="text-[#101418] text-sm font-medium leading-normal" to="/dashboard">Dashboard</Link>
-          <Link className="text-[#101418] text-sm font-medium leading-normal" to="/upload">Exams</Link>
+          <Link 
+            className={`text-sm font-medium leading-normal ${
+              location.pathname === '/upload' || location.pathname === '/organization-exam-creation'
+                ? 'text-blue-600 font-semibold' 
+                : 'text-[#101418]'
+            }`} 
+            to="/upload"
+          >
+            Exams
+          </Link>
           <Link className="text-[#101418] text-sm font-medium leading-normal" to="/student-performance">Students</Link>
           <Link className="text-[#101418] text-sm font-medium leading-normal" to="/evaluation">Reports</Link>
         </div>

@@ -24,7 +24,8 @@ const Sidebar = () => {
           </div>
           <div className="flex flex-col gap-2">
             {menuItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isActive = location.pathname === item.path || 
+                              (item.path === '/upload' && location.pathname === '/organization-exam-creation');
               return (
                 <Link
                   key={item.path}

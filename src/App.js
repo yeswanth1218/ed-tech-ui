@@ -33,6 +33,7 @@ import TeacherArchive from './components/TeacherArchive';
 import TeacherLeaderboard from './components/TeacherLeaderboard';
 import AnswerSheetUpload from './components/AnswerSheetUpload';
 import SetQuestionPaper from './components/SetQuestionPaper';
+import OrganizationExamCreation from './components/OrganizationExamCreation';
 
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
           <Route path="/teacher-leaderboard" element={<TeacherLeaderboard />} />
           <Route path="/answer-sheet-upload" element={<AnswerSheetUpload />} />
           <Route path="/set-question-paper" element={<SetQuestionPaper />} />
+          <Route path="/organization-exam-creation" element={<OrganizationExamCreation />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
         <AIChatbot />

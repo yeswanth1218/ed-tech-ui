@@ -213,7 +213,7 @@ const TeacherAnalytics = () => {
 
             {/* Navigation Tabs */}
             <div className="bg-white rounded-xl border border-[#d4dbe2] mb-6">
-              <div className="flex border-b border-[#d4dbe2] overflow-x-auto">
+              <div className="flex p-2 overflow-x-auto">
                 {[
                   { id: 'overview', label: 'Overview', icon: 'dashboard' },
                   { id: 'students', label: 'Student Analysis', icon: 'person_search' },
@@ -223,10 +223,10 @@ const TeacherAnalytics = () => {
                 ].map((tab) => (
                   <button
                     key={tab.id}
-                    className={`px-6 py-4 font-medium transition-colors whitespace-nowrap ${
+                    className={`px-4 py-2 mx-1 font-medium transition-all duration-300 whitespace-nowrap rounded-full ${
                       selectedView === tab.id
-                        ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-                        : 'text-[#5c728a] hover:text-[#101418]'
+                        ? 'text-white bg-blue-600 shadow-lg shadow-purple-500/30 transform -translate-y-0.5'
+                        : 'text-[#5c728a] hover:text-[#101418] hover:bg-gray-100 hover:shadow-md hover:shadow-purple-300/20'
                     }`}
                     onClick={() => setSelectedView(tab.id)}
                   >
