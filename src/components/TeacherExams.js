@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import TeacherSidebar from './TeacherSidebar';
@@ -6,9 +6,34 @@ import TeacherSidebar from './TeacherSidebar';
 const TeacherExams = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('pending');
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [showQuestionPaper, setShowQuestionPaper] = useState(false);
-  const [showEvaluation, setShowEvaluation] = useState(false);
+  const [exams, setExams] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch exams from API
+  const fetchExams = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/exams`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch exams');
+      }
+      const data = await response.json();
+      setExams(data.data || []);
+    } catch (err) {
+      setError(err.message);
+      console.error('Error fetching exams:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'questionPaper') {
+      fetchExams();
+    }
+  }, [activeTab]);
 
   const pendingExams = [
     {
@@ -124,8 +149,7 @@ const TeacherExams = () => {
     const priority = type === 'pending' ? getPriorityLevel(exam.deadline) : null;
     
     return (
-      <div className="bg-white rounded-xl p-6 border border-[#d4dbe2] hover:shadow-md transition-all cursor-pointer"
-           onClick={() => setSelectedExam(exam)}>
+      <div className="bg-white rounded-xl p-6 border border-[#d4dbe2] hover:shadow-md transition-all cursor-pointer">
         <div className="flex justify-between items-start mb-4">
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-[#101418] mb-1">{exam.title}</h3>
@@ -195,13 +219,13 @@ const TeacherExams = () => {
           <div className="mt-4 flex gap-2">
             {exam.status === 'question_paper_pending' && (
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                      onClick={(e) => { e.stopPropagation(); setShowQuestionPaper(true); }}>
+                      onClick={(e) => { e.stopPropagation(); navigate('/set-question-paper'); }}>
                 Set Question Paper
               </button>
             )}
             {exam.status === 'evaluation_pending' && (
               <button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
-                      onClick={(e) => { e.stopPropagation(); setShowEvaluation(true); }}>
+                      onClick={(e) => { e.stopPropagation(); navigate('/evaluation'); }}>
                 Start Evaluation
               </button>
             )}
@@ -504,52 +528,82 @@ const TeacherExams = () => {
                 {activeTab === 'questionPaper' && (
                   <div className="space-y-6">
                     <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-lg font-semibold text-[#101418]">Upcoming Examinations</h2>
+                      <h2 className="text-lg font-semibold text-[#101418]">Available Examinations</h2>
+                      <button 
+                        onClick={fetchExams}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
+                      >
+                        <span className="material-icons" style={{fontSize: '16px'}}>refresh</span>
+                        Refresh
+                      </button>
                     </div>
                     
-                    {/* Exam Details Card */}
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 bg-blue-100 rounded-lg">
-                              <span className="material-icons text-blue-600" style={{fontSize: '24px'}}>assignment</span>
-                            </div>
-                            <div>
-                              <h3 className="text-xl font-bold text-[#101418]">Unit Test 1</h3>
-                              <p className="text-[#5c728a]">Environmental Science (EVS)</p>
-                            </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                            <div>
-                              <p className="text-[#5c728a]">Exam ID</p>
-                              <p className="font-medium text-[#101418]">1</p>
-                            </div>
-                            <div>
-                              <p className="text-[#5c728a]">Class</p>
-                              <p className="font-medium text-[#101418]">3-B</p>
-                            </div>
-                            <div>
-                              <p className="text-[#5c728a]">Date</p>
-                              <p className="font-medium text-[#101418]">Aug 18, 2025</p>
-                            </div>
-                            <div>
-                              <p className="text-[#5c728a]">Class ID</p>
-                              <p className="font-medium text-[#101418]">23</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <button 
-                          onClick={() => navigate('/set-question-paper')}
-                          className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
-                        >
-                          <span className="material-icons" style={{fontSize: '18px'}}>edit</span>
-                          Set Question Paper
-                        </button>
+                    {loading && (
+                      <div className="flex justify-center items-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span className="ml-2 text-[#5c728a]">Loading exams...</span>
                       </div>
-                    </div>
+                    )}
+                    
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div className="flex items-center gap-2">
+                          <span className="material-icons text-red-600" style={{fontSize: '20px'}}>error</span>
+                          <p className="text-red-700 font-medium">Error loading exams</p>
+                        </div>
+                        <p className="text-red-600 text-sm mt-1">{error}</p>
+                      </div>
+                    )}
+                    
+                    {!loading && !error && exams.length === 0 && (
+                      <div className="text-center py-8">
+                        <span className="material-icons text-gray-400" style={{fontSize: '48px'}}>assignment</span>
+                        <p className="text-[#5c728a] mt-2">No exams available</p>
+                      </div>
+                    )}
+                    
+                    {!loading && !error && exams.length > 0 && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {exams.map((exam) => (
+                          <div key={exam.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 hover:shadow-lg transition-all duration-200">
+                            <div className="flex items-start justify-between mb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="p-2 bg-blue-100 rounded-lg">
+                                  <span className="material-icons text-blue-600" style={{fontSize: '20px'}}>assignment</span>
+                                </div>
+                                <div>
+                                  <h3 className="text-lg font-bold text-[#101418] line-clamp-1">{exam.name}</h3>
+                                  <p className="text-[#5c728a] text-sm">{exam.examination_code}</p>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="space-y-2 text-sm mb-4">
+                              <div className="flex justify-between">
+                                <span className="text-[#5c728a]">Exam ID:</span>
+                                <span className="font-medium text-[#101418]">{exam.id}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-[#5c728a]">Code:</span>
+                                <span className="font-medium text-[#101418]">{exam.examination_code}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-[#5c728a]">Created:</span>
+                                <span className="font-medium text-[#101418]">{new Date(exam.createdAt).toLocaleDateString()}</span>
+                              </div>
+                            </div>
+                            
+                            <button 
+                              onClick={() => navigate('/set-question-paper', { state: { examData: exam } })}
+                              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                            >
+                              <span className="material-icons" style={{fontSize: '16px'}}>edit</span>
+                              Set Question Paper
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

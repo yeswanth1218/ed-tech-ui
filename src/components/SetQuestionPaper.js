@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import TeacherSidebar from './TeacherSidebar';
 
 const SetQuestionPaper = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [questions, setQuestions] = useState([]);
+  const [existingQuestions, setExistingQuestions] = useState([]);
+  const [newQuestions, setNewQuestions] = useState([]);
+  const [editedQuestions, setEditedQuestions] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState({
     question_number: '',
     question: '',
@@ -17,31 +22,132 @@ const SetQuestionPaper = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Static exam details
-  const examDetails = {
-    exam_name: "unit test1",
-    exam_id: 5,
-    class_id: 23,
-    class: "3-B",
-    exam_date: "2025-08-18",
-    subject: "Social_Studies",
-    evaluator_id: 1
+  // Dynamic exam details state
+  const [examDetails, setExamDetails] = useState({
+    exam_name: '',
+    examination_code: '',
+    subject_code: '',
+    subject_name: '',
+    class_id: '',
+    class_name: '',
+    exam_date: ''
+  });
+  
+  // API data states
+  const [subjects, setSubjects] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [error, setError] = useState(null);
+  const [canAddQuestions, setCanAddQuestions] = useState(false);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [expandedQuestions, setExpandedQuestions] = useState(new Set());
+
+  // Fetch subjects from API
+  const fetchSubjects = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/subjects`);
+      if (!response.ok) throw new Error('Failed to fetch subjects');
+      const data = await response.json();
+      setSubjects(data.data || []);
+    } catch (err) {
+      setError('Failed to load subjects');
+      console.error('Error fetching subjects:', err);
+    }
   };
 
-  // Load questions from localStorage on component mount
+  // Fetch classes from API
+  const fetchClasses = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/classes`);
+      if (!response.ok) throw new Error('Failed to fetch classes');
+      const data = await response.json();
+      setClasses(data.data || []);
+    } catch (err) {
+      setError('Failed to load classes');
+      console.error('Error fetching classes:', err);
+    }
+  };
+
+  // Generate golden code from class and subject
+  const generateGoldenCode = (className, subjectCode, examCode) => {
+    return `${className}-${subjectCode}-${examCode}`;
+  };
+
+  // Fetch existing questions from API
+  const fetchExistingQuestions = async (goldenCode) => {
+    setLoadingQuestions(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/scheduled_question_papers?golden_code=${goldenCode}`);
+      if (!response.ok) throw new Error('Failed to fetch questions');
+      const data = await response.json();
+      
+      if (data.data && data.data.length > 0) {
+        // Transform API data to match our question format
+        const transformedQuestions = data.data.map(q => ({
+          id: q.id, // Store the original ID for updates
+          question_number: q.question_number,
+          question: q.question,
+          answer: q.answer,
+          marks: parseFloat(q.marks),
+          question_type: q.question_type,
+          ruberics: q.ruberics
+        }));
+        setExistingQuestions(transformedQuestions);
+      } else {
+        setExistingQuestions([]);
+      }
+      
+      setCanAddQuestions(true);
+    } catch (err) {
+      console.error('Error fetching existing questions:', err);
+      setQuestions([]);
+      setCanAddQuestions(true); // Still allow adding questions even if fetch fails
+    } finally {
+      setLoadingQuestions(false);
+    }
+  };
+
+  // Check if both subject and class are selected to enable question fetching
+  useEffect(() => {
+    if (examDetails.subject_code && examDetails.class_name && examDetails.examination_code) {
+      const goldenCode = generateGoldenCode(examDetails.class_name, examDetails.subject_code, examDetails.examination_code);
+      fetchExistingQuestions(goldenCode);
+    } else {
+      setCanAddQuestions(false);
+      setExistingQuestions([]);
+    }
+  }, [examDetails.subject_code, examDetails.class_name, examDetails.examination_code]);
+
+  // Load questions from localStorage and initialize exam data
   useEffect(() => {
     const savedQuestions = localStorage.getItem('questionPaperQuestions');
     if (savedQuestions) {
-      setQuestions(JSON.parse(savedQuestions));
+      setNewQuestions(JSON.parse(savedQuestions));
     }
-    // Clear any old cached data to ensure fresh start
-    console.log('Current exam details:', examDetails);
-  }, []);
+    
+    // Get exam data from navigation state
+    const examData = location.state?.examData;
+    if (examData) {
+      setExamDetails(prev => ({
+        ...prev,
+        exam_name: examData.name,
+        examination_code: examData.examination_code
+      }));
+    }
+    
+    // Fetch dropdown data
+    fetchSubjects();
+    fetchClasses();
+  }, [location.state]);
 
-  // Save questions to localStorage whenever questions change
+  // Save new questions to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('questionPaperQuestions', JSON.stringify(questions));
-  }, [questions]);
+    localStorage.setItem('questionPaperQuestions', JSON.stringify(newQuestions));
+  }, [newQuestions]);
+
+  // Combine all questions for total count and operations
+  useEffect(() => {
+    setQuestions([...existingQuestions, ...newQuestions, ...editedQuestions]);
+  }, [existingQuestions, newQuestions, editedQuestions]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,13 +158,19 @@ const SetQuestionPaper = () => {
   };
 
   const handleAddQuestion = () => {
+    if (editingQuestion) {
+      handleUpdateQuestion();
+      return;
+    }
+
     if (!currentQuestion.question_number || !currentQuestion.question || !currentQuestion.answer || !currentQuestion.marks) {
       alert('Please fill in all required fields');
       return;
     }
 
-    // Check if question number already exists
-    const existingQuestion = questions.find(q => q.question_number === parseInt(currentQuestion.question_number));
+    // Check if question number already exists in all question arrays
+    const allQuestions = [...existingQuestions, ...newQuestions, ...editedQuestions];
+    const existingQuestion = allQuestions.find(q => q.question_number === parseInt(currentQuestion.question_number));
     if (existingQuestion) {
       alert('Question number already exists. Please use a different number.');
       return;
@@ -70,7 +182,7 @@ const SetQuestionPaper = () => {
       marks: parseInt(currentQuestion.marks)
     };
 
-    setQuestions(prev => [...prev, newQuestion].sort((a, b) => a.question_number - b.question_number));
+    setNewQuestions(prev => [...prev, newQuestion].sort((a, b) => a.question_number - b.question_number));
     
     // Reset form
     setCurrentQuestion({
@@ -84,59 +196,176 @@ const SetQuestionPaper = () => {
     setShowAddForm(false);
   };
 
-  const handleDeleteQuestion = (questionNumber) => {
-    setQuestions(prev => prev.filter(q => q.question_number !== questionNumber));
+  const handleDeleteQuestion = (questionNumber, questionType = 'new') => {
+    if (questionType === 'existing') {
+      // For existing questions, you might want to call an API to delete
+      // For now, just remove from local state
+      setExistingQuestions(prev => prev.filter(q => q.question_number !== questionNumber));
+    } else if (questionType === 'edited') {
+      setEditedQuestions(prev => prev.filter(q => q.question_number !== questionNumber));
+    } else {
+      setNewQuestions(prev => prev.filter(q => q.question_number !== questionNumber));
+    }
+  };
+
+  const handleEditQuestion = (question) => {
+    setEditingQuestion(question);
+    setCurrentQuestion({
+      question_number: question.question_number.toString(),
+      question: question.question,
+      answer: question.answer,
+      marks: question.marks.toString(),
+      question_type: question.question_type,
+      ruberics: question.ruberics || ''
+    });
+    setShowAddForm(true);
+  };
+
+  const handleUpdateQuestion = () => {
+    if (!currentQuestion.question_number || !currentQuestion.question || !currentQuestion.answer || !currentQuestion.marks) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const updatedQuestion = {
+      id: editingQuestion.id, // Preserve the original ID
+      question_number: parseInt(currentQuestion.question_number),
+      question: currentQuestion.question,
+      answer: currentQuestion.answer,
+      marks: parseInt(currentQuestion.marks),
+      question_type: currentQuestion.question_type,
+      ruberics: currentQuestion.ruberics
+    };
+
+    // Remove from existing questions and add to edited questions
+    setExistingQuestions(prev => prev.filter(q => q.question_number !== updatedQuestion.question_number));
+    setEditedQuestions(prev => {
+      const filtered = prev.filter(q => q.question_number !== updatedQuestion.question_number);
+      return [...filtered, updatedQuestion].sort((a, b) => a.question_number - b.question_number);
+    });
+
+    // Reset form
+    setCurrentQuestion({
+      question_number: '',
+      question: '',
+      answer: '',
+      marks: '',
+      question_type: 'SUBJECTIVE',
+      ruberics: ''
+    });
+    setEditingQuestion(null);
+    setShowAddForm(false);
+  };
+
+  const toggleQuestionExpansion = (questionNumber) => {
+    setExpandedQuestions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(questionNumber)) {
+        newSet.delete(questionNumber);
+      } else {
+        newSet.add(questionNumber);
+      }
+      return newSet;
+    });
   };
 
   const handleSubmitQuestionPaper = async () => {
-    if (questions.length === 0) {
-      alert('Please add at least one question before submitting.');
+    if (newQuestions.length === 0 && editedQuestions.length === 0) {
+      alert('Please add or edit at least one question before submitting.');
       return;
     }
 
     setIsSubmitting(true);
     
-    const payload = {
-      ...examDetails,
-      question_details: questions
-    };
-
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://34.93.230.130:9000/api';
       
-      console.log('Submitting payload:', JSON.stringify(payload, null, 2));
-      console.log('API URL:', `${apiUrl}/admin/schedule_exam`);
-      
-      const response = await fetch(`${apiUrl}/admin/schedule_exam`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Question paper submitted successfully:', result);
+      // Submit new questions if any
+      if (newQuestions.length > 0) {
+        let newQuestionsPayload;
+        let apiEndpoint;
         
-        // Clear localStorage and questions
-        localStorage.removeItem('questionPaperQuestions');
-        setQuestions([]);
-        
-        alert('Question paper submitted successfully!');
-        navigate('/teacher-exams');
-      } else {
-        // Get error details from response
-        let errorMessage = `API request failed with status: ${response.status}`;
-        try {
-          const errorData = await response.json();
-          console.error('API Error Response:', errorData);
-          errorMessage += ` - ${errorData.message || errorData.error || JSON.stringify(errorData)}`;
-        } catch (e) {
-          console.error('Could not parse error response');
+        // Check if there are existing questions to determine API endpoint and payload structure
+        if (existingQuestions.length > 0) {
+          // If existing questions present, use /admin/add_questions with golden_code
+          const goldenCode = generateGoldenCode(examDetails.class_name, examDetails.subject_code, examDetails.examination_code);
+          newQuestionsPayload = {
+            golden_code: goldenCode,
+            question_details: newQuestions.map(q => ({
+              question: q.question,
+              question_number: q.question_number,
+              answer: q.answer,
+              marks: q.marks,
+              question_type: q.question_type,
+              ruberics: q.ruberics
+            }))
+          };
+          apiEndpoint = `${apiUrl}/admin/add_questions`;
+        } else {
+          // If no existing questions, use /admin/schedule_exam with full exam details
+          newQuestionsPayload = {
+            examination_code: examDetails.examination_code,
+            subject_code: examDetails.subject_code,
+            class: examDetails.class_name,
+            exam_date: examDetails.exam_date,
+            evaluator_id: 1,
+            question_details: newQuestions
+          };
+          apiEndpoint = `${apiUrl}/admin/schedule_exam`;
         }
-        throw new Error(errorMessage);
+
+        console.log('Submitting new questions to:', apiEndpoint);
+        console.log('Payload:', JSON.stringify(newQuestionsPayload, null, 2));
+        
+        const newQuestionsResponse = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newQuestionsPayload),
+        });
+
+        if (!newQuestionsResponse.ok) {
+          throw new Error(`Failed to submit new questions: ${newQuestionsResponse.status}`);
+        }
       }
+
+      // Submit edited questions if any (send each question individually)
+      if (editedQuestions.length > 0) {
+        for (const editedQuestion of editedQuestions) {
+          const editedQuestionPayload = {
+            id: editedQuestion.id,
+            question_number: editedQuestion.question_number,
+            question: editedQuestion.question,
+            answer: editedQuestion.answer,
+            marks: editedQuestion.marks,
+            question_type: editedQuestion.question_type,
+            ruberics: editedQuestion.ruberics
+          };
+
+          console.log('Submitting edited question:', JSON.stringify(editedQuestionPayload, null, 2));
+          
+          const editedQuestionResponse = await fetch(`${apiUrl}/admin/update_question_paper`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(editedQuestionPayload),
+          });
+
+          if (!editedQuestionResponse.ok) {
+            throw new Error(`Failed to submit edited question ${editedQuestion.question_number}: ${editedQuestionResponse.status}`);
+          }
+        }
+      }
+
+      // Clear localStorage and questions
+      localStorage.removeItem('questionPaperQuestions');
+      setNewQuestions([]);
+      setEditedQuestions([]);
+      
+      alert('Question paper submitted successfully!');
+      navigate('/teacher-exams');
     } catch (error) {
       console.error('Submit error:', error);
       alert(`Failed to submit question paper: ${error.message}`);
@@ -193,56 +422,284 @@ const SetQuestionPaper = () => {
                   <h2 className="text-xl font-bold text-[#101418]">Exam Details</h2>
                 </div>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
-                    <p className="text-[#5c728a] text-sm font-medium">Exam Name</p>
-                    <p className="font-bold text-[#101418] text-lg">{examDetails.exam_name}</p>
+                    <p className="text-[#5c728a] text-sm font-medium mb-2">Exam Name</p>
+                    <input
+                      type="text"
+                      value={examDetails.exam_name}
+                      onChange={(e) => setExamDetails(prev => ({ ...prev, exam_name: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter exam name"
+                    />
+                    {examDetails.examination_code && (
+                      <p className="text-xs text-gray-500 mt-1">Code: {examDetails.examination_code}</p>
+                    )}
                   </div>
+                  
                   <div className="p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg">
-                    <p className="text-[#5c728a] text-sm font-medium">Subject</p>
-                    <p className="font-bold text-[#101418] text-lg">{examDetails.subject}</p>
+                    <p className="text-[#5c728a] text-sm font-medium mb-2">Subject</p>
+                    <select
+                      value={examDetails.subject_code}
+                      onChange={(e) => {
+                        const selectedSubject = subjects.find(s => s.subject_code === e.target.value);
+                        setExamDetails(prev => ({
+                          ...prev,
+                          subject_code: e.target.value,
+                          subject_name: selectedSubject?.name || ''
+                        }));
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    >
+                      <option value="">Select Subject</option>
+                      {subjects.map(subject => (
+                        <option key={subject.id} value={subject.subject_code}>
+                          {subject.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+                  
                   <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
-                    <p className="text-[#5c728a] text-sm font-medium">Class</p>
-                    <p className="font-bold text-[#101418] text-lg">{examDetails.class}</p>
+                    <p className="text-[#5c728a] text-sm font-medium mb-2">Class</p>
+                    <select
+                      value={examDetails.class_id}
+                      onChange={(e) => {
+                        const selectedClass = classes.find(c => c.id === parseInt(e.target.value));
+                        setExamDetails(prev => ({
+                          ...prev,
+                          class_id: e.target.value,
+                          class_name: selectedClass?.class || ''
+                        }));
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    >
+                      <option value="">Select Class</option>
+                      {classes.map(classItem => (
+                        <option key={classItem.id} value={classItem.id}>
+                          {classItem.class}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+                  
                   <div className="p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg">
-                    <p className="text-[#5c728a] text-sm font-medium">Exam Date</p>
-                    <p className="font-bold text-[#101418] text-lg">{new Date(examDetails.exam_date).toLocaleDateString()}</p>
+                    <p className="text-[#5c728a] text-sm font-medium mb-2">Exam Date</p>
+                    <input
+                      type="date"
+                      value={examDetails.exam_date}
+                      onChange={(e) => setExamDetails(prev => ({ ...prev, exam_date: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
                   </div>
                 </div>
                 
-                {/* Debug Info */}
-                <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <p className="text-yellow-800 text-sm font-medium">Debug Info:</p>
-                  <p className="text-yellow-700 text-xs">Exam ID: {examDetails.exam_id} | Class ID: {examDetails.class_id} | Evaluator ID: {examDetails.evaluator_id}</p>
-                </div>
+                {error && (
+                  <div className="mt-4 p-3 bg-red-50 rounded-lg border border-red-200">
+                    <p className="text-red-800 text-sm font-medium">Error:</p>
+                    <p className="text-red-700 text-xs">{error}</p>
+                  </div>
+                )}
               </div>
 
-              {/* Questions Section */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
+              {/* Already Set Questions Section */}
+              {canAddQuestions && existingQuestions.length > 0 && (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl mb-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <span className="material-icons text-blue-600" style={{fontSize: '24px'}}>assignment_turned_in</span>
+                    </div>
+                    <h2 className="text-xl font-bold text-[#101418]">Already Set Questions ({existingQuestions.length})</h2>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {existingQuestions.map((question, index) => {
+                      const isExpanded = expandedQuestions.has(question.question_number);
+                      return (
+                        <div key={question.question_number} className={`border border-blue-200 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 hover:shadow-md transition-all duration-200 ${
+                          isExpanded ? 'p-6' : 'p-4'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                <span className="text-white text-sm font-bold">{question.question_number}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getQuestionTypeColor(question.question_type)}`}>
+                                  {question.question_type}
+                                </span>
+                                <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
+                                  {question.marks} marks
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => toggleQuestionExpansion(question.question_number)}
+                                className="p-2 hover:bg-blue-100 rounded-lg text-blue-600 hover:text-blue-700 transition-colors"
+                                title={isExpanded ? 'Collapse' : 'Expand'}
+                              >
+                                <span className="material-icons" style={{fontSize: '18px'}}>
+                                  {isExpanded ? 'expand_less' : 'expand_more'}
+                                </span>
+                              </button>
+                              <button 
+                                 onClick={() => handleEditQuestion(question)}
+                                 className="p-2 hover:bg-yellow-100 rounded-lg text-yellow-600 hover:text-yellow-700 transition-colors"
+                                 title="Edit Question"
+                               >
+                                 <span className="material-icons" style={{fontSize: '18px'}}>edit</span>
+                               </button>
+                               <button 
+                                 onClick={() => handleDeleteQuestion(question.question_number, 'existing')}
+                                 className="p-2 hover:bg-red-100 rounded-lg text-red-500 hover:text-red-700 transition-colors"
+                                 title="Delete Question"
+                               >
+                                 <span className="material-icons" style={{fontSize: '18px'}}>delete</span>
+                               </button>
+                            </div>
+                          </div>
+                          
+                          {isExpanded && (
+                            <div className="mt-4 space-y-4 border-t border-gray-200 pt-4">
+                              <div>
+                                <p className="font-medium text-[#101418] mb-1">Question:</p>
+                                <p className="text-[#5c728a] bg-gray-50 p-3 rounded-lg">{question.question}</p>
+                              </div>
+                              <div>
+                                <p className="font-medium text-[#101418] mb-1">Answer:</p>
+                                <p className="text-[#5c728a] bg-green-50 p-3 rounded-lg">{question.answer}</p>
+                              </div>
+                              {question.ruberics && (
+                                <div>
+                                  <p className="font-medium text-[#101418] mb-1">Rubrics:</p>
+                                  <p className="text-[#5c728a] bg-blue-50 p-3 rounded-lg">{question.ruberics}</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Edited Questions Section */}
+               {canAddQuestions && editedQuestions.length > 0 && (
+                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl mb-6">
+                   <div className="flex items-center gap-3 mb-6">
+                     <div className="p-2 bg-yellow-100 rounded-lg">
+                       <span className="material-icons text-yellow-600" style={{fontSize: '24px'}}>edit_note</span>
+                     </div>
+                     <h2 className="text-xl font-bold text-[#101418]">Edits Made ({editedQuestions.length})</h2>
+                   </div>
+                   
+                   <div className="space-y-3">
+                     {editedQuestions.map((question, index) => {
+                       const isExpanded = expandedQuestions.has(question.question_number);
+                       return (
+                         <div key={question.question_number} className={`border border-yellow-200 rounded-xl bg-gradient-to-r from-yellow-50 to-orange-50 hover:shadow-md transition-all duration-200 ${
+                           isExpanded ? 'p-6' : 'p-4'
+                         }`}>
+                           <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-3">
+                               <div className="w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center">
+                                 <span className="text-white text-sm font-bold">{question.question_number}</span>
+                               </div>
+                               <div className="flex items-center gap-2">
+                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${getQuestionTypeColor(question.question_type)}`}>
+                                   {question.question_type}
+                                 </span>
+                                 <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
+                                   {question.marks} marks
+                                 </span>
+                                 <span className="px-2 py-1 bg-yellow-200 text-yellow-800 rounded-full text-xs font-medium">
+                                   EDITED
+                                 </span>
+                               </div>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <button 
+                                 onClick={() => toggleQuestionExpansion(question.question_number)}
+                                 className="p-2 hover:bg-blue-100 rounded-lg text-blue-600 hover:text-blue-700 transition-colors"
+                                 title={isExpanded ? 'Collapse' : 'Expand'}
+                               >
+                                 <span className="material-icons" style={{fontSize: '18px'}}>
+                                   {isExpanded ? 'expand_less' : 'expand_more'}
+                                 </span>
+                               </button>
+                               <button 
+                                 onClick={() => handleEditQuestion(question)}
+                                 className="p-2 hover:bg-yellow-100 rounded-lg text-yellow-600 hover:text-yellow-700 transition-colors"
+                                 title="Edit Again"
+                               >
+                                 <span className="material-icons" style={{fontSize: '18px'}}>edit</span>
+                               </button>
+                               <button 
+                                 onClick={() => handleDeleteQuestion(question.question_number, 'edited')}
+                                 className="p-2 hover:bg-red-100 rounded-lg text-red-500 hover:text-red-700 transition-colors"
+                                 title="Delete Question"
+                               >
+                                 <span className="material-icons" style={{fontSize: '18px'}}>delete</span>
+                               </button>
+                             </div>
+                           </div>
+                           
+                           {isExpanded && (
+                             <div className="mt-4 space-y-4 border-t border-gray-200 pt-4">
+                               <div>
+                                 <p className="font-medium text-[#101418] mb-1">Question:</p>
+                                 <p className="text-[#5c728a] bg-gray-50 p-3 rounded-lg">{question.question}</p>
+                               </div>
+                               <div>
+                                 <p className="font-medium text-[#101418] mb-1">Answer:</p>
+                                 <p className="text-[#5c728a] bg-green-50 p-3 rounded-lg">{question.answer}</p>
+                               </div>
+                               {question.ruberics && (
+                                 <div>
+                                   <p className="font-medium text-[#101418] mb-1">Rubrics:</p>
+                                   <p className="text-[#5c728a] bg-blue-50 p-3 rounded-lg">{question.ruberics}</p>
+                                 </div>
+                               )}
+                             </div>
+                           )}
+                         </div>
+                       );
+                     })}
+                   </div>
+                 </div>
+               )}
+
+               {/* Set New Questions Section */}
+               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-green-100 rounded-lg">
                       <span className="material-icons text-green-600" style={{fontSize: '24px'}}>quiz</span>
                     </div>
-                    <h2 className="text-xl font-bold text-[#101418]">Questions ({questions.length})</h2>
+                    <h2 className="text-xl font-bold text-[#101418]">Set New Questions ({newQuestions.length})</h2>
                   </div>
                   
                   <div className="flex gap-3">
                     <button 
                       onClick={() => setShowAddForm(true)}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-xl font-medium hover:from-green-700 hover:to-teal-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                      disabled={!canAddQuestions || loadingQuestions}
+                      className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                        canAddQuestions && !loadingQuestions
+                          ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white hover:from-green-700 hover:to-teal-700 shadow-lg hover:shadow-xl transform hover:scale-105'
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
                     >
-                      <span className="material-icons" style={{fontSize: '20px'}}>add</span>
-                      Add Question
+                      <span className="material-icons" style={{fontSize: '20px'}}>{editingQuestion ? 'save' : 'add'}</span>
+                      {loadingQuestions ? 'Loading...' : (editingQuestion ? 'Update Question' : 'Add Question')}
                     </button>
                     
-                    {questions.length > 0 && (
+                    {newQuestions.length > 0 && (
                       <button 
                         onClick={() => {
                           localStorage.removeItem('questionPaperQuestions');
-                          setQuestions([]);
+                          setNewQuestions([]);
                         }}
                         className="flex items-center gap-2 px-4 py-3 border-2 border-red-300 text-red-600 rounded-xl font-medium hover:bg-red-50 transition-all duration-200"
                       >
@@ -253,64 +710,100 @@ const SetQuestionPaper = () => {
                   </div>
                 </div>
 
-                {/* Questions List */}
-                {questions.length > 0 ? (
-                  <div className="space-y-4 mb-6">
-                    {questions.map((question, index) => (
-                      <div key={question.question_number} className="border border-gray-200 rounded-xl p-6 bg-gradient-to-r from-white to-gray-50 hover:shadow-md transition-all duration-200">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">{question.question_number}</span>
+                {/* Loading State */}
+                {loadingQuestions && (
+                  <div className="flex justify-center items-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+                    <span className="ml-2 text-[#5c728a]">Loading existing questions...</span>
+                  </div>
+                )}
+                
+                {/* New Questions List */}
+                {!loadingQuestions && newQuestions.length > 0 ? (
+                  <div className="space-y-3 mb-6">
+                    {newQuestions.map((question, index) => {
+                      const isExpanded = expandedQuestions.has(question.question_number);
+                      return (
+                        <div key={question.question_number} className={`border border-gray-200 rounded-xl bg-gradient-to-r from-white to-gray-50 hover:shadow-md transition-all duration-200 ${
+                          isExpanded ? 'p-6' : 'p-4'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                                <span className="text-white text-sm font-bold">{question.question_number}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getQuestionTypeColor(question.question_type)}`}>
+                                  {question.question_type}
+                                </span>
+                                <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
+                                  {question.marks} marks
+                                </span>
+                              </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getQuestionTypeColor(question.question_type)}`}>
-                                {question.question_type}
-                              </span>
-                              <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
-                                {question.marks} marks
-                              </span>
+                              <button 
+                                onClick={() => toggleQuestionExpansion(question.question_number)}
+                                className="p-2 hover:bg-blue-100 rounded-lg text-blue-600 hover:text-blue-700 transition-colors"
+                                title={isExpanded ? 'Collapse' : 'Expand'}
+                              >
+                                <span className="material-icons" style={{fontSize: '18px'}}>
+                                  {isExpanded ? 'expand_less' : 'expand_more'}
+                                </span>
+                              </button>
+                              <button 
+                                 onClick={() => handleDeleteQuestion(question.question_number, 'new')}
+                                 className="p-2 hover:bg-red-100 rounded-lg text-red-500 hover:text-red-700 transition-colors"
+                                 title="Delete Question"
+                               >
+                                 <span className="material-icons" style={{fontSize: '18px'}}>delete</span>
+                               </button>
                             </div>
                           </div>
-                          <button 
-                            onClick={() => handleDeleteQuestion(question.question_number)}
-                            className="p-2 hover:bg-red-100 rounded-lg text-red-500 hover:text-red-700 transition-colors"
-                          >
-                            <span className="material-icons" style={{fontSize: '18px'}}>delete</span>
-                          </button>
-                        </div>
-                        
-                        <div className="space-y-3">
-                          <div>
-                            <p className="font-medium text-[#101418] mb-1">Question:</p>
-                            <p className="text-[#5c728a] bg-gray-50 p-3 rounded-lg">{question.question}</p>
-                          </div>
-                          <div>
-                            <p className="font-medium text-[#101418] mb-1">Answer:</p>
-                            <p className="text-[#5c728a] bg-green-50 p-3 rounded-lg">{question.answer}</p>
-                          </div>
-                          {question.ruberics && (
-                            <div>
-                              <p className="font-medium text-[#101418] mb-1">Rubrics:</p>
-                              <p className="text-[#5c728a] bg-blue-50 p-3 rounded-lg">{question.ruberics}</p>
+                          
+                          {isExpanded && (
+                            <div className="mt-4 space-y-4 border-t border-gray-200 pt-4">
+                              <div>
+                                <p className="font-medium text-[#101418] mb-1">Question:</p>
+                                <p className="text-[#5c728a] bg-gray-50 p-3 rounded-lg">{question.question}</p>
+                              </div>
+                              <div>
+                                <p className="font-medium text-[#101418] mb-1">Answer:</p>
+                                <p className="text-[#5c728a] bg-green-50 p-3 rounded-lg">{question.answer}</p>
+                              </div>
+                              {question.ruberics && (
+                                <div>
+                                  <p className="font-medium text-[#101418] mb-1">Rubrics:</p>
+                                  <p className="text-[#5c728a] bg-blue-50 p-3 rounded-lg">{question.ruberics}</p>
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="text-center py-12">
                     <div className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4">
                       <span className="material-icons text-gray-400" style={{fontSize: '32px'}}>quiz</span>
                     </div>
-                    <p className="text-[#5c728a] text-lg">No questions added yet</p>
-                    <p className="text-[#5c728a] text-sm">Click the "Add Question" button to get started</p>
+                    {!canAddQuestions ? (
+                      <>
+                        <p className="text-[#5c728a] text-lg">Select Subject and Class to continue</p>
+                        <p className="text-[#5c728a] text-sm">Please fill in the exam details above to start adding questions</p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-[#5c728a] text-lg">No new questions added yet</p>
+                        <p className="text-[#5c728a] text-sm">Click the "Add Question" button to get started</p>
+                      </>
+                    )}
                   </div>
                 )}
 
                 {/* Submit Button */}
-                {questions.length > 0 && (
+                {(newQuestions.length > 0 || editedQuestions.length > 0) && (
                   <div className="flex justify-end pt-6 border-t border-gray-200">
                     <button 
                       onClick={handleSubmitQuestionPaper}
