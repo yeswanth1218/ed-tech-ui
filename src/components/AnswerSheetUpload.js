@@ -1,39 +1,120 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import TeacherSidebar from './TeacherSidebar';
 
 const AnswerSheetUpload = () => {
   const [selectedExam, setSelectedExam] = useState('');
+  const [selectedExamCode, setSelectedExamCode] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedSubjectCode, setSelectedSubjectCode] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState('');
+  const [selectedStudentCode, setSelectedStudentCode] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [dragActive, setDragActive] = useState(false);
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
-  const availableExams = [
-    { id: 'UN_250807', title: 'unit test1 - UN_250807' },
-    { id: 'AN_250807', title: 'annual exam - AN_250807' }
-  ];
+  // Dynamic data states
+  const [availableExams, setAvailableExams] = useState([]);
+  const [availableClasses, setAvailableClasses] = useState([]);
+  const [availableSubjects, setAvailableSubjects] = useState([]);
+  const [availableStudentIds, setAvailableStudentIds] = useState([]);
+  const [loading, setLoading] = useState({
+    exams: false,
+    classes: false,
+    subjects: false,
+    students: false
+  });
 
-  const availableClasses = ['10', '11', '12'];
-  
-  const availableSubjects = [
-    'Social Studies',
-    'Physics', 
-    'Biology',
-    'History',
-    'Civics',
-    'Economics'
-  ];
-  
-  const availableStudentIds = [
-    'std_123',
-    'std_111', 
-    'std_222',
-    'std_555'
-  ];
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  // API functions
+  const fetchExams = async () => {
+    setLoading(prev => ({ ...prev, exams: true }));
+    try {
+      const response = await fetch(`${apiUrl}/admin/exams`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableExams(result.data || []);
+      } else {
+        console.error('Failed to fetch exams');
+      }
+    } catch (error) {
+      console.error('Error fetching exams:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, exams: false }));
+    }
+  };
+
+  const fetchClasses = async () => {
+    setLoading(prev => ({ ...prev, classes: true }));
+    try {
+      const response = await fetch(`${apiUrl}/admin/classes`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableClasses(result.data || []);
+      } else {
+        console.error('Failed to fetch classes');
+      }
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, classes: false }));
+    }
+  };
+
+  const fetchSubjects = async () => {
+    setLoading(prev => ({ ...prev, subjects: true }));
+    try {
+      const response = await fetch(`${apiUrl}/admin/subjects`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableSubjects(result.data || []);
+      } else {
+        console.error('Failed to fetch subjects');
+      }
+    } catch (error) {
+      console.error('Error fetching subjects:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, subjects: false }));
+    }
+  };
+
+  const fetchStudentsByClass = async (classValue) => {
+    if (!classValue) {
+      setAvailableStudentIds([]);
+      return;
+    }
+    setLoading(prev => ({ ...prev, students: true }));
+    try {
+      const response = await fetch(`${apiUrl}/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableStudentIds(result.data || []);
+      } else {
+        console.error('Failed to fetch students');
+      }
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    } finally {
+      setLoading(prev => ({ ...prev, students: false }));
+    }
+  };
+
+  // useEffect hooks
+  useEffect(() => {
+    fetchExams();
+    fetchClasses();
+    fetchSubjects();
+  }, []);
+
+  useEffect(() => {
+    fetchStudentsByClass(selectedClass);
+    // Reset student selection when class changes
+    setSelectedStudentId('');
+    setSelectedStudentCode('');
+  }, [selectedClass]);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -93,10 +174,12 @@ const AnswerSheetUpload = () => {
       // Create FormData for API request
       const formData = new FormData();
       
-      // Add static values
-      formData.append('student_id', '12345'); // Static value for now
-      formData.append('exam_id', '3'); // Use selected exam ID
-      formData.append('class_id', '67890'); // Static value for now
+      // Add dynamic values from dropdown selections
+      formData.append('student_id', selectedStudentCode);
+      
+      // Construct golden_code as: class-subject_code-examination_code
+      const goldenCode = `${selectedClass}-${selectedSubjectCode}-${selectedExamCode}`;
+      formData.append('golden_code', goldenCode);
       
       // Add uploaded files
       uploadedFiles.forEach((fileObj, index) => {
@@ -210,13 +293,18 @@ const AnswerSheetUpload = () => {
                     <label className="block text-sm font-medium text-[#5c728a] mb-2">Select Exam</label>
                     <select 
                       value={selectedExam} 
-                      onChange={(e) => setSelectedExam(e.target.value)}
+                      onChange={(e) => {
+                        const selectedOption = availableExams.find(exam => exam.name === e.target.value);
+                        setSelectedExam(e.target.value);
+                        setSelectedExamCode(selectedOption ? selectedOption.examination_code : '');
+                      }}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                      disabled={loading.exams}
                     >
-                      <option value="">Choose an exam...</option>
+                      <option value="">{loading.exams ? 'Loading exams...' : 'Choose an exam...'}</option>
                       {availableExams.map(exam => (
-                        <option key={exam.id} value={exam.id}>
-                          {exam.title}
+                        <option key={exam.id} value={exam.name}>
+                          {exam.name}
                         </option>
                       ))}
                     </select>
@@ -232,11 +320,12 @@ const AnswerSheetUpload = () => {
                       value={selectedClass} 
                       onChange={(e) => setSelectedClass(e.target.value)}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                      disabled={loading.classes}
                     >
-                      <option value="">Choose class...</option>
+                      <option value="">{loading.classes ? 'Loading classes...' : 'Choose class...'}</option>
                       {availableClasses.map(cls => (
-                        <option key={cls} value={cls}>
-                          {cls}
+                        <option key={cls.class || cls} value={cls.class || cls}>
+                          {cls.class || cls}
                         </option>
                       ))}
                     </select>
@@ -250,13 +339,18 @@ const AnswerSheetUpload = () => {
                     <label className="block text-sm font-medium text-[#5c728a] mb-2">Subject</label>
                     <select 
                       value={selectedSubject} 
-                      onChange={(e) => setSelectedSubject(e.target.value)}
+                      onChange={(e) => {
+                        const selectedOption = availableSubjects.find(subject => subject.name === e.target.value);
+                        setSelectedSubject(e.target.value);
+                        setSelectedSubjectCode(selectedOption ? selectedOption.subject_code : '');
+                      }}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                      disabled={loading.subjects}
                     >
-                      <option value="">Choose subject...</option>
+                      <option value="">{loading.subjects ? 'Loading subjects...' : 'Choose subject...'}</option>
                       {availableSubjects.map(subject => (
-                        <option key={subject} value={subject}>
-                          {subject}
+                        <option key={subject.id} value={subject.name}>
+                          {subject.name}
                         </option>
                       ))}
                     </select>
@@ -270,13 +364,22 @@ const AnswerSheetUpload = () => {
                     <label className="block text-sm font-medium text-[#5c728a] mb-2">Student ID</label>
                     <select 
                       value={selectedStudentId} 
-                      onChange={(e) => setSelectedStudentId(e.target.value)}
+                      onChange={(e) => {
+                        const selectedOption = availableStudentIds.find(student => student.name === e.target.value);
+                        setSelectedStudentId(e.target.value);
+                        setSelectedStudentCode(selectedOption ? selectedOption.student_id : '');
+                      }}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                      disabled={loading.students || !selectedClass}
                     >
-                      <option value="">Choose student ID...</option>
-                      {availableStudentIds.map(studentId => (
-                        <option key={studentId} value={studentId}>
-                          {studentId}
+                      <option value="">
+                        {!selectedClass ? 'Select class first...' : 
+                         loading.students ? 'Loading students...' : 
+                         'Choose student ID...'}
+                      </option>
+                      {availableStudentIds.map(student => (
+                        <option key={student.id} value={student.name}>
+                          {student.name}
                         </option>
                       ))}
                     </select>
@@ -293,7 +396,7 @@ const AnswerSheetUpload = () => {
                       <span className="text-green-800 font-medium">All selections completed successfully!</span>
                     </div>
                     <div className="mt-2 text-sm text-green-700">
-                      <strong>Selected:</strong> {selectedExam} | Class {selectedClass} | {selectedSubject} | {selectedStudentId}
+                      <strong>golden_code:</strong> {selectedClass}-{selectedSubjectCode}-{selectedExamCode}
                     </div>
                   </div>
                 )}

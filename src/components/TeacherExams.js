@@ -9,6 +9,29 @@ const TeacherExams = () => {
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // Exam Results tab states
+  const [selectedExam, setSelectedExam] = useState('');
+  const [selectedExamCode, setSelectedExamCode] = useState('');
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedSubjectCode, setSelectedSubjectCode] = useState('');
+  const [selectedStudentId, setSelectedStudentId] = useState('');
+  const [selectedStudentCode, setSelectedStudentCode] = useState('');
+  const [evaluationResults, setEvaluationResults] = useState(null);
+  const [resultsLoading, setResultsLoading] = useState(false);
+  
+  // Dynamic data states for exam results
+  const [availableExams, setAvailableExams] = useState([]);
+  const [availableClasses, setAvailableClasses] = useState([]);
+  const [availableSubjects, setAvailableSubjects] = useState([]);
+  const [availableStudentIds, setAvailableStudentIds] = useState([]);
+  const [dropdownLoading, setDropdownLoading] = useState({
+    exams: false,
+    classes: false,
+    subjects: false,
+    students: false
+  });
 
   // Fetch exams from API
   const fetchExams = async () => {
@@ -28,12 +51,130 @@ const TeacherExams = () => {
       setLoading(false);
     }
   };
+  
+  // API functions for exam results
+  const fetchExamsForResults = async () => {
+    setDropdownLoading(prev => ({ ...prev, exams: true }));
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/exams`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableExams(result.data || []);
+      } else {
+        console.error('Failed to fetch exams');
+      }
+    } catch (error) {
+      console.error('Error fetching exams:', error);
+    } finally {
+      setDropdownLoading(prev => ({ ...prev, exams: false }));
+    }
+  };
+
+  const fetchClasses = async () => {
+    setDropdownLoading(prev => ({ ...prev, classes: true }));
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/classes`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableClasses(result.data || []);
+      } else {
+        console.error('Failed to fetch classes');
+      }
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+    } finally {
+      setDropdownLoading(prev => ({ ...prev, classes: false }));
+    }
+  };
+
+  const fetchSubjects = async () => {
+    setDropdownLoading(prev => ({ ...prev, subjects: true }));
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/subjects`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableSubjects(result.data || []);
+      } else {
+        console.error('Failed to fetch subjects');
+      }
+    } catch (error) {
+      console.error('Error fetching subjects:', error);
+    } finally {
+      setDropdownLoading(prev => ({ ...prev, subjects: false }));
+    }
+  };
+
+  const fetchStudentsByClass = async (classValue) => {
+    if (!classValue) {
+      setAvailableStudentIds([]);
+      return;
+    }
+    setDropdownLoading(prev => ({ ...prev, students: true }));
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableStudentIds(result.data || []);
+      } else {
+        console.error('Failed to fetch students');
+      }
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    } finally {
+      setDropdownLoading(prev => ({ ...prev, students: false }));
+    }
+  };
+  
+  const fetchEvaluationResults = async () => {
+    if (!selectedExam || !selectedClass || !selectedSubject || !selectedStudentId) {
+      alert('Please select all fields before submitting.');
+      return;
+    }
+    
+    const goldenCode = `${selectedClass}-${selectedSubjectCode}-${selectedExamCode}`;
+    setResultsLoading(true);
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/evaluation_results?golden_code=${encodeURIComponent(goldenCode)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        setEvaluationResults(result);
+      } else {
+        throw new Error('Failed to fetch evaluation results');
+      }
+    } catch (error) {
+      console.error('Error fetching evaluation results:', error);
+      alert('Failed to fetch evaluation results. Please try again.');
+    } finally {
+      setResultsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (activeTab === 'questionPaper') {
       fetchExams();
     }
+    if (activeTab === 'examResults') {
+      fetchExamsForResults();
+      fetchClasses();
+      fetchSubjects();
+    }
   }, [activeTab]);
+  
+  useEffect(() => {
+    if (activeTab === 'examResults') {
+      fetchStudentsByClass(selectedClass);
+      // Reset student selection when class changes
+      setSelectedStudentId('');
+      setSelectedStudentCode('');
+    }
+  }, [selectedClass, activeTab]);
 
   const pendingExams = [
     {
@@ -77,36 +218,7 @@ const TeacherExams = () => {
     }
   ];
 
-  const recentExams = [
-    {
-      id: 4,
-      title: 'Calculus Final Exam',
-      class: '12-C',
-      subject: 'Mathematics',
-      date: '2024-01-25',
-      duration: '3 hours',
-      totalMarks: 100,
-      status: 'completed',
-      studentsCount: 40,
-      evaluatedCount: 40,
-      avgScore: 78.5,
-      aiAccuracy: 94.2
-    },
-    {
-      id: 5,
-      title: 'Trigonometry Test',
-      class: '11-C',
-      subject: 'Mathematics',
-      date: '2024-01-20',
-      duration: '1.5 hours',
-      totalMarks: 50,
-      status: 'completed',
-      studentsCount: 35,
-      evaluatedCount: 35,
-      avgScore: 42.3,
-      aiAccuracy: 96.8
-    }
-  ];
+  // Removed recentExams array as it's no longer needed after replacing Recent Exams tab with Exam Results
 
   const evaluationMetrics = [
     { label: 'AI Evaluation Accuracy', value: '95.2%', trend: '+2.1%', color: 'green' },
@@ -288,15 +400,15 @@ const TeacherExams = () => {
                 </button>
                 <button
                   className={`px-4 py-2 mx-1 font-medium transition-all duration-300 whitespace-nowrap rounded-full ${
-                    activeTab === 'recent'
+                    activeTab === 'examResults'
                       ? 'text-white bg-blue-600 shadow-lg shadow-purple-500/30 transform -translate-y-0.5'
                       : 'text-[#5c728a] hover:text-[#101418] hover:bg-gray-100 hover:shadow-md hover:shadow-purple-300/20'
                   }`}
-                  onClick={() => setActiveTab('recent')}
+                  onClick={() => setActiveTab('examResults')}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="material-icons" style={{fontSize: '20px'}}>history</span>
-                    Recent Exams
+                    <span className="material-icons" style={{fontSize: '20px'}}>assessment</span>
+                    Exam Results
                   </div>
                 </button>
                 <button
@@ -368,17 +480,272 @@ const TeacherExams = () => {
                   </div>
                 )}
 
-                {activeTab === 'recent' && (
-                  <div className="space-y-4">
+                {activeTab === 'examResults' && (
+                  <div className="space-y-6">
                     <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-lg font-semibold text-[#101418]">Recently Completed Exams</h2>
-                      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                        Export Results
-                      </button>
+                      <h2 className="text-base font-semibold text-[#101418]">Exam Results</h2>
                     </div>
-                    {recentExams.map(exam => (
-                      <ExamCard key={exam.id} exam={exam} type="recent" />
-                    ))}
+                    
+                    {/* Exam Selection Details */}
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <span className="material-icons text-blue-600" style={{fontSize: '24px'}}>quiz</span>
+                        </div>
+                        <h3 className="text-lg font-semibold text-[#101418]">Exam Selection Details</h3>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Select Exam */}
+                        <div className="relative">
+                          <label className="block text-sm font-medium text-[#5c728a] mb-2">Select Exam</label>
+                          <select 
+                            value={selectedExam} 
+                            onChange={(e) => {
+                              const selectedOption = availableExams.find(exam => exam.name === e.target.value);
+                              setSelectedExam(e.target.value);
+                              setSelectedExamCode(selectedOption ? selectedOption.examination_code : '');
+                            }}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                            disabled={dropdownLoading.exams}
+                          >
+                            <option value="">{dropdownLoading.exams ? 'Loading exams...' : 'Choose an exam...'}</option>
+                            {availableExams.map(exam => (
+                              <option key={exam.id} value={exam.name}>
+                                {exam.name}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                            <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                          </div>
+                        </div>
+
+                        {/* Select Class */}
+                        <div className="relative">
+                          <label className="block text-sm font-medium text-[#5c728a] mb-2">Class</label>
+                          <select 
+                            value={selectedClass} 
+                            onChange={(e) => setSelectedClass(e.target.value)}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                            disabled={dropdownLoading.classes}
+                          >
+                            <option value="">{dropdownLoading.classes ? 'Loading classes...' : 'Choose class...'}</option>
+                            {availableClasses.map(cls => (
+                              <option key={cls.class || cls} value={cls.class || cls}>
+                                {cls.class || cls}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                            <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                          </div>
+                        </div>
+
+                        {/* Select Subject */}
+                        <div className="relative">
+                          <label className="block text-sm font-medium text-[#5c728a] mb-2">Subject</label>
+                          <select 
+                            value={selectedSubject} 
+                            onChange={(e) => {
+                              const selectedOption = availableSubjects.find(subject => subject.name === e.target.value);
+                              setSelectedSubject(e.target.value);
+                              setSelectedSubjectCode(selectedOption ? selectedOption.subject_code : '');
+                            }}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                            disabled={dropdownLoading.subjects}
+                          >
+                            <option value="">{dropdownLoading.subjects ? 'Loading subjects...' : 'Choose subject...'}</option>
+                            {availableSubjects.map(subject => (
+                              <option key={subject.id} value={subject.name}>
+                                {subject.name}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                            <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                          </div>
+                        </div>
+
+                        {/* Select Student ID */}
+                        <div className="relative">
+                          <label className="block text-sm font-medium text-[#5c728a] mb-2">Student ID</label>
+                          <select 
+                            value={selectedStudentId} 
+                            onChange={(e) => {
+                              const selectedOption = availableStudentIds.find(student => student.name === e.target.value);
+                              setSelectedStudentId(e.target.value);
+                              setSelectedStudentCode(selectedOption ? selectedOption.student_id : '');
+                            }}
+                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                            disabled={dropdownLoading.students || !selectedClass}
+                          >
+                            <option value="">
+                              {!selectedClass ? 'Select class first...' : 
+                               dropdownLoading.students ? 'Loading students...' : 
+                               'Choose student ID...'}
+                            </option>
+                            {availableStudentIds.map(student => (
+                              <option key={student.id} value={student.name}>
+                                {student.name}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="absolute right-3 top-9 transform translate-y-1/2 pointer-events-none">
+                            <span className="material-icons text-gray-400" style={{fontSize: '20px'}}>expand_more</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {selectedExam && selectedClass && selectedSubject && selectedStudentId && (
+                        <div className="mt-6 p-4 bg-green-50 rounded-xl border border-green-200">
+                          <div className="flex items-center gap-2">
+                            <span className="material-icons text-green-600" style={{fontSize: '20px'}}>check_circle</span>
+                            <span className="text-green-800 font-medium">All selections completed successfully!</span>
+                          </div>
+                          <div className="mt-2 text-sm text-green-700">
+                            <strong>golden_code:</strong> {selectedClass}-{selectedSubjectCode}-{selectedExamCode}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Submit Button */}
+                      <div className="mt-6 flex justify-center">
+                        <button 
+                          onClick={fetchEvaluationResults}
+                          disabled={!selectedExam || !selectedClass || !selectedSubject || !selectedStudentId || resultsLoading}
+                          className="px-8 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                        >
+                          {resultsLoading ? (
+                            <>
+                              <span className="material-icons animate-spin" style={{fontSize: '20px'}}>refresh</span>
+                              Loading Results...
+                            </>
+                          ) : (
+                            <>
+                              <span className="material-icons" style={{fontSize: '20px'}}>search</span>
+                              Get Evaluation Results
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Results Dashboard */}
+                    {evaluationResults && (
+                      <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="p-2 bg-green-100 rounded-lg">
+                            <span className="material-icons text-green-600" style={{fontSize: '24px'}}>assessment</span>
+                          </div>
+                          <h3 className="text-lg font-semibold text-[#101418]">Evaluation Results</h3>
+                        </div>
+                        
+                        {evaluationResults.evaluationResults && evaluationResults.evaluationResults.length > 0 ? (
+                          <div className="space-y-4">
+                            {/* Summary Stats */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                              <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <span className="material-icons text-blue-600" style={{fontSize: '20px'}}>quiz</span>
+                                  <span className="text-blue-800 font-medium">Total Questions</span>
+                                </div>
+                                <p className="text-xl font-bold text-blue-900">{evaluationResults.evaluationResults.length}</p>
+                              </div>
+                              <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <span className="material-icons text-green-600" style={{fontSize: '20px'}}>grade</span>
+                                  <span className="text-green-800 font-medium">Total Score</span>
+                                </div>
+                                <p className="text-xl font-bold text-green-900">
+                                  {evaluationResults.evaluationResults.reduce((sum, result) => sum + result.marks_obtained, 0)} / 
+                                  {evaluationResults.evaluationResults.reduce((sum, result) => sum + result.max_possible_marks, 0)}
+                                </p>
+                              </div>
+                              <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <span className="material-icons text-purple-600" style={{fontSize: '20px'}}>percent</span>
+                                  <span className="text-purple-800 font-medium">Percentage</span>
+                                </div>
+                                <p className="text-xl font-bold text-purple-900">
+                                  {Math.round((evaluationResults.evaluationResults.reduce((sum, result) => sum + result.marks_obtained, 0) / 
+                                  evaluationResults.evaluationResults.reduce((sum, result) => sum + result.max_possible_marks, 0)) * 100)}%
+                                </p>
+                              </div>
+                            </div>
+                            
+                            {/* Individual Question Results */}
+                            <div className="space-y-4">
+                              {evaluationResults.evaluationResults.map((result, index) => (
+                                <div key={result.id} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                                  <div className="flex justify-between items-start mb-4">
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-3 mb-2">
+                                        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                          Question {result.question_number}
+                                        </span>
+                                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                          result.marks_obtained === result.max_possible_marks 
+                                            ? 'bg-green-100 text-green-800' 
+                                            : result.marks_obtained > 0 
+                                            ? 'bg-yellow-100 text-yellow-800' 
+                                            : 'bg-red-100 text-red-800'
+                                        }`}>
+                                          {result.marks_obtained}/{result.max_possible_marks} marks
+                                        </span>
+                                      </div>
+                                      <h4 className="text-base font-semibold text-[#101418] mb-3">{result.question}</h4>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div>
+                                      <h5 className="text-sm font-medium text-[#5c728a] mb-2">Student Answer:</h5>
+                                      <div className="bg-gray-50 rounded-lg p-4">
+                                        <p className="text-[#101418]">{result.answer}</p>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <h5 className="text-sm font-medium text-[#5c728a] mb-2">Evaluation Reason:</h5>
+                                      <div className="bg-blue-50 rounded-lg p-4">
+                                        <p className="text-[#101418]">{result.reason}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  {(result.strengths !== '["No strengths identified for this response"]' || 
+                                    result.areas_for_improvement !== '["No areas for improvement suggested"]') && (
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                                      {result.strengths !== '["No strengths identified for this response"]' && (
+                                        <div>
+                                          <h5 className="text-sm font-medium text-green-700 mb-2">Strengths:</h5>
+                                          <div className="bg-green-50 rounded-lg p-4">
+                                            <p className="text-green-800">{result.strengths}</p>
+                                          </div>
+                                        </div>
+                                      )}
+                                      {result.areas_for_improvement !== '["No areas for improvement suggested"]' && (
+                                        <div>
+                                          <h5 className="text-sm font-medium text-orange-700 mb-2">Areas for Improvement:</h5>
+                                          <div className="bg-orange-50 rounded-lg p-4">
+                                            <p className="text-orange-800">{result.areas_for_improvement}</p>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-center py-8">
+                            <span className="material-icons text-gray-400 mb-4" style={{fontSize: '48px'}}>search_off</span>
+                            <p className="text-gray-600">No evaluation results found for the selected criteria.</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
 
