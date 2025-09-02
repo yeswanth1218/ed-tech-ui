@@ -14,6 +14,7 @@ const AnswerSheetUpload = () => {
   const [dragActive, setDragActive] = useState(false);
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // Dynamic data states
   const [availableExams, setAvailableExams] = useState([]);
@@ -147,6 +148,8 @@ const AnswerSheetUpload = () => {
       status: 'ready'
     }));
     setUploadedFiles(prev => [...prev, ...newFiles]);
+    // Clear error message when new files are added
+    setErrorMessage(null);
   };
 
   const removeFile = (fileId) => {
@@ -163,9 +166,12 @@ const AnswerSheetUpload = () => {
 
   const handleUpload = async () => {
     if (!selectedExam || !selectedClass || !selectedSubject || !selectedStudentId || uploadedFiles.length === 0) {
-      alert('Please select exam, class, subject, student ID and upload at least one file.');
+      setErrorMessage('Please complete all required selections and upload at least one file before proceeding.');
       return;
     }
+    
+    // Clear any previous errors
+    setErrorMessage(null);
     
     // Update file status to uploading
     setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'uploading' })));
@@ -199,10 +205,10 @@ const AnswerSheetUpload = () => {
          body: formData,
        });
       
+      const result = await response.json();
+      console.log('API Response:', result);
+      
       if (response.ok) {
-         const result = await response.json();
-         console.log('API Response:', result);
-         
          // Update file status to completed
          setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'completed' })));
          
@@ -210,18 +216,28 @@ const AnswerSheetUpload = () => {
          if (result.evaluation_results) {
            setEvaluationResults(result);
            setShowResults(true);
+           setErrorMessage(null); // Clear any previous errors
          }
          
          alert('Answer sheets uploaded and sent to AI for evaluation successfully!');
        } else {
-        throw new Error(`API request failed with status: ${response.status}`);
+         // Handle error responses with detail message
+         if (result.detail) {
+           // Update file status back to ready on error
+           setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
+           
+           // Show error message in a more user-friendly way
+           setErrorMessage(result.detail);
+           return;
+         }
+         throw new Error(`API request failed with status: ${response.status}`);
       }
     } catch (error) {
       console.error('Upload error:', error);
       
       // Update file status back to ready on error
       setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
-      alert(`Upload failed: ${error.message}`);
+      setErrorMessage(`Upload failed: ${error.message}`);
     }
   };
 
@@ -612,6 +628,52 @@ const AnswerSheetUpload = () => {
                   )}
                 </button>
               </div>
+              
+              {/* Enhanced Error Message Display */}
+              {errorMessage && (
+                <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-200/50 shadow-lg">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-orange-100 rounded-lg">
+                      <span className="material-icons text-orange-600" style={{fontSize: '24px'}}>warning</span>
+                    </div>
+                    <h3 className="font-bold text-orange-900 text-xl">Duplication Detected</h3>
+                    <div className="ml-auto">
+                      <button 
+                        onClick={() => setErrorMessage(null)}
+                        className="p-2 hover:bg-white/60 rounded-full transition-all duration-200 group"
+                      >
+                        <span className="material-icons text-gray-500 group-hover:text-gray-700 transition-colors" style={{fontSize: '20px'}}>close</span>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-white/60 rounded-lg p-4">
+                      <p className="text-orange-800 font-medium">
+                        <span className="material-icons text-orange-600 mr-2" style={{fontSize: '18px', verticalAlign: 'middle'}}>info</span>
+                        The questions in this answer sheet are already evaluated before
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center justify-center">
+                      <button 
+                        onClick={() => setErrorMessage(null)}
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                      >
+                        <span className="material-icons" style={{fontSize: '16px'}}>check_circle</span>
+                        Got it, Thanks!
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 text-center">
+                    <div className="flex items-center justify-center gap-2 text-sm text-orange-700">
+                      <span className="material-icons" style={{fontSize: '16px'}}>lightbulb</span>
+                      <span>Try selecting different questions</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* AI Evaluation Results Section */}
