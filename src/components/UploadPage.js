@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ExamCreation from './ExamCreation';
 import QuestionPaperUpload from './QuestionPaperUpload';
 import AnswerKeyManagement from './AnswerKeyManagement';
@@ -8,6 +9,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 
 const UploadPage = () => {
+  const navigate = useNavigate();
   const [currentPhase, setCurrentPhase] = useState('landing');
   const [examData, setExamData] = useState({
     examId: '',
@@ -215,17 +217,17 @@ const UploadPage = () => {
   const renderLandingPage = () => (
     <div className="space-y-6">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-white">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-200 rounded-xl p-8 border border-gray-300 shadow-sm hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300 cursor-pointer group">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-            <span className="material-icons text-3xl">psychology</span>
+          <div className="w-16 h-16 bg-gray-300 group-hover:bg-blue-100 rounded-full flex items-center justify-center transition-colors duration-300">
+            <span className="material-icons text-3xl text-gray-700 group-hover:text-blue-600 transition-colors duration-300">psychology</span>
           </div>
           <div>
-            <h1 className="text-3xl font-bold">AI-Powered Evaluation System</h1>
-            <p className="text-blue-100 text-lg">Revolutionizing exam assessment with artificial intelligence</p>
+            <h1 className="text-3xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300">AI-Powered Evaluation System</h1>
+            <p className="text-gray-600 text-lg group-hover:text-blue-600 transition-colors duration-300">Revolutionizing exam assessment with artificial intelligence</p>
           </div>
         </div>
-        <p className="text-blue-50 text-lg leading-relaxed">
+        <p className="text-gray-700 text-lg leading-relaxed">
           Transform your examination process with our cutting-edge AI evaluation system. 
           Create exams, upload question papers, manage answer keys, and set custom rubrics 
           for intelligent, consistent, and fair assessment.
@@ -234,12 +236,19 @@ const UploadPage = () => {
 
       {/* Key Features */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow">
-          <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+        <div 
+          onClick={() => navigate('/organization-exam-creation')}
+          className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow cursor-pointer hover:border-blue-300 group"
+        >
+          <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
             <span className="material-icons text-green-600 text-2xl">add_circle</span>
           </div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Exam Creation</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">Exam Creation</h3>
           <p className="text-gray-600">Create comprehensive exams with detailed metadata, class assignments, and structured organization.</p>
+          <div className="mt-4 flex items-center text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="text-sm font-medium">Click to create exam</span>
+            <span className="material-icons text-sm ml-1">arrow_forward</span>
+          </div>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow">

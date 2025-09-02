@@ -21,6 +21,19 @@ import UserProfile from './components/UserProfile';
 import Evaluation from './components/Evaluation';
 import Financials from './components/Financials';
 import AIChatbot from './components/AIChatbot';
+import TeacherDashboard from './components/TeacherDashboard';
+import TeacherExams from './components/TeacherExams';
+import TeacherAnalytics from './components/TeacherAnalytics';
+import TeacherTimetable from './components/TeacherTimetable';
+import TeacherAttendance from './components/TeacherAttendance';
+import TeacherClass from './components/TeacherClass';
+import TeacherRequests from './components/TeacherRequests';
+import TeacherAssessments from './components/TeacherAssessments';
+import TeacherArchive from './components/TeacherArchive';
+import TeacherLeaderboard from './components/TeacherLeaderboard';
+import AnswerSheetUpload from './components/AnswerSheetUpload';
+import SetQuestionPaper from './components/SetQuestionPaper';
+import OrganizationExamCreation from './components/OrganizationExamCreation';
 
 
 function App() {
@@ -48,6 +61,19 @@ function App() {
           <Route path="/student-fees" element={<StudentFees />} />
           <Route path="/student-settings" element={<StudentSettings />} />
           <Route path="/upload" element={<UploadPage />} />
+          <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+          <Route path="/teacher-exams" element={<TeacherExams />} />
+          <Route path="/teacher-analytics" element={<TeacherAnalytics />} />
+          <Route path="/teacher-timetable" element={<TeacherTimetable />} />
+          <Route path="/teacher-attendance" element={<TeacherAttendance />} />
+          <Route path="/teacher-class" element={<TeacherClass />} />
+          <Route path="/teacher-requests" element={<TeacherRequests />} />
+          <Route path="/teacher-assessments" element={<TeacherAssessments />} />
+          <Route path="/teacher-archive" element={<TeacherArchive />} />
+          <Route path="/teacher-leaderboard" element={<TeacherLeaderboard />} />
+          <Route path="/answer-sheet-upload" element={<AnswerSheetUpload />} />
+          <Route path="/set-question-paper" element={<SetQuestionPaper />} />
+          <Route path="/organization-exam-creation" element={<OrganizationExamCreation />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
         <AIChatbot />

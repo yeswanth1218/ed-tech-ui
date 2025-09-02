@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import StudentSidebar from './StudentSidebar';
-import Header from './Header';
 
 const StudentResults = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('all');
@@ -90,11 +89,10 @@ const StudentResults = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <StudentSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title="Student Portal" />
-        <div className="flex-1 overflow-auto p-6">
+    <div className="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style={{fontFamily: 'Lexend, "Noto Sans", sans-serif'}}>
+      <div className="layout-container flex h-full grow flex-col">
+        <div className="gap-1 px-6 flex flex-1 justify-start py-5">
+          <StudentSidebar />
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
             {/* Header */}
             <div className="flex flex-wrap justify-between gap-3 p-4">

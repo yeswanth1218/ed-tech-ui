@@ -11,24 +11,87 @@ const Login = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const type = params.get('type');
-    if (type && ['student', 'teacher', 'org'].includes(type)) {
+    if (type && ['student', 'teacher', 'admin'].includes(type)) {
       setLoginType(type);
     }
+    
+    // Environment debugging on component mount
+    console.log('🚀 Login Component Mounted - Environment Check:');
+    console.log('📍 All Environment Variables:');
+    console.log('  - REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
+    console.log('  - REACT_APP_API_VERSION:', process.env.REACT_APP_API_VERSION);
+    console.log('  - REACT_APP_ENVIRONMENT:', process.env.REACT_APP_ENVIRONMENT);
+    console.log('  - NODE_ENV:', process.env.NODE_ENV);
+    console.log('🌐 Current Location:', window.location.href);
+    console.log('🔧 User Agent:', navigator.userAgent);
+    console.log('📱 Platform Info:', {
+      platform: navigator.platform,
+      language: navigator.language,
+      cookieEnabled: navigator.cookieEnabled
+    });
   }, [location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Demo credentials for testing
+    const demoCredentials = {
+      student: { username: 'student', password: 'demo' },
+      teacher: { username: 'teacher', password: 'demo' },
+      org: { username: 'admin', password: 'demo' }
+    };
+
+    // Check if using demo credentials
+    // const isDemoLogin = credentials.username === demoCredentials[loginType]?.username && 
+    //                    credentials.password === demoCredentials[loginType]?.password;
+
+    // if (isDemoLogin) {
+    //   // Demo login - navigate directly to appropriate portal
+    //   console.log(`Demo login successful for ${loginType}`);
+      
+    //   switch (loginType) {
+    //     case 'STUDENT':
+    //       navigate('/student-profile');
+    //       break;
+    //     case 'TEACHER':
+    //       navigate('/teacher-dashboard');
+    //       break;
+    //     case 'ADMIN':
+    //       navigate('/dashboard');
+    //       break;
+    //     default:
+    //       navigate('/');
+    //   }
+    //   return;
+    // }
+
+    // Try actual API login
     try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:9000/api';
+      
+      // Debug logs for troubleshooting
+      console.log('🔍 Authentication Debug Info:');
+      console.log('📍 Environment Variables:');
+      console.log('  - REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
+      console.log('  - NODE_ENV:', process.env.NODE_ENV);
+      console.log('🌐 Resolved API URL:', apiUrl);
+      console.log('🎯 Full Login Endpoint:', `${apiUrl}/login`);
+      console.log('📦 Login Payload:', {
+        username: credentials.username,
+        password: credentials.password ? '[HIDDEN]' : 'undefined',
+        loginType: loginType
+      });
+      console.log('⚙️ Request Config:', { withCredentials: true });
+      
       const res = await axios.post(
-        'http://localhost:9000/api/login',
+        `${apiUrl}/auth/login`,
         credentials,
-        { withCredentials: true } // crucial to receive/set HttpOnly cookie
+        { withCredentials: true }
       );
 
       const user = res.data.user;
-      // Optionally store user info in local state/global context
-      console.log('Login successful:', user);
+      console.log('✅ Login successful:', user);
+      console.log('🎫 Response data:', res.data);
 
       // Navigate based on role
       switch (user.role) {
@@ -36,6 +99,8 @@ const Login = () => {
           navigate('/student-profile');
           break;
         case 'TEACHER':
+          navigate('/teacher-dashboard');
+          break;
         case 'ADMIN':
           navigate('/dashboard');
           break;
@@ -43,7 +108,41 @@ const Login = () => {
           navigate('/');
       }
     } catch (err) {
-      alert(err?.response?.data?.error || 'Login failed');
+      console.error('❌ Login Authentication Failed:');
+      console.error('🔍 Error Details:');
+      console.error('  - Error Type:', err.name);
+      console.error('  - Error Message:', err.message);
+      console.error('  - Error Code:', err.code);
+      
+      if (err.response) {
+        // Server responded with error status
+        console.error('📡 Server Response Error:');
+        console.error('  - Status Code:', err.response.status);
+        console.error('  - Status Text:', err.response.statusText);
+        console.error('  - Response Data:', err.response.data);
+        console.error('  - Response Headers:', err.response.headers);
+      } else if (err.request) {
+        // Request was made but no response received
+        console.error('🌐 Network/Request Error:');
+        console.error('  - Request Details:', err.request);
+        console.error('  - Possible causes: Network connectivity, CORS, server down');
+      } else {
+        // Something else happened
+        console.error('⚠️ Unexpected Error:', err.message);
+      }
+      
+      console.error('🔧 Troubleshooting Tips:');
+      console.error('  1. Check if backend server is running');
+      console.error('  2. Verify API URL is accessible from container');
+      console.error('  3. Check CORS configuration');
+      console.error('  4. Verify network connectivity');
+      
+      const errorMessage = err?.response?.data?.error || 
+                          err?.response?.data?.message || 
+                          err?.message || 
+                          'Login failed. Try demo credentials: username="student/teacher/admin", password="demo"';
+      
+      alert(`Authentication Failed: ${errorMessage}`);
     }
   };
 
@@ -75,7 +174,7 @@ const Login = () => {
               <h1 className="text-2xl font-bold text-[#0d141c]">Skool</h1>
             </div>
             <h2 className="text-xl font-semibold text-[#0d141c] mb-2">Welcome Back</h2>
-            <p className="text-[#49719c]">Sign in to your account</p>
+            <p className="text-[#49719c] mb-2">Sign in to your account</p>
           </div>
 
           <div className="flex bg-[#e7edf4] rounded-lg p-1 mb-6">
