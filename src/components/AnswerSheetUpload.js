@@ -15,6 +15,7 @@ const AnswerSheetUpload = () => {
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState('idle'); // 'idle', 'submitted', 'evaluating', 'completed'
 
   // Dynamic data states
   const [availableExams, setAvailableExams] = useState([]);
@@ -173,8 +174,16 @@ const AnswerSheetUpload = () => {
     // Clear any previous errors
     setErrorMessage(null);
     
+    // Set status to submitted immediately
+    setUploadStatus('submitted');
+    
     // Update file status to uploading
     setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'uploading' })));
+    
+    // After a brief moment, change to evaluating status
+    setTimeout(() => {
+      setUploadStatus('evaluating');
+    }, 1000);
     
     try {
       // Create FormData for API request
@@ -218,6 +227,9 @@ const AnswerSheetUpload = () => {
          // Update file status to completed
          setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'completed' })));
          
+         // Set status to completed
+         setUploadStatus('completed');
+         
          // Store evaluation results and show them
          if (result.evaluation_results) {
            setEvaluationResults(result);
@@ -225,27 +237,33 @@ const AnswerSheetUpload = () => {
            setErrorMessage(null); // Clear any previous errors
          }
          
-         alert('Answer sheets uploaded and sent to AI for evaluation successfully!');
+         // Show success message after a brief delay
+         setTimeout(() => {
+           alert('Answer sheets uploaded and sent to AI for evaluation successfully!');
+         }, 500);
        } else {
-         // Handle error responses - check for various error formats
-         if (result.detail) {
-           // Standard detail format
-           setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
-           setErrorMessage(result.detail);
-           return;
-         } else if (response.status === 400) {
-           // Handle 400 Bad Request specifically for duplication
-           setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
-           setErrorMessage('The questions in this answer sheet are already evaluated before');
-           return;
-         }
-         throw new Error(`API request failed with status: ${response.status}`);
-      }
+           // Handle error responses - check for various error formats
+           if (result.detail) {
+             // Standard detail format
+             setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
+             setUploadStatus('idle');
+             setErrorMessage(result.detail);
+             return;
+           } else if (response.status === 400) {
+             // Handle 400 Bad Request specifically for duplication
+             setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
+             setUploadStatus('idle');
+             setErrorMessage('The questions in this answer sheet are already evaluated before');
+             return;
+           }
+           throw new Error(`API request failed with status: ${response.status}`);
+        }
     } catch (error) {
       console.error('Upload error:', error);
       
       // Update file status back to ready on error
       setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
+      setUploadStatus('idle');
       setErrorMessage(`Upload failed: ${error.message}`);
     }
   };
@@ -280,24 +298,82 @@ const AnswerSheetUpload = () => {
               {/* Progress Indicator */}
               <div className="flex items-center gap-4 mt-6">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm font-bold">1</span>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    selectedExam && selectedClass && selectedSubject && selectedStudentId
+                      ? 'bg-green-600'
+                      : 'bg-blue-600'
+                  }`}>
+                    {selectedExam && selectedClass && selectedSubject && selectedStudentId ? (
+                      <span className="material-icons text-white" style={{fontSize: '16px'}}>check</span>
+                    ) : (
+                      <span className="text-white text-sm font-bold">1</span>
+                    )}
                   </div>
-                  <span className="text-sm font-medium text-blue-600">Select Exam</span>
+                  <span className={`text-sm font-medium ${
+                    selectedExam && selectedClass && selectedSubject && selectedStudentId
+                      ? 'text-green-600'
+                      : 'text-blue-600'
+                  }`}>Select Exam</span>
                 </div>
-                <div className="w-12 h-0.5 bg-gray-300"></div>
+                <div className={`w-12 h-0.5 ${
+                  selectedExam && selectedClass && selectedSubject && selectedStudentId && uploadedFiles.length > 0
+                    ? 'bg-green-300'
+                    : 'bg-gray-300'
+                }`}></div>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <span className="text-gray-600 text-sm font-bold">2</span>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    uploadStatus === 'submitted' || uploadStatus === 'evaluating' || uploadStatus === 'completed'
+                      ? 'bg-green-600'
+                      : uploadedFiles.length > 0
+                      ? 'bg-blue-600'
+                      : 'bg-gray-300'
+                  }`}>
+                    {uploadStatus === 'submitted' || uploadStatus === 'evaluating' || uploadStatus === 'completed' ? (
+                      <span className="material-icons text-white" style={{fontSize: '16px'}}>check</span>
+                    ) : uploadedFiles.length > 0 ? (
+                      <span className="text-white text-sm font-bold">2</span>
+                    ) : (
+                      <span className="text-gray-600 text-sm font-bold">2</span>
+                    )}
                   </div>
-                  <span className="text-sm font-medium text-gray-500">Upload Files</span>
+                  <span className={`text-sm font-medium ${
+                    uploadStatus === 'submitted' || uploadStatus === 'evaluating' || uploadStatus === 'completed'
+                      ? 'text-green-600'
+                      : uploadedFiles.length > 0
+                      ? 'text-blue-600'
+                      : 'text-gray-500'
+                  }`}>Upload Files</span>
                 </div>
-                <div className="w-12 h-0.5 bg-gray-300"></div>
+                <div className={`w-12 h-0.5 ${
+                  uploadStatus === 'completed'
+                    ? 'bg-green-300'
+                    : uploadStatus === 'evaluating'
+                    ? 'bg-yellow-300'
+                    : 'bg-gray-300'
+                }`}></div>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <span className="text-gray-600 text-sm font-bold">3</span>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    uploadStatus === 'completed'
+                      ? 'bg-green-600'
+                      : uploadStatus === 'evaluating'
+                      ? 'bg-yellow-500'
+                      : 'bg-gray-300'
+                  }`}>
+                    {uploadStatus === 'completed' ? (
+                      <span className="material-icons text-white" style={{fontSize: '16px'}}>check</span>
+                    ) : uploadStatus === 'evaluating' ? (
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      <span className="text-gray-600 text-sm font-bold">3</span>
+                    )}
                   </div>
-                  <span className="text-sm font-medium text-gray-500">AI Evaluation</span>
+                  <span className={`text-sm font-medium ${
+                    uploadStatus === 'completed'
+                      ? 'text-green-600'
+                      : uploadStatus === 'evaluating'
+                      ? 'text-yellow-600'
+                      : 'text-gray-500'
+                  }`}>AI Evaluation</span>
                 </div>
               </div>
             </div>
@@ -621,21 +697,66 @@ const AnswerSheetUpload = () => {
                   Cancel
                 </button>
                 
-                <button 
-                  onClick={handleUpload}
-                  disabled={!selectedExam || uploadedFiles.length === 0}
-                  className={`flex items-center gap-3 px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform ${
-                    !selectedExam || uploadedFiles.length === 0
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:scale-105 shadow-lg hover:shadow-xl'
-                  }`}
-                >
-                  <span className="material-icons" style={{fontSize: '20px'}}>upload</span>
-                  Upload Answer Sheets ({uploadedFiles.length})
-                  {(!selectedExam || uploadedFiles.length === 0) && (
-                    <span className="material-icons" style={{fontSize: '18px'}}>lock</span>
-                  )}
-                </button>
+                {uploadStatus === 'idle' && (
+                  <button 
+                    onClick={handleUpload}
+                    disabled={!selectedExam || uploadedFiles.length === 0}
+                    className={`flex items-center gap-3 px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform ${
+                      !selectedExam || uploadedFiles.length === 0
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:scale-105 shadow-lg hover:shadow-xl'
+                    }`}
+                  >
+                    <span className="material-icons" style={{fontSize: '20px'}}>upload</span>
+                    Upload Answer Sheets ({uploadedFiles.length})
+                    {(!selectedExam || uploadedFiles.length === 0) && (
+                      <span className="material-icons" style={{fontSize: '18px'}}>lock</span>
+                    )}
+                  </button>
+                )}
+                
+                {uploadStatus === 'submitted' && (
+                  <div className="flex items-center gap-3 px-8 py-4 rounded-xl font-semibold bg-green-500 text-white shadow-lg">
+                    <span className="material-icons" style={{fontSize: '20px'}}>check_circle</span>
+                    Submitted Successfully
+                    <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+                  </div>
+                )}
+                
+                {uploadStatus === 'evaluating' && (
+                  <div className="flex items-center gap-3 px-8 py-4 rounded-xl font-semibold bg-yellow-500 text-white shadow-lg">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Evaluating Answer Sheets...
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-yellow-300 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+                      <div className="w-2 h-2 bg-yellow-300 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+                      <div className="w-2 h-2 bg-yellow-300 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+                    </div>
+                  </div>
+                )}
+                
+                {uploadStatus === 'completed' && (
+                   <div className="flex items-center gap-4">
+                     <div className="flex items-center gap-3 px-8 py-4 rounded-xl font-semibold bg-green-600 text-white shadow-lg">
+                       <span className="material-icons" style={{fontSize: '20px'}}>check_circle</span>
+                       Evaluation Completed
+                       <span className="material-icons" style={{fontSize: '20px'}}>done_all</span>
+                     </div>
+                     <button 
+                       onClick={() => {
+                         setUploadStatus('idle');
+                         setUploadedFiles([]);
+                         setEvaluationResults(null);
+                         setShowResults(false);
+                         setErrorMessage(null);
+                       }}
+                       className="flex items-center gap-2 px-6 py-3 border-2 border-blue-500 text-blue-600 rounded-xl font-medium hover:bg-blue-50 transition-all duration-200"
+                     >
+                       <span className="material-icons" style={{fontSize: '18px'}}>refresh</span>
+                       New Upload
+                     </button>
+                   </div>
+                 )}
               </div>
               
               {/* Enhanced Error Message Display */}
