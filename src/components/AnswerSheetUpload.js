@@ -205,8 +205,14 @@ const AnswerSheetUpload = () => {
          body: formData,
        });
       
-      const result = await response.json();
-      console.log('API Response:', result);
+      let result;
+      try {
+        result = await response.json();
+        console.log('API Response:', result);
+      } catch (jsonError) {
+        console.error('Failed to parse JSON response:', jsonError);
+        result = {};
+      }
       
       if (response.ok) {
          // Update file status to completed
@@ -221,13 +227,16 @@ const AnswerSheetUpload = () => {
          
          alert('Answer sheets uploaded and sent to AI for evaluation successfully!');
        } else {
-         // Handle error responses with detail message
+         // Handle error responses - check for various error formats
          if (result.detail) {
-           // Update file status back to ready on error
+           // Standard detail format
            setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
-           
-           // Show error message in a more user-friendly way
            setErrorMessage(result.detail);
+           return;
+         } else if (response.status === 400) {
+           // Handle 400 Bad Request specifically for duplication
+           setUploadedFiles(prev => prev.map(file => ({ ...file, status: 'ready' })));
+           setErrorMessage('The questions in this answer sheet are already evaluated before');
            return;
          }
          throw new Error(`API request failed with status: ${response.status}`);
