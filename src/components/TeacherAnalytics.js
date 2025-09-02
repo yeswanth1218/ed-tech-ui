@@ -16,17 +16,16 @@ const TeacherAnalytics = () => {
   ];
 
   const classPerformance = [
-    { class: '12-A', students: 45, avgScore: 82.3, improvement: '+6.2%', engagement: 8.7, atRisk: 3 },
-    { class: '11-B', students: 38, avgScore: 76.8, improvement: '+3.1%', engagement: 7.9, atRisk: 5 },
-    { class: '11-A', students: 42, avgScore: 79.1, improvement: '+4.8%', engagement: 8.2, atRisk: 4 },
-    { class: '12-C', students: 40, avgScore: 74.5, improvement: '+2.3%', engagement: 7.6, atRisk: 6 }
+    { class: '12', students: 45, avgScore: 82.3, improvement: '+6.2%', engagement: 8.7, atRisk: 3 },
+    { class: '11', students: 38, avgScore: 76.8, improvement: '+3.1%', engagement: 7.9, atRisk: 5 },
+    { class: '10', students: 40, avgScore: 74.5, improvement: '+2.3%', engagement: 7.6, atRisk: 6 }
   ];
 
   const atRiskStudents = [
     {
       id: 1,
-      name: 'Alex Johnson',
-      class: '12-A',
+      name: 'Arjun Sharma',
+      class: '12',
       currentGrade: 'D+',
       trend: 'declining',
       lastScore: 45,
@@ -36,8 +35,8 @@ const TeacherAnalytics = () => {
     },
     {
       id: 2,
-      name: 'Sarah Chen',
-      class: '11-B',
+      name: 'Priya Patel',
+      class: '11',
       currentGrade: 'C-',
       trend: 'stable_low',
       lastScore: 58,
@@ -47,8 +46,8 @@ const TeacherAnalytics = () => {
     },
     {
       id: 3,
-      name: 'Michael Rodriguez',
-      class: '11-A',
+      name: 'Vikram Singh',
+      class: '11',
       currentGrade: 'D',
       trend: 'declining',
       lastScore: 42,
@@ -61,8 +60,8 @@ const TeacherAnalytics = () => {
   const topPerformers = [
     {
       id: 1,
-      name: 'Emma Thompson',
-      class: '12-A',
+      name: 'Ananya Gupta',
+      class: '12',
       currentGrade: 'A+',
       lastScore: 96,
       consistency: 94,
@@ -71,8 +70,8 @@ const TeacherAnalytics = () => {
     },
     {
       id: 2,
-      name: 'David Kim',
-      class: '11-B',
+      name: 'Rohan Mehta',
+      class: '11',
       currentGrade: 'A',
       lastScore: 92,
       consistency: 89,
@@ -174,10 +173,9 @@ const TeacherAnalytics = () => {
                 onChange={(e) => setSelectedClass(e.target.value)}
               >
                 <option value="all">All Classes</option>
-                <option value="12-A">Class 12-A</option>
-                <option value="11-B">Class 11-B</option>
-                <option value="11-A">Class 11-A</option>
-                <option value="12-C">Class 12-C</option>
+                <option value="12">Class 12</option>
+                <option value="11">Class 11</option>
+                <option value="10">Class 10</option>
               </select>
               <select 
                 className="px-4 py-2 border border-[#d4dbe2] rounded-lg text-sm"
@@ -457,7 +455,7 @@ const TeacherAnalytics = () => {
                           <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
                             <span className="material-icons text-red-600">priority_high</span>
                             <div className="flex-1">
-                              <p className="font-medium text-[#101418]">Schedule intervention for Alex Johnson</p>
+                              <p className="font-medium text-[#101418]">Schedule intervention for Arjun Sharma</p>
                               <p className="text-sm text-[#5c728a]">Due: Tomorrow</p>
                             </div>
                           </div>

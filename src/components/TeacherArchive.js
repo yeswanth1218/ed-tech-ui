@@ -14,7 +14,7 @@ const TeacherArchive = () => {
       title: 'Calculus Final Exam',
       type: 'exam',
       subject: 'Mathematics',
-      class: '12-A',
+      class: '12',
       academicYear: '2023-24',
       semester: 'Fall',
       date: '2023-12-15',
@@ -78,9 +78,9 @@ const TeacherArchive = () => {
   const studentRecords = [
     {
       id: 1,
-      studentName: 'Emma Thompson',
+      studentName: 'Ananya Gupta',
       rollNo: 'MA001',
-      class: '12-A',
+      class: '12',
       academicYear: '2023-24',
       overallGrade: 'A+',
       gpa: 9.2,
@@ -98,9 +98,9 @@ const TeacherArchive = () => {
     },
     {
       id: 2,
-      studentName: 'David Kim',
+      studentName: 'Rohan Mehta',
       rollNo: 'MA002',
-      class: '12-A',
+      class: '12',
       academicYear: '2023-24',
       overallGrade: 'A',
       gpa: 8.8,

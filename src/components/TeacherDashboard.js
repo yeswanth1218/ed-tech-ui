@@ -8,10 +8,10 @@ const TeacherDashboard = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   
   const todayClasses = [
-    { time: '09:00 AM', subject: 'Mathematics', class: '12-A', room: 'Room 201', status: 'upcoming' },
-    { time: '11:00 AM', subject: 'Algebra', class: '11-B', room: 'Room 203', status: 'upcoming' },
-    { time: '02:00 PM', subject: 'Calculus', class: '12-C', room: 'Room 201', status: 'completed' },
-    { time: '03:30 PM', subject: 'Statistics', class: '11-A', room: 'Room 205', status: 'upcoming' }
+    { time: '09:00 AM', subject: 'Mathematics', class: '12', room: 'Room 201', status: 'upcoming' },
+    { time: '11:00 AM', subject: 'Algebra', class: '11', room: 'Room 203', status: 'upcoming' },
+    { time: '02:00 PM', subject: 'Calculus', class: '10', room: 'Room 201', status: 'completed' },
+    { time: '03:30 PM', subject: 'Statistics', class: '11', room: 'Room 205', status: 'upcoming' }
   ];
 
   const recentActivities = [

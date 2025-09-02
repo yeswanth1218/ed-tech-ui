@@ -17,7 +17,7 @@ const TeacherClass = () => {
   const students = [
     {
       id: 1,
-      name: 'Emma Thompson',
+      name: 'Ananya Gupta',
       rollNo: 'MA001',
       attendance: 94,
       avgGrade: 'A+',
@@ -35,7 +35,7 @@ const TeacherClass = () => {
     },
     {
       id: 2,
-      name: 'David Kim',
+      name: 'Rohan Mehta',
       rollNo: 'MA002',
       attendance: 89,
       avgGrade: 'A',
@@ -53,7 +53,7 @@ const TeacherClass = () => {
     },
     {
       id: 3,
-      name: 'Sarah Chen',
+      name: 'Priya Patel',
       rollNo: 'MA003',
       attendance: 76,
       avgGrade: 'C+',
@@ -71,7 +71,7 @@ const TeacherClass = () => {
     },
     {
       id: 4,
-      name: 'Michael Rodriguez',
+      name: 'Vikram Singh',
       rollNo: 'MA004',
       attendance: 72,
       avgGrade: 'D+',
@@ -89,7 +89,7 @@ const TeacherClass = () => {
     },
     {
       id: 5,
-      name: 'Alex Johnson',
+      name: 'Arjun Sharma',
       rollNo: 'MA005',
       attendance: 68,
       avgGrade: 'D',
@@ -118,28 +118,28 @@ const TeacherClass = () => {
     {
       type: 'assignment',
       title: 'Mathematics Assignment 5 submitted',
-      student: 'Emma Thompson',
+      student: 'Ananya Gupta',
       time: '2 hours ago',
       status: 'completed'
     },
     {
       type: 'absence',
       title: 'Absent from morning session',
-      student: 'Alex Johnson',
+      student: 'Arjun Sharma',
       time: '1 day ago',
       status: 'pending'
     },
     {
       type: 'parent_meeting',
       title: 'Parent meeting scheduled',
-      student: 'Michael Rodriguez',
+      student: 'Vikram Singh',
       time: '2 days ago',
       status: 'scheduled'
     },
     {
       type: 'achievement',
       title: 'Scored 98% in Physics test',
-      student: 'David Kim',
+      student: 'Rohan Mehta',
       time: '3 days ago',
       status: 'completed'
     }

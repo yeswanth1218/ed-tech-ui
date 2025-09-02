@@ -104,7 +104,7 @@ const TeacherAssessments = () => {
   const recentSubmissions = [
     {
       id: 1,
-      student: 'Emma Thompson',
+      student: 'Ananya Gupta',
       assessment: 'Quadratic Equations Test',
       submittedAt: '2024-01-16 14:30',
       score: 95,
@@ -113,7 +113,7 @@ const TeacherAssessments = () => {
     },
     {
       id: 2,
-      student: 'David Kim',
+      student: 'Rohan Mehta',
       assessment: 'Chemical Bonding Quiz',
       submittedAt: '2024-01-16 10:15',
       score: 88,
@@ -122,7 +122,7 @@ const TeacherAssessments = () => {
     },
     {
       id: 3,
-      student: 'Sarah Chen',
+      student: 'Priya Patel',
       assessment: 'English Essay - Climate Change',
       submittedAt: '2024-01-16 16:45',
       score: null,

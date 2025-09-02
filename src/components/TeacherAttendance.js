@@ -8,28 +8,28 @@ const TeacherAttendance = () => {
   const [attendanceMode, setAttendanceMode] = useState('mark'); // 'mark' or 'view'
   const [selectedSubject, setSelectedSubject] = useState('Mathematics');
   
-  const classes = ['12-A', '11-B', '11-A', '12-C', '11-C'];
+  const classes = ['12', '11', '10'];
   const subjects = ['Mathematics', 'Algebra', 'Calculus', 'Statistics', 'Geometry'];
   
   const [students, setStudents] = useState([
-    { id: 1, name: 'Emma Thompson', rollNo: 'MA001', status: 'present', lateBy: 0, note: '' },
-    { id: 2, name: 'David Kim', rollNo: 'MA002', status: 'present', lateBy: 0, note: '' },
-    { id: 3, name: 'Sarah Chen', rollNo: 'MA003', status: 'absent', lateBy: 0, note: 'Sick leave' },
-    { id: 4, name: 'Michael Rodriguez', rollNo: 'MA004', status: 'late', lateBy: 15, note: 'Traffic' },
-    { id: 5, name: 'Alex Johnson', rollNo: 'MA005', status: 'present', lateBy: 0, note: '' },
-    { id: 6, name: 'Lisa Wang', rollNo: 'MA006', status: 'present', lateBy: 0, note: '' },
-    { id: 7, name: 'James Wilson', rollNo: 'MA007', status: 'absent', lateBy: 0, note: 'Family emergency' },
-    { id: 8, name: 'Maria Garcia', rollNo: 'MA008', status: 'late', lateBy: 10, note: 'Bus delay' },
-    { id: 9, name: 'Ryan Brown', rollNo: 'MA009', status: 'present', lateBy: 0, note: '' },
-    { id: 10, name: 'Sophie Davis', rollNo: 'MA010', status: 'present', lateBy: 0, note: '' }
+    { id: 1, name: 'Ananya Gupta', rollNo: 'MA001', status: 'present', lateBy: 0, note: '' },
+    { id: 2, name: 'Rohan Mehta', rollNo: 'MA002', status: 'present', lateBy: 0, note: '' },
+    { id: 3, name: 'Priya Patel', rollNo: 'MA003', status: 'absent', lateBy: 0, note: 'Sick leave' },
+    { id: 4, name: 'Vikram Singh', rollNo: 'MA004', status: 'late', lateBy: 15, note: 'Traffic' },
+    { id: 5, name: 'Arjun Sharma', rollNo: 'MA005', status: 'present', lateBy: 0, note: '' },
+    { id: 6, name: 'Kavya Reddy', rollNo: 'MA006', status: 'present', lateBy: 0, note: '' },
+    { id: 7, name: 'Aditya Kumar', rollNo: 'MA007', status: 'absent', lateBy: 0, note: 'Family emergency' },
+    { id: 8, name: 'Sneha Joshi', rollNo: 'MA008', status: 'late', lateBy: 10, note: 'Bus delay' },
+    { id: 9, name: 'Rahul Nair', rollNo: 'MA009', status: 'present', lateBy: 0, note: '' },
+    { id: 10, name: 'Ishita Agarwal', rollNo: 'MA010', status: 'present', lateBy: 0, note: '' }
   ]);
 
   const attendanceHistory = [
-    { date: '2024-02-01', class: '12-A', subject: 'Mathematics', present: 42, absent: 3, late: 2, total: 47 },
-    { date: '2024-01-31', class: '12-A', subject: 'Mathematics', present: 44, absent: 2, late: 1, total: 47 },
-    { date: '2024-01-30', class: '11-B', subject: 'Algebra', present: 35, absent: 2, late: 1, total: 38 },
-    { date: '2024-01-29', class: '12-A', subject: 'Mathematics', present: 43, absent: 3, late: 1, total: 47 },
-    { date: '2024-01-26', class: '11-A', subject: 'Statistics', present: 39, absent: 2, late: 1, total: 42 }
+    { date: '2024-02-01', class: '12', subject: 'Mathematics', present: 42, absent: 3, late: 2, total: 47 },
+    { date: '2024-01-31', class: '12', subject: 'Mathematics', present: 44, absent: 2, late: 1, total: 47 },
+    { date: '2024-01-30', class: '11', subject: 'Algebra', present: 35, absent: 2, late: 1, total: 38 },
+    { date: '2024-01-29', class: '12', subject: 'Mathematics', present: 43, absent: 3, late: 1, total: 47 },
+    { date: '2024-01-26', class: '11', subject: 'Statistics', present: 39, absent: 2, late: 1, total: 42 }
   ];
 
   const attendanceStats = {
