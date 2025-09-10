@@ -171,7 +171,7 @@ const Login = () => {
                     fill="currentColor" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-[#0d141c]">Skool</h1>
+              <h1 className="text-2xl font-bold text-[#0d141c]">BeyondGrades</h1>
             </div>
             <h2 className="text-xl font-semibold text-[#0d141c] mb-2">Welcome Back</h2>
             <p className="text-[#49719c] mb-2">Sign in to your account</p>

@@ -59,7 +59,7 @@ const LandingPage = () => {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full animate-pulse"></div>
             </div>
             <div>
-              <h2 className="text-[#0d141c] text-xl font-bold leading-tight tracking-[-0.015em]">Skool.ai</h2>
+              <h2 className="text-[#0d141c] text-xl font-bold leading-tight tracking-[-0.015em]">BeyondGrades.ai</h2>
               <p className="text-xs text-[#49719c] font-medium">AI-Powered Education</p>
             </div>
           </div>
@@ -221,7 +221,7 @@ const LandingPage = () => {
               </div>
               <h2 className="text-4xl lg:text-5xl font-black text-[#0d141c] mb-6">
                 Why Leading Institutions Choose
-                <span className="bg-gradient-to-r from-[#0b79ee] to-[#8b5cf6] bg-clip-text text-transparent"> Skool.ai</span>
+                <span className="bg-gradient-to-r from-[#0b79ee] to-[#8b5cf6] bg-clip-text text-transparent"> BeyondGrades.ai</span>
               </h2>
               <p className="text-xl text-[#49719c] max-w-3xl mx-auto">
                 Experience the future of education with our comprehensive AI-powered platform designed to transform how institutions manage, assess, and optimize learning outcomes.
@@ -418,7 +418,7 @@ const LandingPage = () => {
                   Ready to Transform Your Institution?
                 </h2>
                 <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                  Join thousands of educators who are already using Skool.ai to revolutionize their teaching and assessment processes.
+                  Join thousands of educators who are already using BeyondGrades.ai to revolutionize their teaching and assessment processes.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -463,7 +463,7 @@ const LandingPage = () => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">Skool.ai</h3>
+                  <h3 className="text-xl font-bold">BeyondGrades.ai</h3>
                   <p className="text-sm text-gray-400">AI-Powered Education</p>
                 </div>
               </div>
@@ -512,7 +512,7 @@ const LandingPage = () => {
           {/* Bottom */}
           <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2024 Skool.ai. All rights reserved. Made with ❤️ for education.
+              © 2024 BeyondGrades.ai. All rights reserved. Made with ❤️ for education.
             </div>
             
             <div className="flex items-center gap-6">
