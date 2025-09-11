@@ -3,6 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import LandingPage from './components/LandingPage';
 import Login from './components/Login';
+import FeaturesPage from './components/FeaturesPage';
+import SolutionsPage from './components/SolutionsPage';
+import PricingPage from './components/PricingPage';
+import ContactPage from './components/ContactPage';
+import AboutPage from './components/AboutPage';
 import Dashboard from './components/Dashboard';
 import Departments from './components/Departments';
 import DepartmentDetail from './components/DepartmentDetail';
@@ -44,6 +49,11 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/solutions" element={<SolutionsPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/departments" element={<Departments />} />
           <Route path="/departments/:departmentId" element={<DepartmentDetail />} />
