@@ -18,7 +18,7 @@ const TeacherTimetable = () => {
     ],
     Tuesday: [
       { time: '08:30 - 10:00', subject: 'Statistics', class: '11-A', room: 'Room 204', type: 'lecture', students: 42 },
-      { time: '10:30 - 12:00', subject: 'Mathematics', class: '12-A', room: 'Room 201', type: 'practice', students: 45 },
+      { time: '10:30 - 12:00', subject: 'Mathematics', class: '10th', room: 'Room 201', type: 'practice', students: 45 },
       { time: '13:30 - 15:00', subject: 'Geometry', class: '11-C', room: 'Room 202', type: 'lecture', students: 35 },
       { time: '15:30 - 16:30', subject: 'Faculty Meeting', class: 'Staff', room: 'Conference Room', type: 'meeting', students: 0 }
     ],
@@ -31,7 +31,7 @@ const TeacherTimetable = () => {
     Thursday: [
       { time: '08:30 - 10:00', subject: 'Trigonometry', class: '11-D', room: 'Room 206', type: 'lecture', students: 39 },
       { time: '10:30 - 12:00', subject: 'Statistics', class: '11-A', room: 'Room 204', type: 'practice', students: 42 },
-      { time: '13:30 - 15:00', subject: 'Mathematics', class: '12-A', room: 'Room 201', type: 'lecture', students: 45 },
+      { time: '13:30 - 15:00', subject: 'Mathematics', class: '10th', room: 'Room 201', type: 'lecture', students: 45 },
       { time: '15:30 - 17:00', subject: 'Remedial Class', class: 'Mixed', room: 'Room 207', type: 'remedial', students: 15 }
     ],
     Friday: [
