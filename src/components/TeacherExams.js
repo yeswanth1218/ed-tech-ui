@@ -353,9 +353,9 @@ const TeacherExams = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="min-h-screen">
       <TeacherSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="ml-80 flex flex-col min-h-screen">
         <Header />
         <div className="flex-1 overflow-auto" style={{backgroundColor: '#f0f2f5'}}>
           <div className="p-6">
