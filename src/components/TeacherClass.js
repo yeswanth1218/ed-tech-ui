@@ -7,11 +7,11 @@ const TeacherClass = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   
   const classInfo = {
-    className: '12-A',
-    totalStudents: 45,
+    className: '10th',
+    totalStudents: 32,
     subject: 'Mathematics',
     academicYear: '2023-24',
-    classTeacher: 'Dr. Sarah Wilson'
+    classTeacher: 'Dr Ram Gopal'
   };
 
   const students = [
