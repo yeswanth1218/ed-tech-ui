@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import TeacherSidebar from './TeacherSidebar';
+import api from '../api/axiosInstance';
 
 const AnswerSheetUpload = () => {
   const [selectedExam, setSelectedExam] = useState('');
@@ -35,7 +36,7 @@ const AnswerSheetUpload = () => {
   const fetchExams = async () => {
     setLoading(prev => ({ ...prev, exams: true }));
     try {
-      const response = await fetch(`${apiUrl}/admin/exams`);
+      const response = await api.post(`${apiUrl}/admin/exams`);
       if (response.ok) {
         const result = await response.json();
         setAvailableExams(result.data || []);

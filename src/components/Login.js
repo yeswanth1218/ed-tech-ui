@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axiosInstance'; // <-- use your new axios instance
 
 const Login = () => {
   const [loginType, setLoginType] = useState('student');
@@ -33,62 +33,15 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    // Demo credentials for testing
-    const demoCredentials = {
-      student: { username: 'student', password: 'demo' },
-      teacher: { username: 'teacher', password: 'demo' },
-      org: { username: 'admin', password: 'demo' }
-    };
-
-    // Check if using demo credentials
-    // const isDemoLogin = credentials.username === demoCredentials[loginType]?.username && 
-    //                    credentials.password === demoCredentials[loginType]?.password;
-
-    // if (isDemoLogin) {
-    //   // Demo login - navigate directly to appropriate portal
-    //   console.log(`Demo login successful for ${loginType}`);
-      
-    //   switch (loginType) {
-    //     case 'STUDENT':
-    //       navigate('/student-profile');
-    //       break;
-    //     case 'TEACHER':
-    //       navigate('/teacher-dashboard');
-    //       break;
-    //     case 'ADMIN':
-    //       navigate('/dashboard');
-    //       break;
-    //     default:
-    //       navigate('/');
-    //   }
-    //   return;
-    // }
-
-    // Try actual API login
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:9000/api';
-      
-      // Debug logs for troubleshooting
-      console.log('🔍 Authentication Debug Info:');
-      console.log('📍 Environment Variables:');
-      console.log('  - REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
-      console.log('  - NODE_ENV:', process.env.NODE_ENV);
-      console.log('🌐 Resolved API URL:', apiUrl);
-      console.log('🎯 Full Login Endpoint:', `${apiUrl}/login`);
-      console.log('📦 Login Payload:', {
-        username: credentials.username,
-        password: credentials.password ? '[HIDDEN]' : 'undefined',
-        loginType: loginType
-      });
-      console.log('⚙️ Request Config:', { withCredentials: true });
-      
-      const res = await axios.post(
-        `${apiUrl}/auth/login`,
-        credentials,
-        { withCredentials: true }
-      );
+      const res = await api.post('/auth/login', credentials);
 
+      // Save token to sessionStorage
+      if (res.data.user?.token) {
+        sessionStorage.setItem('token', res.data.user.token);
+      }
+      console.log(res.data.user.token , "21");
       const user = res.data.user;
       console.log('✅ Login successful:', user);
       console.log('🎫 Response data:', res.data);
