@@ -51,26 +51,29 @@ const AnswerSheetUpload = () => {
   };
 
   const fetchClasses = async () => {
-    setLoading(prev => ({ ...prev, classes: true }));
-    try {
-      const response = await fetch(`${apiUrl}/admin/classes`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableClasses(result.data || []);
-      } else {
-        console.error('Failed to fetch classes');
-      }
-    } catch (error) {
-      console.error('Error fetching classes:', error);
-    } finally {
-      setLoading(prev => ({ ...prev, classes: false }));
+  setLoading(prev => ({ ...prev, classes: true }));
+  try {
+    const response = await api.get("/admin/classes"); // axios automatically uses baseURL
+
+    console.log(response, 'classes response');
+    setAvailableClasses(response.data?.data || []); // axios response is in `data`
+
+  } catch (error) {
+    if (error.response) {
+      console.error('Failed to fetch classes:', error.response.data);
+    } else {
+      console.error('Error fetching classes:', error.message);
     }
-  };
+  } finally {
+    setLoading(prev => ({ ...prev, classes: false }));
+  }
+};
+
 
   const fetchSubjects = async () => {
     setLoading(prev => ({ ...prev, subjects: true }));
     try {
-      const response = await fetch(`${apiUrl}/admin/subjects`);
+      const response = await api.get(`/admin/subjects`);
       if (response.ok) {
         const result = await response.json();
         setAvailableSubjects(result.data || []);
@@ -91,7 +94,7 @@ const AnswerSheetUpload = () => {
     }
     setLoading(prev => ({ ...prev, students: true }));
     try {
-      const response = await fetch(`${apiUrl}/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
+      const response = await api.get(`${apiUrl}/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
       if (response.ok) {
         const result = await response.json();
         setAvailableStudentIds(result.data || []);

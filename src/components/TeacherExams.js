@@ -65,7 +65,13 @@ const TeacherExams = () => {
   const fetchClasses = async () => {
     setDropdownLoading(prev => ({ ...prev, classes: true }));
     try {
-      const response = await api.get('/admin/classes');
+      console.log(sessionStorage.getItem('token' , '---'));
+      const response = await api.get('/admin/classes', {
+  headers: {
+    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+  }
+});
+
       setAvailableClasses(response.data.data || []);
     } catch (error) {
       console.error('Error fetching classes:', error);
