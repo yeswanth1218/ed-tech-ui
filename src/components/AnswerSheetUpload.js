@@ -29,6 +29,9 @@ const AnswerSheetUpload = () => {
     subjects: false,
     students: false
   });
+  const [goldenInfo, setGoldenInfo] = useState(null); // { golden_code, is_evaluation_completed }
+  const [goldenLoading, setGoldenLoading] = useState(false);
+  const [goldenError, setGoldenError] = useState('');
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -72,6 +75,38 @@ const AnswerSheetUpload = () => {
     setLoading(prev => ({ ...prev, classes: false }));
   }
 };
+
+  async function fetchGoldenCode({ examCode, classValue, subjectCode, studentId }) {
+      // example endpoint:
+      // admin/golden_code?examination_code=HA_250823&class=10&subject_code=PHY&student_id=10-1
+      if (!examCode || !classValue || !subjectCode || !studentId) return;
+      setGoldenLoading(true);
+      setGoldenError('');
+      setGoldenInfo(null);
+      try {
+        const q = `examination_code=${encodeURIComponent(examCode)}&class=${encodeURIComponent(classValue)}&subject_code=${encodeURIComponent(subjectCode)}&student_id=${encodeURIComponent(studentId)}`;
+        const response = await api.get(`/admin/golden_code?${q}`);
+        console.log(`>>>>responsegolen${JSON.stringify(response)}`)
+        console.log(`>>>>>>apiai`,api)
+        // expected shape: { message:"...", data:{ golden_code:"...", is_evaluation_completed:1 } }
+        const data = response?.data?.data;
+        console.log(`>>>>datagaga${JSON.stringify(data)}`)
+
+        if (data) {
+          setGoldenInfo({
+            golden_code: data.golden_code ?? null,
+            is_evaluation_completed: Number(data.is_evaluation_completed ?? 0)
+          });
+        } else {
+          setGoldenError('Invalid response from server');
+        }
+      } catch (err) {
+        console.error('Error fetching golden code:', err);
+        setGoldenError(err?.response?.data?.error || 'Failed to fetch golden code');
+      } finally {
+        setGoldenLoading(false);
+      }
+  }
 
 
   const fetchSubjects = async () => {
@@ -475,16 +510,31 @@ const AnswerSheetUpload = () => {
                       value={selectedStudentId} 
                       onChange={(e) => {
                         const selectedOption = availableStudentIds.find(student => student.name === e.target.value);
+                        const studentCode = selectedOption ? selectedOption.student_id : '';
                         setSelectedStudentId(e.target.value);
-                        setSelectedStudentCode(selectedOption ? selectedOption.student_id : '');
+                        setSelectedStudentCode(studentCode);
+
+                        // call golden_code API only if other selections exist
+                        if (selectedExam && selectedClass && selectedSubject && e.target.value) {
+                          fetchGoldenCode({
+                            examCode: selectedExamCode,     // your state with exam code
+                            classValue: selectedClass,     // your state with class
+                            subjectCode: selectedSubjectCode, // subject code state
+                            studentId: studentCode || e.target.value
+                          });
+                        } else {
+                          // clear golden info if not all selections present
+                          setGoldenInfo(null);
+                          setGoldenError('');
+                        }
                       }}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
                       disabled={loading.students || !selectedClass}
                     >
                       <option value="">
                         {!selectedClass ? 'Select class first...' : 
-                         loading.students ? 'Loading students...' : 
-                         'Choose student ID...'}
+                        loading.students ? 'Loading students...' : 
+                        'Choose student ID...'}
                       </option>
                       {availableStudentIds.map(student => (
                         <option key={student.id} value={student.name}>
@@ -499,15 +549,55 @@ const AnswerSheetUpload = () => {
                 </div>
                 
                 {selectedExam && selectedClass && selectedSubject && selectedStudentId && (
-                  <div className="mt-6 p-4 bg-green-50 rounded-xl border border-green-200">
-                    <div className="flex items-center gap-2">
-                      <span className="material-icons text-green-600" style={{fontSize: '20px'}}>check_circle</span>
-                      <span className="text-green-800 font-medium">All selections completed successfully!</span>
-                    </div>
-                    <div className="mt-2 text-sm text-green-700">
-                      <strong>golden_code:</strong> {selectedClass}-{selectedSubjectCode}-{selectedExamCode}
-                    </div>
-                  </div>
+                  <>
+                    {goldenLoading ? (
+                      <div className="mt-6 p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+                        <div className="flex items-center gap-2">
+                          <span className="material-icons text-yellow-600" style={{fontSize: '20px'}}>hourglass_top</span>
+                          <span className="text-yellow-800 font-medium">Checking evaluation status...</span>
+                        </div>
+                      </div>
+                    ) : goldenInfo ? (
+                      goldenInfo.is_evaluation_completed === 1 ? (
+                        // RED: evaluation already done
+                        <div className="mt-6 p-4 bg-red-50 rounded-xl border border-red-200">
+                          <div className="flex items-center gap-2">
+                            <span className="material-icons text-red-600" style={{fontSize: '20px'}}>error</span>
+                            <span className="text-red-800 font-medium">Evaluation already completed</span>
+                          </div>
+                          <div className="mt-2 text-sm text-red-700">
+                            <strong>golden_code:</strong> {goldenInfo.golden_code}
+                          </div>
+                          <div className="mt-2 text-sm text-red-700">
+                            This student's evaluation is already completed. You cannot start evaluation again.
+                          </div>
+                        </div>
+                      ) : (
+                        // GREEN: ready to process for evaluation
+                        <div className="mt-6 p-4 bg-green-50 rounded-xl border border-green-200">
+                          <div className="flex items-center gap-2">
+                            <span className="material-icons text-green-600" style={{fontSize: '20px'}}>check_circle</span>
+                            <span className="text-green-800 font-medium">All selections completed successfully!</span>
+                          </div>
+                          <div className="mt-2 text-sm text-green-700">
+                            <strong>golden_code:</strong> {goldenInfo.golden_code}
+                          </div>
+                          <div className="mt-2 text-sm text-green-700">
+                            Proceed to answer sheet upload.
+                          </div>
+                        </div>
+                      )
+                    ) : goldenError ? (
+                      <div className="mt-6 p-4 bg-red-50 rounded-xl border border-red-200">
+                        <div className="text-sm text-red-700">Error: {goldenError}</div>
+                      </div>
+                    ) : (
+                      // default fallback if goldenInfo not yet fetched
+                      <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <div className="text-sm text-gray-700">Please confirm selections to fetch golden code.</div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
