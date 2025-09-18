@@ -36,13 +36,17 @@ const AnswerSheetUpload = () => {
   const fetchExams = async () => {
     setLoading(prev => ({ ...prev, exams: true }));
     try {
-      const response = await api.post(`${apiUrl}/admin/exams`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableExams(result.data || []);
-      } else {
-        console.error('Failed to fetch exams');
-      }
+      const response = await api.get('/admin/exams');
+      console.log(`>>>>response${JSON.stringify(response)}`)
+
+      setAvailableExams(response.data.data || []);
+
+      // if (response.ok) {
+      //   const result = await response.json();
+      //   setAvailableExams(result.data.data || []);
+      // } else {
+      //   console.error('Failed to fetch exams');
+      // }
     } catch (error) {
       console.error('Error fetching exams:', error);
     } finally {
@@ -73,13 +77,18 @@ const AnswerSheetUpload = () => {
   const fetchSubjects = async () => {
     setLoading(prev => ({ ...prev, subjects: true }));
     try {
-      const response = await api.get(`/admin/subjects`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableSubjects(result.data || []);
-      } else {
-        console.error('Failed to fetch subjects');
-      }
+      const response = await api.get('/admin/subjects');
+      setAvailableSubjects(response.data.data || []);
+      // const response = await api.get(`/admin/subjects`);
+
+      // if (response.ok) {
+      //   const result = await response.json();
+      // console.log(`>>>>result${JSON.stringify(result)}`)
+
+        // setAvailableSubjects(result.data.data || []);
+      // } else {
+      //   console.error('Failed to fetch subjects');
+      // }
     } catch (error) {
       console.error('Error fetching subjects:', error);
     } finally {
@@ -92,15 +101,10 @@ const AnswerSheetUpload = () => {
       setAvailableStudentIds([]);
       return;
     }
-    setLoading(prev => ({ ...prev, students: true }));
+    // setDropdownLoading(prev => ({ ...prev, students: true }));
     try {
-      const response = await api.get(`${apiUrl}/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableStudentIds(result.data || []);
-      } else {
-        console.error('Failed to fetch students');
-      }
+      const response = await api.get(`/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
+      setAvailableStudentIds(response.data.data || []);
     } catch (error) {
       console.error('Error fetching students:', error);
     } finally {
