@@ -79,13 +79,13 @@ const SetQuestionPaper = () => {
   const fetchExistingQuestions = async (goldenCode) => {
     setLoadingQuestions(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/scheduled_question_papers?golden_code=${goldenCode}`);
-      if (!response.ok) throw new Error('Failed to fetch questions');
-      const data = await response.json();
-      
-      if (data.data && data.data.length > 0) {
+      const response = await api.get(`${process.env.REACT_APP_API_URL}/admin/scheduled_question_papers?golden_code=${goldenCode}`);
+      //if (!response.ok) throw new Error('Failed to fetch questions');
+      //const data = await response.json();
+
+      if (response.data.data && response.data.data.length > 0) {
         // Transform API data to match our question format
-        const transformedQuestions = data.data.map(q => ({
+        const transformedQuestions = response.data.data.map(q => ({
           id: q.id, // Store the original ID for updates
           question_number: q.question_number,
           question: q.question,
@@ -95,6 +95,7 @@ const SetQuestionPaper = () => {
           ruberics: q.ruberics
         }));
         setExistingQuestions(transformedQuestions);
+        console.log(transformedQuestions,"exist");
       } else {
         setExistingQuestions([]);
       }
