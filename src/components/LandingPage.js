@@ -436,8 +436,23 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* Enhanced Features Section */}
+        {/* Features Section */}
         <section id="features" className="relative z-10 py-24 px-6 lg:px-10">
+          {/* Animated Background Shapes for Features Section */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Floating AI Elements */}
+            <div className="absolute top-20 left-10 w-4 h-4 bg-blue-400/20 rounded-full animate-bounce" style={{animationDelay: '0s', animationDuration: '3s'}}></div>
+            <div className="absolute top-40 right-20 w-6 h-6 bg-purple-400/20 rounded-full animate-pulse" style={{animationDelay: '1s', animationDuration: '4s'}}></div>
+            <div className="absolute bottom-32 left-1/4 w-3 h-3 bg-emerald-400/20 rounded-full animate-ping" style={{animationDelay: '2s', animationDuration: '3s'}}></div>
+            <div className="absolute top-1/3 right-1/3 w-5 h-5 bg-orange-400/20 rounded-full animate-bounce" style={{animationDelay: '0.5s', animationDuration: '3.5s'}}></div>
+            <div className="absolute bottom-20 right-10 w-4 h-4 bg-indigo-400/20 rounded-full animate-pulse" style={{animationDelay: '1.5s', animationDuration: '4s'}}></div>
+            
+            {/* Geometric Shapes */}
+            <div className="absolute top-16 right-1/4 w-8 h-8 border-2 border-blue-300/20 rotate-45 animate-bounce" style={{animationDelay: '2.5s', animationDuration: '4s'}}></div>
+            <div className="absolute bottom-40 left-1/3 w-6 h-6 border-2 border-purple-300/20 rounded-full animate-pulse" style={{animationDelay: '0.8s', animationDuration: '3s'}}></div>
+            <div className="absolute top-1/2 left-16 w-5 h-5 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rotate-12 animate-bounce" style={{animationDelay: '1.2s', animationDuration: '3.8s'}}></div>
+          </div>
+          
           <div className="max-w-7xl mx-auto">
             {/* Section Header */}
             <div className="text-center mb-20">
@@ -556,6 +571,21 @@ const LandingPage = () => {
         
         {/* Solutions Section */}
         <section id="solutions" className="relative z-10 py-24 px-6 lg:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
+          {/* Animated Background Shapes for Solutions Section */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Floating Elements */}
+            <div className="absolute top-16 left-14 w-5 h-5 bg-blue-400/15 rounded-full animate-bounce" style={{animationDelay: '0.6s', animationDuration: '3.3s'}}></div>
+            <div className="absolute top-24 right-18 w-4 h-4 bg-purple-400/15 rounded-full animate-pulse" style={{animationDelay: '1.9s', animationDuration: '3.7s'}}></div>
+            <div className="absolute bottom-20 left-1/5 w-6 h-6 bg-emerald-400/15 rounded-full animate-ping" style={{animationDelay: '0.3s', animationDuration: '4.0s'}}></div>
+            <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-orange-400/15 rounded-full animate-bounce" style={{animationDelay: '2.5s', animationDuration: '3.4s'}}></div>
+            <div className="absolute bottom-24 right-14 w-5 h-5 bg-indigo-400/15 rounded-full animate-pulse" style={{animationDelay: '1.2s', animationDuration: '3.8s'}}></div>
+            
+            {/* Geometric Shapes */}
+            <div className="absolute top-20 right-1/6 w-7 h-7 border-2 border-blue-300/15 rotate-45 animate-bounce" style={{animationDelay: '1.7s', animationDuration: '4.1s'}}></div>
+            <div className="absolute bottom-32 left-1/4 w-4 h-4 border-2 border-purple-300/15 rounded-full animate-pulse" style={{animationDelay: '2.8s', animationDuration: '3.6s'}}></div>
+            <div className="absolute top-2/3 left-16 w-6 h-6 bg-gradient-to-br from-emerald-400/10 to-blue-400/10 rotate-12 animate-bounce" style={{animationDelay: '0.9s', animationDuration: '3.9s'}}></div>
+          </div>
+          
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-full px-4 py-2 mb-6">
@@ -630,6 +660,21 @@ const LandingPage = () => {
         
         {/* CTA Section */}
         <section className="relative z-10 py-24 px-6 lg:px-10">
+          {/* Animated Background Shapes for CTA Section */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Floating Elements */}
+            <div className="absolute top-12 left-10 w-4 h-4 bg-blue-400/20 rounded-full animate-bounce" style={{animationDelay: '0.2s', animationDuration: '3.5s'}}></div>
+            <div className="absolute top-20 right-16 w-5 h-5 bg-purple-400/20 rounded-full animate-pulse" style={{animationDelay: '1.3s', animationDuration: '4.0s'}}></div>
+            <div className="absolute bottom-16 left-1/6 w-3 h-3 bg-emerald-400/20 rounded-full animate-ping" style={{animationDelay: '2.1s', animationDuration: '3.2s'}}></div>
+            <div className="absolute top-1/4 right-1/5 w-6 h-6 bg-orange-400/20 rounded-full animate-bounce" style={{animationDelay: '0.9s', animationDuration: '3.8s'}}></div>
+            <div className="absolute bottom-20 right-12 w-4 h-4 bg-indigo-400/20 rounded-full animate-pulse" style={{animationDelay: '1.7s', animationDuration: '3.6s'}}></div>
+            
+            {/* Geometric Shapes */}
+            <div className="absolute top-16 right-1/4 w-7 h-7 border-2 border-blue-300/20 rotate-45 animate-bounce" style={{animationDelay: '2.4s', animationDuration: '3.9s'}}></div>
+            <div className="absolute bottom-24 left-1/5 w-5 h-5 border-2 border-purple-300/20 rounded-full animate-pulse" style={{animationDelay: '0.6s', animationDuration: '4.2s'}}></div>
+            <div className="absolute top-1/2 left-14 w-6 h-6 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rotate-12 animate-bounce" style={{animationDelay: '1.8s', animationDuration: '3.4s'}}></div>
+          </div>
+          
           <div className="max-w-4xl mx-auto text-center">
             <div className="bg-gradient-to-br from-[#693393] via-[#0b79ee] to-[#6366f1] rounded-3xl p-12 lg:p-16 relative overflow-hidden">
               {/* Background pattern */}
@@ -672,8 +717,23 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Contact Section */}
-        <section id="contact" className="relative z-10 py-24 px-6 lg:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
+        {/* Testimonials Section */}
+        <section className="relative z-10 py-24 px-6 lg:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
+          {/* Animated Background Shapes for Testimonials Section */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Floating Elements */}
+            <div className="absolute top-24 left-8 w-5 h-5 bg-blue-400/15 rounded-full animate-bounce" style={{animationDelay: '0.3s', animationDuration: '3.2s'}}></div>
+            <div className="absolute top-16 right-16 w-4 h-4 bg-purple-400/15 rounded-full animate-pulse" style={{animationDelay: '1.8s', animationDuration: '3.8s'}}></div>
+            <div className="absolute bottom-28 left-1/5 w-6 h-6 bg-emerald-400/15 rounded-full animate-ping" style={{animationDelay: '0.7s', animationDuration: '4.2s'}}></div>
+            <div className="absolute top-1/4 right-1/4 w-3 h-3 bg-orange-400/15 rounded-full animate-bounce" style={{animationDelay: '2.1s', animationDuration: '3.6s'}}></div>
+            <div className="absolute bottom-16 right-8 w-5 h-5 bg-indigo-400/15 rounded-full animate-pulse" style={{animationDelay: '0.9s', animationDuration: '3.4s'}}></div>
+            
+            {/* Geometric Shapes */}
+            <div className="absolute top-20 right-1/5 w-7 h-7 border-2 border-blue-300/15 rotate-45 animate-bounce" style={{animationDelay: '1.4s', animationDuration: '4.1s'}}></div>
+            <div className="absolute bottom-32 left-1/4 w-4 h-4 border-2 border-purple-300/15 rounded-full animate-pulse" style={{animationDelay: '2.3s', animationDuration: '3.7s'}}></div>
+            <div className="absolute top-2/3 left-12 w-6 h-6 bg-gradient-to-br from-emerald-400/10 to-blue-400/10 rotate-12 animate-bounce" style={{animationDelay: '0.6s', animationDuration: '3.9s'}}></div>
+          </div>
+          
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-full px-4 py-2 mb-6">
@@ -776,8 +836,23 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* About Us Section */}
-        <section id="about" className="relative z-10 py-24 px-6 lg:px-10">
+        {/* Contact Section */}
+        <section id="contact" className="relative z-10 py-24 px-6 lg:px-10">
+          {/* Animated Background Shapes for Contact Section */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Floating Elements */}
+            <div className="absolute top-20 left-12 w-4 h-4 bg-blue-400/20 rounded-full animate-bounce" style={{animationDelay: '0.4s', animationDuration: '3.1s'}}></div>
+            <div className="absolute top-32 right-24 w-5 h-5 bg-purple-400/20 rounded-full animate-pulse" style={{animationDelay: '1.6s', animationDuration: '3.9s'}}></div>
+            <div className="absolute bottom-24 left-1/6 w-3 h-3 bg-emerald-400/20 rounded-full animate-ping" style={{animationDelay: '2.2s', animationDuration: '3.3s'}}></div>
+            <div className="absolute top-1/3 right-1/5 w-6 h-6 bg-orange-400/20 rounded-full animate-bounce" style={{animationDelay: '0.8s', animationDuration: '3.7s'}}></div>
+            <div className="absolute bottom-32 right-12 w-4 h-4 bg-indigo-400/20 rounded-full animate-pulse" style={{animationDelay: '1.3s', animationDuration: '4.1s'}}></div>
+            
+            {/* Geometric Shapes */}
+            <div className="absolute top-24 right-1/6 w-6 h-6 border-2 border-blue-300/20 rotate-45 animate-bounce" style={{animationDelay: '2.7s', animationDuration: '3.5s'}}></div>
+            <div className="absolute bottom-40 left-1/5 w-5 h-5 border-2 border-purple-300/20 rounded-full animate-pulse" style={{animationDelay: '0.5s', animationDuration: '4.3s'}}></div>
+            <div className="absolute top-1/2 left-20 w-7 h-7 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rotate-12 animate-bounce" style={{animationDelay: '1.9s', animationDuration: '3.2s'}}></div>
+          </div>
+          
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-full px-4 py-2 mb-6">
@@ -860,7 +935,22 @@ const LandingPage = () => {
             </div>
             
             {/* Team Section */}
-            <div className="text-center mb-12">
+            <div className="relative text-center mb-12">
+              {/* Animated Background Shapes for Team Section */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {/* Floating Elements */}
+                <div className="absolute top-8 left-12 w-4 h-4 bg-blue-400/15 rounded-full animate-bounce" style={{animationDelay: '0.4s', animationDuration: '3.6s'}}></div>
+                <div className="absolute top-16 right-20 w-5 h-5 bg-purple-400/15 rounded-full animate-pulse" style={{animationDelay: '1.5s', animationDuration: '3.9s'}}></div>
+                <div className="absolute bottom-12 left-1/4 w-3 h-3 bg-emerald-400/15 rounded-full animate-ping" style={{animationDelay: '2.2s', animationDuration: '3.3s'}}></div>
+                <div className="absolute top-1/3 right-1/6 w-6 h-6 bg-orange-400/15 rounded-full animate-bounce" style={{animationDelay: '0.8s', animationDuration: '4.1s'}}></div>
+                <div className="absolute bottom-20 right-16 w-4 h-4 bg-indigo-400/15 rounded-full animate-pulse" style={{animationDelay: '1.9s', animationDuration: '3.7s'}}></div>
+                
+                {/* Geometric Shapes */}
+                <div className="absolute top-12 right-1/5 w-6 h-6 border-2 border-blue-300/15 rotate-45 animate-bounce" style={{animationDelay: '2.6s', animationDuration: '3.8s'}}></div>
+                <div className="absolute bottom-16 left-1/6 w-5 h-5 border-2 border-purple-300/15 rounded-full animate-pulse" style={{animationDelay: '0.7s', animationDuration: '4.0s'}}></div>
+                <div className="absolute top-2/3 left-18 w-7 h-7 bg-gradient-to-br from-emerald-400/10 to-blue-400/10 rotate-12 animate-bounce" style={{animationDelay: '1.4s', animationDuration: '3.5s'}}></div>
+              </div>
+              
               <h3 className="text-3xl font-bold text-[#0d141c] mb-6">Meet Our Team</h3>
               <p className="text-lg text-[#49719c] max-w-2xl mx-auto mb-12">
                 Our diverse team of educators, engineers, and AI researchers is passionate about transforming education through technology.
@@ -904,6 +994,21 @@ const LandingPage = () => {
       
       {/* Enhanced Footer */}
       <footer className="relative z-10 bg-gradient-to-br from-gray-900 to-gray-800 text-white px-6 lg:px-10 py-16">
+        {/* Animated Background Shapes for Footer */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Floating Elements */}
+          <div className="absolute top-12 left-8 w-3 h-3 bg-blue-400/10 rounded-full animate-bounce" style={{animationDelay: '0.1s', animationDuration: '3.6s'}}></div>
+          <div className="absolute top-20 right-12 w-4 h-4 bg-purple-400/10 rounded-full animate-pulse" style={{animationDelay: '1.4s', animationDuration: '4.1s'}}></div>
+          <div className="absolute bottom-16 left-1/5 w-5 h-5 bg-emerald-400/10 rounded-full animate-ping" style={{animationDelay: '2.6s', animationDuration: '3.4s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-2 h-2 bg-orange-400/10 rounded-full animate-bounce" style={{animationDelay: '0.7s', animationDuration: '3.9s'}}></div>
+          <div className="absolute bottom-24 right-16 w-4 h-4 bg-indigo-400/10 rounded-full animate-pulse" style={{animationDelay: '1.8s', animationDuration: '3.7s'}}></div>
+          
+          {/* Geometric Shapes */}
+          <div className="absolute top-16 right-1/5 w-6 h-6 border border-blue-300/10 rotate-45 animate-bounce" style={{animationDelay: '2.1s', animationDuration: '4.2s'}}></div>
+          <div className="absolute bottom-32 left-1/6 w-3 h-3 border border-purple-300/10 rounded-full animate-pulse" style={{animationDelay: '0.4s', animationDuration: '3.8s'}}></div>
+          <div className="absolute top-2/3 left-12 w-5 h-5 bg-gradient-to-br from-blue-400/5 to-purple-400/5 rotate-12 animate-bounce" style={{animationDelay: '1.6s', animationDuration: '3.5s'}}></div>
+        </div>
+        
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {/* Brand */}
