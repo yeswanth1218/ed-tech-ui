@@ -1,6 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
+import api from '../api/axiosInstance';
 
 const ContactSection = () => {
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        institution: '',
+        message: ''
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+
+        try {
+            const response = await api.post('/admin/user_message', formData);
+            
+            if (response.status === 200) {
+                setSubmitStatus('success');
+                // Reset form
+                setFormData({
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    institution: '',
+                    message: ''
+                });
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitStatus('error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <section id="contact" className="relative z-10 py-12 px-6 lg:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -98,32 +143,99 @@ const ContactSection = () => {
                             <div className="text-center mb-6">
                                 <h3 className="text-2xl font-bold text-[#0d141c] mb-2">Send us a Message</h3>
                                 <p className="text-[#49719c]">Fill out the form and we'll get back to you within 24 hours</p>
+                                
+                                {/* Success/Error Messages */}
+                                {submitStatus === 'success' && (
+                                    <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-xl">
+                                        <div className="flex items-center gap-2 text-green-700">
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                            </svg>
+                                            <span className="font-medium">Message sent successfully! We'll get back to you soon.</span>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {submitStatus === 'error' && (
+                                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                                        <div className="flex items-center gap-2 text-red-700">
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                            </svg>
+                                            <span className="font-medium">Failed to send message. Please try again or contact us directly.</span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                            <form action={`${process.env.REACT_APP_API_URL}/admin/user_message`} method='post' className="space-y-6">
+                            <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-semibold text-[#0d141c] mb-2">First Name</label>
-                                        <input name="first_name" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Gaurav" />
+                                        <input 
+                                            name="first_name" 
+                                            type="text" 
+                                            value={formData.first_name}
+                                            onChange={handleInputChange}
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" 
+                                            placeholder="Gaurav"
+                                            required 
+                                        />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-semibold text-[#0d141c] mb-2">Last Name</label>
-                                        <input name="last_name" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Reddy" />
+                                        <input 
+                                            name="last_name" 
+                                            type="text" 
+                                            value={formData.last_name}
+                                            onChange={handleInputChange}
+                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" 
+                                            placeholder="Reddy"
+                                            required 
+                                        />
                                     </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-[#0d141c] mb-2">Email</label>
-                                    <input name="email" type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Gaurav.Reddy@institution.edu" />
+                                    <input 
+                                        name="email" 
+                                        type="email" 
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" 
+                                        placeholder="Gaurav.Reddy@institution.edu"
+                                        required 
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-[#0d141c] mb-2">Institution</label>
-                                    <input name="institution" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Your Institution Name" />
+                                    <input 
+                                        name="institution" 
+                                        type="text" 
+                                        value={formData.institution}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" 
+                                        placeholder="Your Institution Name"
+                                        required 
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-[#0d141c] mb-2">Message</label>
-                                    <textarea name="message" rows="4" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Tell us about your needs and how we can help..."></textarea>
+                                    <textarea 
+                                        name="message" 
+                                        rows="4" 
+                                        value={formData.message}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" 
+                                        placeholder="Tell us about your needs and how we can help..."
+                                        required
+                                    ></textarea>
                                 </div>
-                                <button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105">
-                                    Send Message
+                                <button 
+                                    type="submit" 
+                                    disabled={isSubmitting}
+                                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                                >
+                                    {isSubmitting ? 'Sending...' : 'Send Message'}
                                 </button>
                             </form>
                         </div>

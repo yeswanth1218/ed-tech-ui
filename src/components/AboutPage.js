@@ -42,9 +42,9 @@ const AboutPage = () => {
             <span className="bg-gradient-to-r from-[#693393] to-[#0b79ee] bg-clip-text text-transparent"> Artificial Intelligence</span>
           </h1>
           <p className="text-xl text-[#49719c] max-w-4xl mx-auto mb-12">
-            We're on a mission to revolutionize how educational institutions evaluate, aggregate, and analyze 
-            student performance using cutting-edge AI technology. Our platform empowers educators to focus on 
-            what matters most: teaching and inspiring the next generation.
+            BeyondGrades is an AI platform that is designed to change the way of manual evaluations 
+            and gives us the results which are beyond mere grades.
+            
           </p>
         </div>
       </section>

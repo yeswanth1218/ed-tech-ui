@@ -3,6 +3,7 @@ import Header from './header/Header';
 import HeroSection from './HeroSection';
 import FeaturesSection from './FeaturesSection';
 import SolutionsSection from './SolutionsSection';
+import ProductNeed from './ProductNeed';
 import ContactSection from './ContactSection';
 import AboutSection from './AboutSection';
 import Footer from './Footer';
@@ -53,6 +54,7 @@ const LandingPage = () => {
         <AboutSection />
         <FeaturesSection />
         <SolutionsSection />
+        <ProductNeed />
         <ContactSection />
 
       </main>

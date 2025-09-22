@@ -21,11 +21,11 @@ const AboutSection = () => {
                         <span className="text-sm font-semibold text-[#693393]">What is BeyondGrades.ai?</span>
                     </div>
                     <h2 className="text-4xl lg:text-5xl font-black text-[#0d141c] mb-6">
-                        Transforming Education Through
+                        The New Leap in Education Through
                         <span className="bg-gradient-to-r from-[#693393] to-[#0b79ee] bg-clip-text text-transparent"> Artificial Intelligence</span>
                     </h2>
                     <p className="text-xl text-[#49719c] max-w-3xl mx-auto">
-                        We're on a mission to revolutionize how educational institutions evaluate, aggregate, and analyze student performance using cutting-edge AI technology.
+                        BeyondGrades is an AI platform that is designed to change the way of manual evaluations and gives us the results which are beyond <span className="bg-[#693393]/70 text-white px-2 py-1 rounded">mere grades</span>.
                     </p>
                 </div>
 
@@ -33,10 +33,13 @@ const AboutSection = () => {
                     <div>
                         <h3 className="text-3xl font-bold text-[#0d141c] mb-6">Our Mission</h3>
                         <p className="text-lg text-[#49719c] mb-6">
-                            At BeyondGrades.ai, we believe that every student deserves personalized, accurate, and timely feedback on their academic performance. Our AI-powered platform eliminates the traditional barriers in educational assessment, making it faster, more accurate, and more insightful than ever before.
+                            Just as AI is revolutionizing industries from healthcare to finance, it can certainly be a new catalyst for efficiency and effectiveness in education. It is about working smarter. 
                         </p>
                         <p className="text-lg text-[#49719c] mb-8">
-                            We're committed to empowering educators with the tools they need to focus on what matters most: teaching and inspiring the next generation of learners.
+                            We see it as a tool that brings lot of efficiency and can change the way we understand, help and guide a student today.
+                        </p>
+                        <p className="text-lg text-[#49719c] mb-8">
+                            The team BeyondGrades is a taking a leap to beyond the conventional extents with the help of AI and show things which cannot be seen otherwise
                         </p>
                     </div>
                     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-8">

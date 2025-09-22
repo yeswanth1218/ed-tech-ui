@@ -14,7 +14,7 @@ const SolutionsSection = () => {
                 {/* Section Header */}
                 <div className="text-center mb-20">
                     <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-full px-4 py-2 mb-6">
-                        <span className="text-sm font-semibold text-[#693393]">How - The Million $ Question?</span>
+                        <span className="text-sm font-semibold text-[#693393]">How? - The Million $ Question</span>
                     </div>
                     <h2 className="text-4xl lg:text-5xl font-black text-[#0d141c] mb-6">
                         Revolutionary

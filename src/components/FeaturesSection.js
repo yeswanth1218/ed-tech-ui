@@ -21,7 +21,8 @@ const FeaturesSection = () => {
                         <span className="text-sm font-semibold text-[#693393]">Why Beyond Grades?</span>
                     </div>
                     <h2 className="text-4xl lg:text-5xl font-black text-[#0d141c] mb-6">
-                        Why Beyond Grades?
+                        Burden to 
+                        <span className="bg-gradient-to-r from-[#693393] to-[#0b79ee] bg-clip-text text-transparent"> Breakthrough </span>
                     </h2>
                 </div>
 
@@ -34,7 +35,7 @@ const FeaturesSection = () => {
                         </h3>
 
                         <div className="space-y-5 flex-1">
-                            <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 border border-red-200/30">
+                            <div className="bg-gradient-to-r from-white to-yellow-50 rounded-2xl p-5 border border-gray-200/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 hover:-translate-y-1">
                                 <h4 className="text-lg font-semibold text-[#0d141c] mb-3 flex items-start">
                                     <span className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">1</span>
                                     <span>The Teacher-Student Ratio:</span>
@@ -42,7 +43,7 @@ const FeaturesSection = () => {
                                 <p className="text-[#49719c] text-sm leading-relaxed ml-9">In India, the average teacher has to manage a large number of students, making individual attention a challenge. Manually evaluating answer sheets for every student is a monumental and time-consuming task.</p>
                             </div>
 
-                            <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 border border-red-200/30">
+                            <div className="bg-gradient-to-r from-white to-yellow-50 rounded-2xl p-5 border border-gray-200/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 hover:-translate-y-1">
                                 <h4 className="text-lg font-semibold text-[#0d141c] mb-3 flex items-start">
                                     <span className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">2</span>
                                     <span>Human Fatigue & Inconsistency:</span>
@@ -50,7 +51,7 @@ const FeaturesSection = () => {
                                 <p className="text-[#49719c] text-sm leading-relaxed ml-9">After grading several papers, fatigue inevitably sets in. This can lead to unintentional inconsistencies in evaluation, no matter how dedicated the teacher is.</p>
                             </div>
 
-                            <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 border border-red-200/30">
+                            <div className="bg-gradient-to-r from-white to-yellow-50 rounded-2xl p-5 border border-gray-200/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 hover:-translate-y-1">
                                 <h4 className="text-lg font-semibold text-[#0d141c] mb-3 flex items-start">
                                     <span className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">3</span>
                                     <span>Lost Opportunities for Insight:</span>
@@ -58,7 +59,7 @@ const FeaturesSection = () => {
                                 <p className="text-[#49719c] text-sm leading-relaxed ml-9">The primary goal of an exam is to understand a student's grasp of a subject. But when the focus is just on grading, we lose the opportunity to identify specific learning gaps and patterns for each child.</p>
                             </div>
 
-                            <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 border border-red-200/30">
+                            <div className="bg-gradient-to-r from-white to-yellow-50 rounded-2xl p-5 border border-gray-200/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 hover:-translate-y-1">
                                 <h4 className="text-lg font-semibold text-[#0d141c] mb-3 flex items-start">
                                     <span className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">4</span>
                                     <span>Student Hesitation:</span>
