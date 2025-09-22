@@ -32,9 +32,9 @@ const LandingPage = () => {
     pricing: {
       title: "Plans Overview",
       items: [
-        { name: "Starter - $99/mo", desc: "View details →" },
-        { name: "Professional - $299/mo", desc: "Most popular →" },
-        { name: "Enterprise - $799/mo", desc: "Full features →" },
+        { name: "Starter Plan", desc: "View details →" },
+        { name: "Professional Plan", desc: "Most popular →" },
+        { name: "Enterprise Plan", desc: "Full features →" },
         { name: "See All Pricing", desc: "Compare plans →" }
       ]
     },
@@ -397,42 +397,6 @@ const LandingPage = () => {
                 </svg>
               </button>
             </div>
-            
-            {/* Enhanced Trust Indicators */}
-            <div className="flex flex-wrap justify-center gap-8 lg:gap-16 mt-16 text-center">
-              <div className="flex flex-col items-center group">
-                <div className="relative">
-                  <span className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-[#693393] to-[#0b79ee] bg-clip-text text-transparent">50K+</span>
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-[#693393] to-[#0b79ee] rounded-full animate-pulse"></div>
-                </div>
-                <span className="text-sm lg:text-base text-[#49719c] font-medium mt-2">Active Students</span>
-                <span className="text-xs text-[#49719c] opacity-75">Across 200+ institutions</span>
-              </div>
-              <div className="flex flex-col items-center group">
-                <div className="relative">
-                  <span className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-[#0b79ee] to-[#6366f1] bg-clip-text text-transparent">1M+</span>
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-[#0b79ee] to-[#6366f1] rounded-full animate-pulse"></div>
-                </div>
-                <span className="text-sm lg:text-base text-[#49719c] font-medium mt-2">Assessments Processed</span>
-                <span className="text-xs text-[#49719c] opacity-75">AI-powered evaluations</span>
-              </div>
-              <div className="flex flex-col items-center group">
-                <div className="relative">
-                  <span className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-[#6366f1] to-[#693393] bg-clip-text text-transparent">99.2%</span>
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-[#6366f1] to-[#693393] rounded-full animate-pulse"></div>
-                </div>
-                <span className="text-sm lg:text-base text-[#49719c] font-medium mt-2">Accuracy Rate</span>
-                <span className="text-xs text-[#49719c] opacity-75">Industry-leading precision</span>
-              </div>
-              <div className="flex flex-col items-center group">
-                <div className="relative">
-                  <span className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-[#693393] to-[#6366f1] bg-clip-text text-transparent">24/7</span>
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-[#693393] to-[#6366f1] rounded-full animate-pulse"></div>
-                </div>
-                <span className="text-sm lg:text-base text-[#49719c] font-medium mt-2">AI Support</span>
-                <span className="text-xs text-[#49719c] opacity-75">Always available</span>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -761,8 +725,8 @@ const LandingPage = () => {
                     <div>
                       <h3 className="text-xl font-bold text-[#0d141c] mb-2">Sales Inquiry</h3>
                       <p className="text-[#49719c] mb-4">Speak with our sales team to find the perfect plan for your institution.</p>
-                      <a href="mailto:sales@beyondgrades.ai" className="text-blue-600 hover:text-blue-700 font-semibold">sales@beyondgrades.ai</a>
-                      <p className="text-[#49719c] mt-1">+1 (555) 123-4567</p>
+                      <a href="mailto:sales@beyondgrades.ai" className="text-blue-600 hover:text-blue-700 font-semibold">Contact Sales</a>
+                      <p className="text-[#49719c] mt-1">Get in touch with our team</p>
                     </div>
                   </div>
                 </div>
@@ -778,7 +742,7 @@ const LandingPage = () => {
                     <div>
                       <h3 className="text-xl font-bold text-[#0d141c] mb-2">Technical Support</h3>
                       <p className="text-[#49719c] mb-4">Get help with implementation, troubleshooting, and technical questions.</p>
-                      <a href="mailto:support@beyondgrades.ai" className="text-emerald-600 hover:text-emerald-700 font-semibold">support@beyondgrades.ai</a>
+                      <a href="mailto:support@beyondgrades.ai" className="text-emerald-600 hover:text-emerald-700 font-semibold">Contact Support</a>
                       <p className="text-[#49719c] mt-1">24/7 Support Available</p>
                     </div>
                   </div>
@@ -794,7 +758,7 @@ const LandingPage = () => {
                     <div>
                       <h3 className="text-xl font-bold text-[#0d141c] mb-2">Partnership</h3>
                       <p className="text-[#49719c] mb-4">Explore collaboration opportunities and integration partnerships.</p>
-                      <a href="mailto:partnerships@beyondgrades.ai" className="text-purple-600 hover:text-purple-700 font-semibold">partnerships@beyondgrades.ai</a>
+                      <a href="mailto:partnerships@beyondgrades.ai" className="text-purple-600 hover:text-purple-700 font-semibold">Contact Partnerships</a>
                       <p className="text-[#49719c] mt-1">Strategic Partnerships</p>
                     </div>
                   </div>
@@ -876,24 +840,6 @@ const LandingPage = () => {
                 <p className="text-lg text-[#49719c] mb-8">
                   We're committed to empowering educators with the tools they need to focus on what matters most: teaching and inspiring the next generation of learners.
                 </p>
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-black text-blue-600 mb-2">200+</div>
-                    <div className="text-sm text-[#49719c]">Institutions Served</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-black text-emerald-600 mb-2">50K+</div>
-                    <div className="text-sm text-[#49719c]">Students Evaluated</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-black text-purple-600 mb-2">1M+</div>
-                    <div className="text-sm text-[#49719c]">Assessments Processed</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-black text-orange-600 mb-2">99.2%</div>
-                    <div className="text-sm text-[#49719c]">Accuracy Rate</div>
-                  </div>
-                </div>
               </div>
               <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-8">
                 <div className="space-y-6">
