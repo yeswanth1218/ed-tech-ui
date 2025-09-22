@@ -99,28 +99,28 @@ const ContactSection = () => {
                                 <h3 className="text-2xl font-bold text-[#0d141c] mb-2">Send us a Message</h3>
                                 <p className="text-[#49719c]">Fill out the form and we'll get back to you within 24 hours</p>
                             </div>
-                            <form className="space-y-6">
+                            <form action={`${process.env.REACT_APP_API_URL}/admin/user_message`} method='post' className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-semibold text-[#0d141c] mb-2">First Name</label>
-                                        <input type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Gaurav" />
+                                        <input name="first_name" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Gaurav" />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-semibold text-[#0d141c] mb-2">Last Name</label>
-                                        <input type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Reddy" />
+                                        <input name="last_name" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Reddy" />
                                     </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-[#0d141c] mb-2">Email</label>
-                                    <input type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Gaurav.Reddy@institution.edu" />
+                                    <input name="email" type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Gaurav.Reddy@institution.edu" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-[#0d141c] mb-2">Institution</label>
-                                    <input type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Your Institution Name" />
+                                    <input name="institution" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Your Institution Name" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-[#0d141c] mb-2">Message</label>
-                                    <textarea rows="4" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Tell us about your needs and how we can help..."></textarea>
+                                    <textarea name="message" rows="4" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none transition-colors" placeholder="Tell us about your needs and how we can help..."></textarea>
                                 </div>
                                 <button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105">
                                     Send Message
