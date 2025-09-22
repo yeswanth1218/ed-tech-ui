@@ -14,7 +14,7 @@ const Login = () => {
     if (type && ['student', 'teacher', 'admin'].includes(type)) {
       setLoginType(type);
     }
-    
+
     // Environment debugging on component mount
     console.log('🚀 Login Component Mounted - Environment Check:');
     console.log('📍 All Environment Variables:');
@@ -41,7 +41,7 @@ const Login = () => {
       if (res.data.user?.token) {
         sessionStorage.setItem('token', res.data.user.token);
       }
-      console.log(res.data.user.token , "21");
+      console.log(res.data.user.token, "21");
       const user = res.data.user;
       console.log('✅ Login successful:', user);
       console.log('🎫 Response data:', res.data);
@@ -66,7 +66,7 @@ const Login = () => {
       console.error('  - Error Type:', err.name);
       console.error('  - Error Message:', err.message);
       console.error('  - Error Code:', err.code);
-      
+
       if (err.response) {
         // Server responded with error status
         console.error('📡 Server Response Error:');
@@ -83,18 +83,18 @@ const Login = () => {
         // Something else happened
         console.error('⚠️ Unexpected Error:', err.message);
       }
-      
+
       console.error('🔧 Troubleshooting Tips:');
       console.error('  1. Check if backend server is running');
       console.error('  2. Verify API URL is accessible from container');
       console.error('  3. Check CORS configuration');
       console.error('  4. Verify network connectivity');
-      
-      const errorMessage = err?.response?.data?.error || 
-                          err?.response?.data?.message || 
-                          err?.message || 
-                          'Login failed. Try demo credentials: username="student/teacher/admin", password="demo"';
-      
+
+      const errorMessage = err?.response?.data?.error ||
+        err?.response?.data?.message ||
+        err?.message ||
+        'Login failed. Try demo credentials: username="student/teacher/admin", password="demo"';
+
       alert(`Authentication Failed: ${errorMessage}`);
     }
   };
@@ -114,9 +114,9 @@ const Login = () => {
         <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-white/20 w-full max-w-md">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <img 
-                src="/logo.png" 
-                alt="BeyondGrades.ai Logo" 
+              <img
+                src="/logo.png"
+                alt="BeyondGrades.ai Logo"
                 className="h-20 w-auto"
               />
             </div>
@@ -129,11 +129,10 @@ const Login = () => {
               <button
                 key={type}
                 onClick={() => setLoginType(type)}
-                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  loginType === type
-                    ? 'bg-white text-[#0d141c] shadow-sm'
-                    : 'text-[#49719c] hover:text-[#0d141c]'
-                }`}
+                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${loginType === type
+                  ? 'bg-white text-[#0d141c] shadow-sm'
+                  : 'text-[#49719c] hover:text-[#0d141c]'
+                  }`}
               >
                 {type.charAt(0).toUpperCase() + type.slice(1)}
               </button>

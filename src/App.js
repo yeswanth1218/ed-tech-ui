@@ -3,20 +3,47 @@ import React from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import LandingPage from './components/LandingPage';
 import AIChatbot from './components/AIChatbot';
-
+import Login from './components/Login';
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import Departments from './components/Departments';
+import DepartmentDetail from './components/DepartmentDetail';
+import AdminPanel from './components/AdminPanel';
+import Evaluation from './components/Evaluation';
+import Financials from './components/Financials';
+import StudentPerformance from './components/StudentPerformance';
+import StudentProfile from './components/StudentProfile';
+import StudentNews from './components/StudentNews';
+import StudentResults from './components/StudentResults';
+import StudentAnalytics from './components/StudentAnalytics';
+import StudentTimetable from './components/StudentTimetable';
+import StudentArchive from './components/StudentArchive';
+import StudentFees from './components/StudentFees';
+import StudentSettings from './components/StudentSettings';
+import UploadPage from './components/UploadPage';
+import TeacherDashboard from './components/TeacherDashboard';
+import TeacherExams from './components/TeacherExams';
+import TeacherAnalytics from './components/TeacherAnalytics';
+import TeacherTimetable from './components/TeacherTimetable';
+import TeacherAttendance from './components/TeacherAttendance';
+import TeacherClass from './components/TeacherClass';
+import TeacherRequests from './components/TeacherRequests';
+import TeacherAssessments from './components/TeacherAssessments';
+import TeacherArchive from './components/TeacherArchive';
+import TeacherLeaderboard from './components/TeacherLeaderboard';
+import AnswerSheetUpload from './components/AnswerSheetUpload';
+import SetQuestionPaper from './components/SetQuestionPaper';
+import OrganizationExamCreation from './components/OrganizationExamCreation';
+import UserProfile from './components/UserProfile';
 
 function App() {
   return (
     <ThemeProvider>
 
       <div className="App">
-        <LandingPage />
-        {/* <Route path="/login" element={<Login />} />
-          <Route path="/features" element={<FeaturesPage />} />
-          <Route path="/solutions" element={<SolutionsPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/about" element={<AboutPage />} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/departments" element={<Departments />} />
           <Route path="/departments/:departmentId" element={<DepartmentDetail />} />
@@ -47,8 +74,8 @@ function App() {
           <Route path="/answer-sheet-upload" element={<AnswerSheetUpload />} />
           <Route path="/set-question-paper" element={<SetQuestionPaper />} />
           <Route path="/organization-exam-creation" element={<OrganizationExamCreation />} />
-          <Route path="/profile" element={<UserProfile />} /> */}
-
+          <Route path="/profile" element={<UserProfile />} />
+        </Routes>
         <AIChatbot />
       </div>
 
