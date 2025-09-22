@@ -1,54 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import { ThemeProvider } from './contexts/ThemeContext';
 import LandingPage from './components/LandingPage';
-import Login from './components/Login';
-import FeaturesPage from './components/FeaturesPage';
-import SolutionsPage from './components/SolutionsPage';
-import PricingPage from './components/PricingPage';
-import ContactPage from './components/ContactPage';
-import AboutPage from './components/AboutPage';
-import Dashboard from './components/Dashboard';
-import Departments from './components/Departments';
-import DepartmentDetail from './components/DepartmentDetail';
-import AdminPanel from './components/AdminPanel';
-import StudentPerformance from './components/StudentPerformance';
-import StudentProfile from './components/StudentProfile';
-import StudentNews from './components/StudentNews';
-import StudentResults from './components/StudentResults';
-import StudentAnalytics from './components/StudentAnalytics';
-import StudentArchive from './components/StudentArchive';
-import StudentTimetable from './components/StudentTimetable';
-import StudentFees from './components/StudentFees';
-import StudentSettings from './components/StudentSettings';
-import UploadPage from './components/UploadPage';
-import UserProfile from './components/UserProfile';
-import Evaluation from './components/Evaluation';
-import Financials from './components/Financials';
 import AIChatbot from './components/AIChatbot';
-import TeacherDashboard from './components/TeacherDashboard';
-import TeacherExams from './components/TeacherExams';
-import TeacherAnalytics from './components/TeacherAnalytics';
-import TeacherTimetable from './components/TeacherTimetable';
-import TeacherAttendance from './components/TeacherAttendance';
-import TeacherClass from './components/TeacherClass';
-import TeacherRequests from './components/TeacherRequests';
-import TeacherAssessments from './components/TeacherAssessments';
-import TeacherArchive from './components/TeacherArchive';
-import TeacherLeaderboard from './components/TeacherLeaderboard';
-import AnswerSheetUpload from './components/AnswerSheetUpload';
-import SetQuestionPaper from './components/SetQuestionPaper';
-import OrganizationExamCreation from './components/OrganizationExamCreation';
 
 
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+
       <div className="App">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
+        <LandingPage />
+        {/* <Route path="/login" element={<Login />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/solutions" element={<SolutionsPage />} />
           <Route path="/pricing" element={<PricingPage />} />
@@ -84,11 +47,11 @@ function App() {
           <Route path="/answer-sheet-upload" element={<AnswerSheetUpload />} />
           <Route path="/set-question-paper" element={<SetQuestionPaper />} />
           <Route path="/organization-exam-creation" element={<OrganizationExamCreation />} />
-          <Route path="/profile" element={<UserProfile />} />
-        </Routes>
+          <Route path="/profile" element={<UserProfile />} /> */}
+
         <AIChatbot />
       </div>
-    </Router>
+
     </ThemeProvider>
   );
 }
