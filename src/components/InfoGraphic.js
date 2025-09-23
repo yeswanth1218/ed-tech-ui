@@ -54,27 +54,28 @@ const InfoGraphic = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="py-20 px-6 lg:px-10">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-10">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-full px-4 py-2 mb-6">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
             <div className="w-2 h-2 bg-gradient-to-r from-[#693393] to-[#0b79ee] rounded-full animate-pulse"></div>
-            <span className="text-sm font-semibold text-[#693393]">Feature Journey</span>
+            <span className="text-xs sm:text-sm font-semibold text-[#693393]">Feature Journey</span>
             <div className="w-2 h-2 bg-gradient-to-r from-[#693393] to-[#0b79ee] rounded-full animate-pulse"></div>
           </div>
-          <h1 className="text-5xl lg:text-7xl font-black text-[#0d141c] mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-[#0d141c] mb-4 sm:mb-6 leading-tight">
             Revolutionizing Evaluation and Empowering
             <span className="bg-gradient-to-r from-[#693393] to-[#0b79ee] bg-clip-text text-transparent"> Educators & Students</span>
           </h1>
-          <p className="text-xl text-[#49719c] max-w-4xl mx-auto mb-12">
+          <p className="text-base sm:text-lg md:text-xl text-[#49719c] max-w-4xl mx-auto mb-8 sm:mb-12 px-4">
             Follow our simple 7-step process to transform your evaluation workflow with AI-powered grading
           </p>
         </div>
       </section>
 
       {/* Journey Infographic */}
-      <section className="py-40 px-6 lg:px-10">
+      <section className="py-20 sm:py-32 md:py-40 px-4 sm:px-6 lg:px-10">
         <div className="max-w-7xl mx-auto">
-          <div className="relative min-h-[1900px]">
+          {/* Desktop Layout - Hidden on mobile */}
+          <div className="hidden lg:block relative min-h-[1900px]">
             {/* SVG Curved Path - Treasure Map Style */}
             <svg 
               className="absolute inset-0 w-full h-full pointer-events-none z-0" 
@@ -358,29 +359,67 @@ const InfoGraphic = () => {
               </div>
             </div>
           </div>
+
+          {/* Mobile/Tablet Layout - Visible on smaller screens */}
+          <div className="lg:hidden">
+            <div className="space-y-8 sm:space-y-12">
+              {steps.map((step, index) => (
+                <div key={step.id} className="flex flex-col items-center">
+                  {/* Step Card */}
+                  <div className="bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-200/50 shadow-xl hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 transform hover:-translate-y-3 w-full max-w-sm sm:max-w-md">
+                    <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-[#693393] to-[#0b79ee] rounded-full mb-4 sm:mb-6 mx-auto shadow-lg">
+                      <span className="text-white font-bold text-lg sm:text-xl">{step.id}</span>
+                    </div>
+                    <div className="w-full h-48 sm:h-64 md:h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl sm:rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 hover:border-[#693393] transition-all duration-300">
+                      <img 
+                        src={`/infogrphics/Image_0${step.id}.png`}
+                        alt={step.title}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="space-y-2 text-center">
+                      <h3 className="text-lg sm:text-xl font-bold text-[#0d141c] hover:text-[#693393] transition-colors duration-300">
+                        {step.title}
+                      </h3>
+                      <p className="text-[#49719c] text-sm sm:text-base leading-snug">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Connection Arrow - Not shown for last step */}
+                  {index < steps.length - 1 && (
+                    <div className="flex items-center justify-center my-4 sm:my-6">
+                      <div className="w-1 h-8 sm:h-12 bg-gradient-to-b from-[#693393] to-[#0b79ee] rounded-full opacity-60"></div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 lg:px-10">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-10">
         <div className="max-w-4xl mx-auto flex justify-center">
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-100 p-12 max-w-3xl w-full text-center transition-all duration-500 hover:transform hover:-translate-y-4 hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)]" style={{background: 'linear-gradient(135deg, #ffffff 0%, #faf7ff 50%, #f3f0ff 100%)'}}>
-            <h2 className="text-4xl lg:text-5xl font-black text-[#693393] mb-6">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl border border-purple-100 p-6 sm:p-8 md:p-12 max-w-3xl w-full text-center transition-all duration-500 hover:transform hover:-translate-y-4 hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)]" style={{background: 'linear-gradient(135deg, #ffffff 0%, #faf7ff 50%, #f3f0ff 100%)'}}>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#693393] mb-4 sm:mb-6">
               Ready to Experience the Magic?
             </h2>
-            <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
               Click here to experiance a handson demo of our AI-powered grading system.
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
               <Link
                 to="/login"
-                className="group flex min-w-[220px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-16 px-8 bg-[#693393] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:shadow-2xl transition-all duration-500 transform hover:scale-110 hover:bg-[#5a2a7a]"
+                className="group flex w-full sm:min-w-[220px] sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl h-12 sm:h-16 px-6 sm:px-8 bg-[#693393] text-white text-base sm:text-lg font-bold leading-normal tracking-[0.015em] hover:shadow-2xl transition-all duration-500 transform hover:scale-110 hover:bg-[#5a2a7a]"
               >
                 <span>Try the Demo</span>
               </Link>
               <Link
                 to="/#contact"
-                className="group flex min-w-[180px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-16 px-8 bg-transparent border-2 border-[#693393] text-[#693393] text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#693393] hover:text-white transition-all duration-300"
+                className="group flex w-full sm:min-w-[180px] sm:w-auto cursor-pointer items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl h-12 sm:h-16 px-6 sm:px-8 bg-transparent border-2 border-[#693393] text-[#693393] text-base sm:text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#693393] hover:text-white transition-all duration-300"
               >
                 <span>Contact Us</span>
               </Link>
