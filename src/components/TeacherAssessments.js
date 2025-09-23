@@ -104,7 +104,7 @@ const TeacherAssessments = () => {
   const recentSubmissions = [
     {
       id: 1,
-      student: 'Emma Thompson',
+      student: 'Ananya Gupta',
       assessment: 'Quadratic Equations Test',
       submittedAt: '2024-01-16 14:30',
       score: 95,
@@ -113,7 +113,7 @@ const TeacherAssessments = () => {
     },
     {
       id: 2,
-      student: 'David Kim',
+      student: 'Rohan Mehta',
       assessment: 'Chemical Bonding Quiz',
       submittedAt: '2024-01-16 10:15',
       score: 88,
@@ -122,7 +122,7 @@ const TeacherAssessments = () => {
     },
     {
       id: 3,
-      student: 'Sarah Chen',
+      student: 'Priya Patel',
       assessment: 'English Essay - Climate Change',
       submittedAt: '2024-01-16 16:45',
       score: null,
@@ -276,9 +276,9 @@ const TeacherAssessments = () => {
   );
 
   return (
-    <div className="flex h-screen">
+    <div className="min-h-screen">
       <TeacherSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="ml-80 flex flex-col min-h-screen">
         <Header />
         <div className="flex-1 overflow-auto" style={{backgroundColor: '#f0f2f5'}}>
           <div className="p-6">

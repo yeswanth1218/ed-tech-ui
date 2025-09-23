@@ -14,8 +14,8 @@ const TeacherRequests = () => {
       title: 'Request for Assignment Extension',
       description: 'Student requesting 3-day extension for Mathematics assignment due to medical reasons.',
       student: {
-        name: 'Emma Thompson',
-        class: '12-A',
+        name: 'Ananya Gupta',
+        class: '12',
         rollNo: 'MA001',
         email: 'emma.thompson@school.edu'
       },
@@ -33,7 +33,7 @@ const TeacherRequests = () => {
       title: 'Lab Equipment Access Issue',
       description: 'Unable to access chemistry lab equipment for practical session. Need immediate assistance.',
       student: {
-        name: 'David Kim',
+        name: 'Rohan Mehta',
         class: '12-A',
         rollNo: 'MA002',
         email: 'david.kim@school.edu'
@@ -52,8 +52,8 @@ const TeacherRequests = () => {
       title: 'Grade Clarification Request',
       description: 'Student questioning the grading criteria for recent physics test. Requesting detailed feedback.',
       student: {
-        name: 'Sarah Chen',
-        class: '11-B',
+        name: 'Priya Patel',
+        class: '11',
         rollNo: 'PH003',
         email: 'sarah.chen@school.edu'
       },
@@ -71,8 +71,8 @@ const TeacherRequests = () => {
       title: 'Counseling Session Request',
       description: 'Student requesting guidance session regarding career choices and subject selection.',
       student: {
-        name: 'Michael Rodriguez',
-        class: '11-A',
+        name: 'Vikram Singh',
+        class: '11',
         rollNo: 'CS004',
         email: 'michael.rodriguez@school.edu'
       },
@@ -92,8 +92,8 @@ const TeacherRequests = () => {
       title: 'Make-up Exam Request',
       description: 'Student missed midterm exam due to family emergency. Requesting make-up exam opportunity.',
       student: {
-        name: 'Alex Johnson',
-        class: '12-B',
+        name: 'Arjun Sharma',
+        class: '12',
         rollNo: 'MT005',
         email: 'alex.johnson@school.edu'
       },
@@ -294,9 +294,9 @@ const TeacherRequests = () => {
   );
 
   return (
-    <div className="flex h-screen">
+    <div className="min-h-screen">
       <TeacherSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="ml-80 flex flex-col min-h-screen">
         <Header />
         <div className="flex-1 overflow-auto" style={{backgroundColor: '#f0f2f5'}}>
           <div className="p-6">

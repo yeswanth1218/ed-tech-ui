@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import TeacherSidebar from './TeacherSidebar';
+import api from '../api/axiosInstance';
 
 const SetQuestionPaper = () => {
   const navigate = useNavigate();
@@ -44,23 +45,25 @@ const SetQuestionPaper = () => {
   // Fetch subjects from API
   const fetchSubjects = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/subjects`);
-      if (!response.ok) throw new Error('Failed to fetch subjects');
-      const data = await response.json();
-      setSubjects(data.data || []);
+      const response = await api.get(`/admin/subjects`);
+      console.log(response,"subj")
+      //if (!response.ok) throw new Error('Failed to fetch subjects');
+      
+      setSubjects(response.data.data || []);
     } catch (err) {
       setError('Failed to load subjects');
-      console.error('Error fetching subjects:', err);
+      console.error('Error fetching subjects:', err.response?.data || err.message);
     }
   };
 
   // Fetch classes from API
   const fetchClasses = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/classes`);
-      if (!response.ok) throw new Error('Failed to fetch classes');
-      const data = await response.json();
-      setClasses(data.data || []);
+      const response = await api.get(`/admin/classes`);
+      //if (!response.ok) throw new Error('Failed to fetch classes');
+      //const data = await response.json();
+      setClasses(response.data.data || []);
+      console.log(classes,"classes12")
     } catch (err) {
       setError('Failed to load classes');
       console.error('Error fetching classes:', err);
@@ -76,13 +79,13 @@ const SetQuestionPaper = () => {
   const fetchExistingQuestions = async (goldenCode) => {
     setLoadingQuestions(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/scheduled_question_papers?golden_code=${goldenCode}`);
-      if (!response.ok) throw new Error('Failed to fetch questions');
-      const data = await response.json();
-      
-      if (data.data && data.data.length > 0) {
+      const response = await api.get(`${process.env.REACT_APP_API_URL}/admin/scheduled_question_papers?golden_code=${goldenCode}`);
+      //if (!response.ok) throw new Error('Failed to fetch questions');
+      //const data = await response.json();
+
+      if (response.data.data && response.data.data.length > 0) {
         // Transform API data to match our question format
-        const transformedQuestions = data.data.map(q => ({
+        const transformedQuestions = response.data.data.map(q => ({
           id: q.id, // Store the original ID for updates
           question_number: q.question_number,
           question: q.question,
@@ -92,6 +95,7 @@ const SetQuestionPaper = () => {
           ruberics: q.ruberics
         }));
         setExistingQuestions(transformedQuestions);
+        console.log(transformedQuestions,"exist");
       } else {
         setExistingQuestions([]);
       }
@@ -385,9 +389,9 @@ const SetQuestionPaper = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       <TeacherSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="ml-80 flex flex-col min-h-screen">
         <Header />
         <div className="flex-1 overflow-auto">
           <div className="p-8">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import TeacherSidebar from './TeacherSidebar';
+import api from '../api/axiosInstance'; // already imported
 
 const TeacherExams = () => {
   const navigate = useNavigate();
@@ -38,12 +39,8 @@ const TeacherExams = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/exams`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch exams');
-      }
-      const data = await response.json();
-      setExams(data.data || []);
+      const response = await api.get('/admin/exams');
+      setExams(response.data.data || []);
     } catch (err) {
       setError(err.message);
       console.error('Error fetching exams:', err);
@@ -56,13 +53,8 @@ const TeacherExams = () => {
   const fetchExamsForResults = async () => {
     setDropdownLoading(prev => ({ ...prev, exams: true }));
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/exams`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableExams(result.data || []);
-      } else {
-        console.error('Failed to fetch exams');
-      }
+      const response = await api.get('/admin/exams');
+      setAvailableExams(response.data.data || []);
     } catch (error) {
       console.error('Error fetching exams:', error);
     } finally {
@@ -73,13 +65,14 @@ const TeacherExams = () => {
   const fetchClasses = async () => {
     setDropdownLoading(prev => ({ ...prev, classes: true }));
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/classes`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableClasses(result.data || []);
-      } else {
-        console.error('Failed to fetch classes');
-      }
+      console.log(sessionStorage.getItem('token' , '---'));
+      const response = await api.get('/admin/classes', {
+  headers: {
+    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+  }
+});
+
+      setAvailableClasses(response.data.data || []);
     } catch (error) {
       console.error('Error fetching classes:', error);
     } finally {
@@ -90,13 +83,8 @@ const TeacherExams = () => {
   const fetchSubjects = async () => {
     setDropdownLoading(prev => ({ ...prev, subjects: true }));
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/subjects`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableSubjects(result.data || []);
-      } else {
-        console.error('Failed to fetch subjects');
-      }
+      const response = await api.get('/admin/subjects');
+      setAvailableSubjects(response.data.data || []);
     } catch (error) {
       console.error('Error fetching subjects:', error);
     } finally {
@@ -111,13 +99,8 @@ const TeacherExams = () => {
     }
     setDropdownLoading(prev => ({ ...prev, students: true }));
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
-      if (response.ok) {
-        const result = await response.json();
-        setAvailableStudentIds(result.data || []);
-      } else {
-        console.error('Failed to fetch students');
-      }
+      const response = await api.get(`/admin/students_by_class?class=${encodeURIComponent(classValue)}`);
+      setAvailableStudentIds(response.data.data || []);
     } catch (error) {
       console.error('Error fetching students:', error);
     } finally {
@@ -130,24 +113,13 @@ const TeacherExams = () => {
       alert('Please select all fields before submitting.');
       return;
     }
-    
+
     const goldenCode = `${selectedClass}-${selectedSubjectCode}-${selectedExamCode}`;
     setResultsLoading(true);
-    
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/evaluation_results?golden_code=${encodeURIComponent(goldenCode)}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        setEvaluationResults(result);
-      } else {
-        throw new Error('Failed to fetch evaluation results');
-      }
+      const response = await api.get(`/admin/evaluation_results?golden_code=${encodeURIComponent(goldenCode)}`);
+      setEvaluationResults(response.data);
     } catch (error) {
       console.error('Error fetching evaluation results:', error);
       alert('Failed to fetch evaluation results. Please try again.');
@@ -353,9 +325,9 @@ const TeacherExams = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="min-h-screen">
       <TeacherSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="ml-80 flex flex-col min-h-screen">
         <Header />
         <div className="flex-1 overflow-auto" style={{backgroundColor: '#f0f2f5'}}>
           <div className="p-6">

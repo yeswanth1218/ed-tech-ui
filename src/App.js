@@ -1,26 +1,26 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import { ThemeProvider } from './contexts/ThemeContext';
 import LandingPage from './components/LandingPage';
+import AIChatbot from './components/AIChatbot';
 import Login from './components/Login';
+import { Routes, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import Departments from './components/Departments';
 import DepartmentDetail from './components/DepartmentDetail';
 import AdminPanel from './components/AdminPanel';
+import Evaluation from './components/Evaluation';
+import Financials from './components/Financials';
 import StudentPerformance from './components/StudentPerformance';
 import StudentProfile from './components/StudentProfile';
 import StudentNews from './components/StudentNews';
 import StudentResults from './components/StudentResults';
 import StudentAnalytics from './components/StudentAnalytics';
-import StudentArchive from './components/StudentArchive';
 import StudentTimetable from './components/StudentTimetable';
+import StudentArchive from './components/StudentArchive';
 import StudentFees from './components/StudentFees';
 import StudentSettings from './components/StudentSettings';
 import UploadPage from './components/UploadPage';
-import UserProfile from './components/UserProfile';
-import Evaluation from './components/Evaluation';
-import Financials from './components/Financials';
-import AIChatbot from './components/AIChatbot';
 import TeacherDashboard from './components/TeacherDashboard';
 import TeacherExams from './components/TeacherExams';
 import TeacherAnalytics from './components/TeacherAnalytics';
@@ -34,15 +34,17 @@ import TeacherLeaderboard from './components/TeacherLeaderboard';
 import AnswerSheetUpload from './components/AnswerSheetUpload';
 import SetQuestionPaper from './components/SetQuestionPaper';
 import OrganizationExamCreation from './components/OrganizationExamCreation';
-
+import UserProfile from './components/UserProfile';
+import InfoGraphic from './components/InfoGraphic';
 
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+
       <div className="App">
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/infographic" element={<InfoGraphic />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/departments" element={<Departments />} />
@@ -78,7 +80,7 @@ function App() {
         </Routes>
         <AIChatbot />
       </div>
-    </Router>
+
     </ThemeProvider>
   );
 }

@@ -12,9 +12,9 @@ const TeacherLeaderboard = () => {
     {
       rank: 1,
       studentId: 1,
-      name: 'Emma Thompson',
+      name: 'Ananya Gupta',
       rollNo: 'MA001',
-      class: '12-A',
+      class: '12',
       overallScore: 96.5,
       gpa: 9.2,
       subjects: {
@@ -31,9 +31,9 @@ const TeacherLeaderboard = () => {
     {
       rank: 2,
       studentId: 2,
-      name: 'David Kim',
+      name: 'Rohan Mehta',
       rollNo: 'MA002',
-      class: '12-A',
+      class: '12',
       overallScore: 92.8,
       gpa: 8.8,
       subjects: {
@@ -50,9 +50,9 @@ const TeacherLeaderboard = () => {
     {
       rank: 3,
       studentId: 3,
-      name: 'Sarah Chen',
+      name: 'Priya Patel',
       rollNo: 'MA003',
-      class: '12-A',
+      class: '12',
       overallScore: 89.2,
       gpa: 8.5,
       subjects: {
@@ -69,9 +69,9 @@ const TeacherLeaderboard = () => {
     {
       rank: 4,
       studentId: 4,
-      name: 'Michael Rodriguez',
+      name: 'Vikram Singh',
       rollNo: 'MA004',
-      class: '12-A',
+      class: '12',
       overallScore: 87.5,
       gpa: 8.2,
       subjects: {
@@ -123,9 +123,9 @@ const TeacherLeaderboard = () => {
     {
       rank: 2,
       studentId: 6,
-      name: 'Alex Johnson',
+      name: 'Arjun Sharma',
       rollNo: 'MA006',
-      class: '12-A',
+      class: '12',
       attendanceRate: 96.8,
       totalClasses: 200,
       attendedClasses: 194,
@@ -138,7 +138,7 @@ const TeacherLeaderboard = () => {
       studentId: 2,
       name: 'David Kim',
       rollNo: 'MA002',
-      class: '12-A',
+      class: '12',
       attendanceRate: 95.2,
       totalClasses: 200,
       attendedClasses: 190,
@@ -154,7 +154,7 @@ const TeacherLeaderboard = () => {
       studentId: 1,
       name: 'Emma Thompson',
       rollNo: 'MA001',
-      class: '12-A',
+      class: '12',
       behaviorScore: 9.8,
       participationScore: 9.5,
       respectScore: 10.0,
@@ -168,7 +168,7 @@ const TeacherLeaderboard = () => {
       studentId: 4,
       name: 'Michael Rodriguez',
       rollNo: 'MA004',
-      class: '12-A',
+      class: '12',
       behaviorScore: 9.5,
       participationScore: 9.8,
       respectScore: 9.2,
@@ -182,7 +182,7 @@ const TeacherLeaderboard = () => {
       studentId: 3,
       name: 'Sarah Chen',
       rollNo: 'MA003',
-      class: '12-A',
+      class: '12',
       behaviorScore: 9.2,
       participationScore: 9.0,
       respectScore: 9.5,
@@ -491,9 +491,9 @@ const TeacherLeaderboard = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="min-h-screen">
       <TeacherSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="ml-80 flex flex-col min-h-screen">
         <Header />
         <div className="flex-1 overflow-auto" style={{backgroundColor: '#f0f2f5'}}>
           <div className="p-6">

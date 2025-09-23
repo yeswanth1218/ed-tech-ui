@@ -8,17 +8,17 @@ const TeacherDashboard = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   
   const todayClasses = [
-    { time: '09:00 AM', subject: 'Mathematics', class: '12-A', room: 'Room 201', status: 'upcoming' },
-    { time: '11:00 AM', subject: 'Algebra', class: '11-B', room: 'Room 203', status: 'upcoming' },
-    { time: '02:00 PM', subject: 'Calculus', class: '12-C', room: 'Room 201', status: 'completed' },
-    { time: '03:30 PM', subject: 'Statistics', class: '11-A', room: 'Room 205', status: 'upcoming' }
+    { time: '09:00 AM', subject: 'Mathematics', class: '12', room: 'Room 201', status: 'upcoming' },
+    { time: '11:00 AM', subject: 'Algebra', class: '11', room: 'Room 203', status: 'upcoming' },
+    { time: '02:00 PM', subject: 'Calculus', class: '10', room: 'Room 201', status: 'completed' },
+    { time: '03:30 PM', subject: 'Statistics', class: '11', room: 'Room 205', status: 'upcoming' }
   ];
 
   const recentActivities = [
-    { type: 'exam', title: 'Mid-term Mathematics Exam', class: '12-A', time: '2 hours ago', status: 'evaluated' },
+    { type: 'exam', title: 'Mid-term Mathematics Exam', class: '10th', time: '2 hours ago', status: 'evaluated' },
     { type: 'assignment', title: 'Algebra Problem Set 5', class: '11-B', time: '4 hours ago', status: 'submitted' },
     { type: 'request', title: 'Grade Review Request', student: 'John Smith', time: '6 hours ago', status: 'pending' },
-    { type: 'attendance', title: 'Morning Session Attendance', class: '12-A', time: '1 day ago', status: 'completed' }
+    { type: 'attendance', title: 'Morning Session Attendance', class: '10th', time: '1 day ago', status: 'completed' }
   ];
 
   const quickStats = [
@@ -70,14 +70,14 @@ const TeacherDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="min-h-screen">
       <TeacherSidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="ml-80 flex flex-col min-h-screen">
         <Header />
-        <main className="flex-1 p-8" style={{backgroundColor: '#f0f2f5'}}>
+        <main className="flex-1 p-8 overflow-y-auto" style={{backgroundColor: '#f0f2f5'}}>
           {/* Welcome Section */}
           <section>
-            <h1 className="text-3xl font-bold text-gray-800">Welcome back, Dr. Sarah Wilson</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Welcome back, Dr Ram Gopal</h1>
             <p className="text-gray-500 mt-1">
               {currentTime.toLocaleDateString('en-US', { 
                 weekday: 'long', 
