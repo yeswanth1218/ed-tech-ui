@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     const [loginType, setLoginType] = useState('student');
@@ -13,7 +14,7 @@ const Header = () => {
     return (
         <header className={`relative z-50 bg-white/90 backdrop-blur-md border-b border-gray-200/50 px-6 lg:px-10 py-4 transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
             <div className="flex items-center justify-between whitespace-nowrap max-w-7xl mx-auto">
-                <div className="flex items-center gap-4 text-[#0d141c]">
+                <Link to="/" className="flex items-center gap-4 text-[#0d141c] hover:opacity-80 transition-opacity duration-200 cursor-pointer">
                     <div className="relative">
                         <img
                             src="/icon-logo.png"
@@ -26,7 +27,7 @@ const Header = () => {
                         <h2 className="text-[#0d141c] text-xl font-bold leading-tight tracking-[-0.015em]">BeyondGrades.ai</h2>
                         <p className="text-xs text-[#49719c] font-medium">Evaluate | Aggrigate | Analyze</p>
                     </div>
-                </div>
+                </Link>
 
                 <div className="hidden lg:flex items-center gap-8">
                     <nav className="flex items-center gap-8 relative">
