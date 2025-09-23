@@ -103,7 +103,7 @@ const SolutionsSection = () => {
                                 <span className="text-sm font-semibold text-white">Predictive Intelligence</span>
                             </div>
                             <h2 className="text-2xl lg:text-3xl font-black text-white mb-6 leading-tight">
-                                <span className="block">AI Analysis & Tracking</span>
+                                <span className="block">The Aftermath</span>
                                 <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Understanding the "Why"</span>
                             </h2>
                             <p className="text-sm text-white/90 mb-8 leading-relaxed max-w-md mx-auto">

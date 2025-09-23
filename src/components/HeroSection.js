@@ -69,7 +69,7 @@ const HeroSection = () => {
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-8">
                     <Link
                         className="group flex min-w-[220px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-16 px-8 bg-gradient-to-r from-[#693393] via-[#0b79ee] to-[#6366f1] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:shadow-2xl transition-all duration-500 transform hover:scale-110 relative"
-                        to="/login"
+                        to="/infographic"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-[#6366f1] via-[#0b79ee] to-[#693393] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <span className="relative z-10">👉 Experience the Real Magic</span>

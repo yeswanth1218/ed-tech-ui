@@ -35,6 +35,7 @@ import AnswerSheetUpload from './components/AnswerSheetUpload';
 import SetQuestionPaper from './components/SetQuestionPaper';
 import OrganizationExamCreation from './components/OrganizationExamCreation';
 import UserProfile from './components/UserProfile';
+import InfoGraphic from './components/InfoGraphic';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/infographic" element={<InfoGraphic />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/departments" element={<Departments />} />
