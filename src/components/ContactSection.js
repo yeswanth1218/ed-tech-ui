@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import api from '../api/axiosInstance';
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpwyzppy';
 
 const ContactSection = () => {
     const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const ContactSection = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -23,28 +25,39 @@ const ContactSection = () => {
         e.preventDefault();
         setIsSubmitting(true);
         setSubmitStatus(null);
-
+      
         try {
-            const response = await api.post('/admin/user_message', formData);
-            
-            if (response.status === 200) {
-                setSubmitStatus('success');
-                // Reset form
-                setFormData({
-                    first_name: '',
-                    last_name: '',
-                    email: '',
-                    institution: '',
-                    message: ''
-                });
-            }
+          const formDataObj = new FormData();
+          Object.entries(formData).forEach(([key, value]) => {
+            formDataObj.append(key, value);
+          });
+      
+          const response = await fetch("https://formspree.io/f/xpwyzppy", {
+            method: "POST",
+            body: formDataObj,
+            headers: { Accept: "application/json" },
+          });
+      
+          if (response.ok) {
+            setSubmitStatus("success");
+            setFormData({
+              first_name: "",
+              last_name: "",
+              email: "",
+              institution: "",
+              message: "",
+            });
+          } else {
+            setSubmitStatus("error");
+          }
         } catch (error) {
-            console.error('Error submitting form:', error);
-            setSubmitStatus('error');
+          console.error("Formspree error:", error);
+          setSubmitStatus("error");
         } finally {
-            setIsSubmitting(false);
+          setIsSubmitting(false);
         }
-    };
+      };
+      
 
     return (
         <section id="contact" className="relative z-10 py-12 px-6 lg:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -247,5 +260,3 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
-
-
