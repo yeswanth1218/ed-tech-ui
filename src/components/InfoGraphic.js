@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Header from './header/Header';
 
 const InfoGraphic = () => {
   const steps = [
@@ -50,24 +51,7 @@ const InfoGraphic = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-[#693393] to-[#0b79ee] rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">BG</span>
-              </div>
-              <span className="text-xl font-bold text-[#0d141c]">BeyondGrades.ai</span>
-            </Link>
-            <Link
-              to="/login"
-              className="bg-gradient-to-r from-[#693393] to-[#0b79ee] text-white px-6 py-2 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="py-20 px-6 lg:px-10">
@@ -378,27 +362,29 @@ const InfoGraphic = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 lg:px-10 bg-gradient-to-r from-[#693393] via-[#0b79ee] to-[#6366f1]">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
-            Ready to Experience the Magic?
-          </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of educators who have already transformed their evaluation process with AI
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Link
-              to="/login"
-              className="group flex min-w-[220px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-16 px-8 bg-white text-[#693393] text-lg font-bold leading-normal tracking-[0.015em] hover:shadow-2xl transition-all duration-500 transform hover:scale-110"
-            >
-              <span>Get Started Now</span>
-            </Link>
-            <Link
-              to="/"
-              className="group flex min-w-[180px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-16 px-8 bg-transparent border-2 border-white text-white text-lg font-bold leading-normal tracking-[0.015em] hover:bg-white hover:text-[#693393] transition-all duration-300"
-            >
-              <span>Back to Home</span>
-            </Link>
+      <section className="py-20 px-6 lg:px-10">
+        <div className="max-w-4xl mx-auto flex justify-center">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-100 p-12 max-w-3xl w-full text-center transition-all duration-500 hover:transform hover:-translate-y-4 hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)]" style={{background: 'linear-gradient(135deg, #ffffff 0%, #faf7ff 50%, #f3f0ff 100%)'}}>
+            <h2 className="text-4xl lg:text-5xl font-black text-[#693393] mb-6">
+              Ready to Experience the Magic?
+            </h2>
+            <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+              Click here to experiance a handson demo of our AI-powered grading system.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Link
+                to="/login"
+                className="group flex min-w-[220px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-16 px-8 bg-[#693393] text-white text-lg font-bold leading-normal tracking-[0.015em] hover:shadow-2xl transition-all duration-500 transform hover:scale-110 hover:bg-[#5a2a7a]"
+              >
+                <span>Try the Demo</span>
+              </Link>
+              <Link
+                to="/#contact"
+                className="group flex min-w-[180px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-16 px-8 bg-transparent border-2 border-[#693393] text-[#693393] text-lg font-bold leading-normal tracking-[0.015em] hover:bg-[#693393] hover:text-white transition-all duration-300"
+              >
+                <span>Contact Us</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
