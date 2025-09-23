@@ -23,16 +23,14 @@ const Footer = () => {
                     {/* Brand */}
                     <div className="lg:col-span-1 text-center sm:text-left">
                         <div className="flex items-center gap-3 mb-4 sm:mb-6 justify-center sm:justify-start">
-                            <div className="size-8 sm:size-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-4 sm:size-6 text-white">
-                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor" opacity="0.8" />
-                                    <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </div>
+                            <img
+                                src="/icon-logo.png"
+                                alt="BeyondGrades.ai Logo"
+                                className="size-8 sm:size-10 rounded-xl shadow-lg object-contain"
+                            />
                             <div>
                                 <h3 className="text-lg sm:text-xl font-bold">BeyondGrades.ai</h3>
-                                <p className="text-xs sm:text-sm text-gray-400">AI-Powered Education</p>
+                                <p className="text-xs sm:text-sm text-gray-400">Evaluate | Aggregate | Analyze</p>
                             </div>
                         </div>
                         <p className="text-gray-400 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
