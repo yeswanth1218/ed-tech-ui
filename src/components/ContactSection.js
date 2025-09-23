@@ -60,7 +60,7 @@ const ContactSection = () => {
       
 
     return (
-        <section id="contact" className="relative z-10 py-8 sm:py-10 lg:py-12 px-4 sm:px-6 lg:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
+        <section id="contact-form" className="relative z-10 py-8 sm:py-10 lg:py-12 px-4 sm:px-6 lg:px-10 bg-gradient-to-br from-gray-50 to-blue-50">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Responsive floating elements - hide some on mobile */}
                 <div className="absolute top-24 left-8 w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 bg-blue-400/10 sm:bg-blue-400/15 rounded-full animate-bounce" style={{ animationDelay: '0.3s', animationDuration: '3.2s' }}></div>

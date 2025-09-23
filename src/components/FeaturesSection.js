@@ -2,7 +2,7 @@ import React from 'react';
 
 const FeaturesSection = () => {
     return (
-        <section id="features" className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-10">
+        <section id="features" className="relative z-10 pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-6 sm:pb-8 md:pb-10 lg:pb-12 px-4 sm:px-6 lg:px-10">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Responsive floating elements - reduced on mobile */}
                 <div className="absolute top-10 sm:top-20 left-4 sm:left-10 w-2 h-2 sm:w-4 sm:h-4 bg-blue-400/15 sm:bg-blue-400/20 rounded-full animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}></div>

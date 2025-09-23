@@ -2,7 +2,7 @@ import React from 'react';
 
 const SolutionsSection = () => {
     return (
-        <section id="solutions" className="relative z-10 pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <section id="solutions" className="relative z-10 pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
             {/* Background Pattern */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-20 left-10 sm:left-20 w-16 h-16 sm:w-32 sm:h-32 bg-gradient-to-br from-purple-200/20 to-blue-200/20 rounded-full blur-3xl"></div>

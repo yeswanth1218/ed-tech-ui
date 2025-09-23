@@ -35,12 +35,16 @@ const Header = () => {
                 {/* Desktop Navigation */}
                 <div className="hidden lg:flex items-center gap-8">
                     <nav className="flex items-center gap-8 relative">
+                        <a className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 relative group cursor-pointer" href="#about">
+                            What
+                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#0b79ee] transition-all duration-200 group-hover:w-full"></span>
+                        </a>
                         <a className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 relative group cursor-pointer" href="#features">
-                            Features
+                            Why
                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#0b79ee] transition-all duration-200 group-hover:w-full"></span>
                         </a>
                         <a className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 relative group cursor-pointer" href="#solutions">
-                            Solutions
+                            How
                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#0b79ee] transition-all duration-200 group-hover:w-full"></span>
                         </a>
                         <a className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 relative group cursor-pointer" href="#contact">
@@ -100,17 +104,24 @@ const Header = () => {
                     <nav className="flex flex-col px-4 sm:px-6 py-4 space-y-4">
                         <a 
                             className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 py-2 border-b border-gray-100" 
+                            href="#about"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            What
+                        </a>
+                        <a 
+                            className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 py-2 border-b border-gray-100" 
                             href="#features"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            Features
+                            Why
                         </a>
                         <a 
                             className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 py-2 border-b border-gray-100" 
                             href="#solutions"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            Solutions
+                            How
                         </a>
                         <a 
                             className="text-[#0d141c] text-sm font-medium leading-normal hover:text-[#0b79ee] transition-all duration-200 py-2 border-b border-gray-100" 

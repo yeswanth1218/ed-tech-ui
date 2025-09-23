@@ -4,7 +4,6 @@ import HeroSection from './HeroSection';
 import FeaturesSection from './FeaturesSection';
 import SolutionsSection from './SolutionsSection';
 import ProductNeed from './ProductNeed';
-import ContactSection from './ContactSection';
 import AboutSection from './AboutSection';
 import Footer from './Footer';
 
@@ -54,7 +53,6 @@ const LandingPage = () => {
         <FeaturesSection />
         <SolutionsSection />
         <ProductNeed />
-        <ContactSection />
 
       </main>
 
