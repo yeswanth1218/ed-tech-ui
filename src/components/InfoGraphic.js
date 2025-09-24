@@ -155,7 +155,7 @@ const InfoGraphic = () => {
                   </div>
                   <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 group-hover:border-[#693393] transition-all duration-300">
                     <img 
-                      src="/infogrphics/Image_01.png" 
+                      src="/infogrphics/Image_01.avif" 
                       alt="Upload Question Paper"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -186,7 +186,7 @@ const InfoGraphic = () => {
                   </div>
                   <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 group-hover:border-[#0b79ee] transition-all duration-300">
                     <img 
-                      src="/infogrphics/Image_02.png" 
+                      src="/infogrphics/Image_02.avif" 
                       alt="Set Answer Key"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -217,7 +217,7 @@ const InfoGraphic = () => {
                   </div>
                   <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 group-hover:border-[#6366f1] transition-all duration-300">
                     <img 
-                      src="/infogrphics/Image_03.png" 
+                      src="/infogrphics/Image_03.avif" 
                       alt="Configure Rubrics"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -248,7 +248,7 @@ const InfoGraphic = () => {
                   </div>
                   <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 group-hover:border-[#693393] transition-all duration-300">
                     <img 
-                      src="/infogrphics/Image_04.png" 
+                      src="/infogrphics/Image_04.avif" 
                       alt="Upload Student Answers"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -279,7 +279,7 @@ const InfoGraphic = () => {
                   </div>
                   <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 group-hover:border-[#0b79ee] transition-all duration-300">
                     <img 
-                      src="/infogrphics/Image_05.png" 
+                      src="/infogrphics/Image_05.avif" 
                       alt="AI Processing"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -311,7 +311,7 @@ const InfoGraphic = () => {
                   </div>
                   <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 group-hover:border-[#6366f1] transition-all duration-300">
                     <img 
-                      src="/infogrphics/Image_06.png" 
+                      src="/infogrphics/Image_06.avif" 
                       alt="Get Results"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -342,7 +342,7 @@ const InfoGraphic = () => {
                   </div>
                   <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-4 overflow-hidden border-2 border-gray-300 group-hover:border-[#693393] transition-all duration-300">
                     <img 
-                      src="/infogrphics/Image_07.png" 
+                      src="/infogrphics/Image_07.avif" 
                       alt="Share & Export"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
