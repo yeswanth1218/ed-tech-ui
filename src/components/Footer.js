@@ -134,6 +134,18 @@ const Footer = () => {
                                     <a href="https://instagram.com/beyondgrades.ai" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:text-pink-300 font-medium text-sm">@beyondgrades.ai</a>
                                 </div>
                             </div>
+
+                            {/* Twitter (X) */}
+                            <div className="flex items-center gap-3 justify-center lg:justify-start">
+                                <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <a href="https://x.com/beyondgrades_ai?t=3DeIknzH0XABQD25OX5yJA&s=08" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white font-medium text-sm">@beyondgrades_ai</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
