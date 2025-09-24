@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
+import { Menu } from 'react-feather';
 
 const Header = ({ title = "Skool" }) => {
   const { darkMode, toggleDarkMode } = useTheme();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,9 +23,13 @@ const Header = ({ title = "Skool" }) => {
     navigate('/login');
   };
   return (
-    <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#eaedf1] px-10 py-3">
-      <div className="flex items-center gap-8">
-        <div className="flex items-center gap-9">
+    <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#eaedf1] px-4 md:px-10 py-3 relative">
+      {/* Hamburger for mobile */}
+      <button className="md:hidden flex items-center mr-2" onClick={() => setMobileNavOpen(!mobileNavOpen)}>
+        <Menu size={24} />
+      </button>
+      <div className={`flex-col md:flex-row flex items-start md:items-center gap-4 md:gap-8 absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-40 transition-all duration-300 ${mobileNavOpen ? 'flex' : 'hidden md:flex'}`}> 
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-9 w-full md:w-auto">
           <Link className="text-[#101418] text-sm font-medium leading-normal" to="/dashboard">Dashboard</Link>
           <Link 
             className={`text-sm font-medium leading-normal ${
@@ -39,7 +45,7 @@ const Header = ({ title = "Skool" }) => {
           <Link className="text-[#101418] text-sm font-medium leading-normal" to="/evaluation">Reports</Link>
         </div>
       </div>
-      <div className="flex flex-1 justify-end gap-8">
+      <div className="flex flex-1 justify-end gap-4 md:gap-8 items-center">
         <label className="flex flex-col min-w-40 !h-10 max-w-64">
           <div className="flex w-full flex-1 items-stretch rounded-xl h-full">
             <div className="text-[#5c728a] flex border-none bg-[#eaedf1] items-center justify-center pl-4 rounded-l-xl border-r-0">

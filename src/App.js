@@ -41,7 +41,7 @@ function App() {
   return (
     <ThemeProvider>
 
-      <div className="App">
+      <div className="App min-h-screen flex flex-col bg-gray-50">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/infographic" element={<InfoGraphic />} />

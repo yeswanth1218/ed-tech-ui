@@ -18,13 +18,13 @@ const Dashboard = () => {
     setModalOpen(true);
   };
   return (
-    <div className="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style={{fontFamily: 'Lexend, "Noto Sans", sans-serif'}}>
+    <div className="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden font-sans" style={{fontFamily: 'Lexend, "Noto Sans", sans-serif'}}>
       <div className="layout-container flex h-full grow flex-col">
         <Header title="Dashboard" />
-        <div className="gap-1 px-6 flex flex-1 justify-start py-5">
+        <div className="gap-1 px-2 md:px-6 flex flex-1 flex-col md:flex-row justify-start py-5">
           <Sidebar />
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div className="flex flex-wrap justify-between gap-3 p-4">
+          <div className="layout-content-container flex flex-col w-full max-w-full md:max-w-[960px] flex-1">
+            <div className="flex flex-wrap justify-between gap-3 p-2 md:p-4">
               <div className="flex min-w-72 flex-col gap-3">
                 <p className="text-[#101418] tracking-light text-[32px] font-bold leading-tight">Command Center - Vellore Institute of Technology</p>
                 <p className="text-[#5c728a] text-sm font-normal leading-normal">Your comprehensive organizational management dashboard - Stay updated with announcements, events, and institutional activities.</p>
@@ -32,7 +32,7 @@ const Dashboard = () => {
             </div>
             
             {/* Organization Overview Cards */}
-            <div className="flex flex-wrap gap-4 p-4">
+            <div className="flex flex-wrap gap-2 md:gap-4 p-2 md:p-4">
               <div className="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-gradient-to-br from-white to-blue-50 border border-gray-200 shadow-sm hover:shadow-lg hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-100 transition-all duration-300 transform hover:-translate-y-1">
                 <p className="text-[#101418] text-base font-medium leading-normal">Total Students</p>
                 <p className="text-[#101418] tracking-light text-2xl font-bold leading-tight">2,847</p>
@@ -65,7 +65,7 @@ const Dashboard = () => {
                 <span className="material-icons" style={{fontSize: '20px'}}>add</span>
               </button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 p-2 md:p-4">
               <div className="bg-gradient-to-br from-white to-red-50 border border-gray-200 shadow-sm rounded-xl p-6 hover:shadow-lg hover:bg-gradient-to-br hover:from-gray-50 hover:to-red-100 transition-all duration-300 transform hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
@@ -98,7 +98,7 @@ const Dashboard = () => {
             
             {/* Recent Events & Activities */}
             <h2 className="text-[#101418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Recent Events & Activities</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 p-2 md:p-4">
               <div className="bg-gradient-to-br from-white to-green-50 border border-gray-200 shadow-sm rounded-xl overflow-hidden hover:shadow-lg hover:bg-gradient-to-br hover:from-gray-50 hover:to-green-100 transition-all duration-300 transform hover:-translate-y-1">
                 <div className="h-32 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 256 256" className="text-green-600">
@@ -151,7 +151,7 @@ const Dashboard = () => {
                 <span className="material-icons" style={{fontSize: '20px'}}>add</span>
               </button>
             </div>
-            <div className="flex flex-wrap gap-4 p-4">
+            <div className="flex flex-wrap gap-2 md:gap-4 p-2 md:p-4">
                <div className="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-4 bg-gradient-to-br from-white to-yellow-50 border border-gray-200 shadow-sm hover:shadow-lg hover:bg-gradient-to-br hover:from-gray-50 hover:to-yellow-100 transition-all duration-300 transform hover:-translate-y-1">
                  <p className="text-[#101418] text-sm font-medium leading-normal">Payment Tracking</p>
                  <p className="text-[#101418] tracking-light text-xl font-bold leading-tight">₹2,45,000</p>
@@ -179,8 +179,8 @@ const Dashboard = () => {
                 <span className="material-icons" style={{fontSize: '20px'}}>add</span>
               </button>
             </div>
-            <div className="px-4 py-3">
-              <div className="flex overflow-hidden rounded-xl border border-[#d4dbe2] bg-gray-50">
+            <div className="px-2 md:px-4 py-2 md:py-3">
+              <div className="flex overflow-x-auto rounded-xl border border-[#d4dbe2] bg-gray-50">
                 <table className="flex-1">
                   <thead>
                     <tr className="bg-gray-50">

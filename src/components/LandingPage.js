@@ -10,7 +10,7 @@ import Footer from './Footer';
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden" style={{ fontFamily: 'Lexend, "Noto Sans", sans-serif' }}>
+    <div className="min-h-screen flex flex-col relative overflow-hidden font-sans">
       {/* Enhanced Background with AI-themed elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
         {/* Animated grid pattern */}
@@ -49,7 +49,7 @@ const LandingPage = () => {
 
       {/* Main Content */}
 
-      <main className="flex-grow">
+      <main className="flex-grow flex flex-col gap-8 px-2 md:px-0">
         <HeroSection />
         <AboutSection />
         <FeaturesSection />
