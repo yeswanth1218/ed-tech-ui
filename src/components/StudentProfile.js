@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line } from 'recharts';
 import StudentSidebar from './StudentSidebar';
 import Header from './Header';
 import PermissionModal from './PermissionModal';
+import { LineChart, ChartData } from 'chart-operations-sdk'
 
 const StudentProfile = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -12,6 +13,27 @@ const StudentProfile = () => {
     setModalActionType(actionType);
     setModalOpen(true);
   };
+
+  const sampleLineData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [
+      {
+        label: 'Sales',
+        data: [12, 19, 3, 5, 2, 3],
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        tension: 0.4,
+      },
+      {
+        label: 'Revenue',
+        data: [2, 3, 20, 5, 1, 4],
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        tension: 0.4,
+      },
+    ],
+  }
+
 
   const [examResults] = useState([
     { id: 1, examName: 'Mathematics Quiz 1', score: 92, date: '2024-01-15', status: 'Completed', subject: 'Math' },
@@ -115,13 +137,25 @@ const StudentProfile = () => {
                 <p className="text-[#101418] text-base font-medium leading-normal">Performance Trends</p>
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={performanceData}>
+                    {/* <LineChart data={performanceData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
                       <YAxis domain={[70, 100]} />
                       <Tooltip />
                       <Line type="monotone" dataKey="score" stroke="#2563eb" strokeWidth={3} />
-                    </LineChart>
+                    </LineChart> */}
+                    <LineChart
+                      data={sampleLineData}
+                      options={{
+                        plugins: {
+                          title: {
+                            display: true,
+                            text: 'Sales vs Revenue',
+                          },
+                        },
+                      }}
+                      height={300}
+                    />
                   </ResponsiveContainer>
                 </div>
               </div>
@@ -144,11 +178,11 @@ const StudentProfile = () => {
             {/* Recent Exam Results */}
             <div className="flex justify-between items-center px-4 pb-3 pt-5">
               <h2 className="text-[#101418] text-[22px] font-bold leading-tight tracking-[-0.015em]">Recent Exam Results</h2>
-              <button 
+              <button
                 onClick={() => handleAddClick('exam result')}
                 className="bg-black hover:bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all duration-200 transform hover:scale-110 shadow-lg hover:shadow-xl"
               >
-                <span className="material-icons" style={{fontSize: '20px'}}>add</span>
+                <span className="material-icons" style={{ fontSize: '20px' }}>add</span>
               </button>
             </div>
             <div className="px-4 py-3">
@@ -230,7 +264,7 @@ const StudentProfile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="material-icons text-green-600" style={{fontSize: '32px'}}>trending_up</span>
+                      <span className="material-icons text-green-600" style={{ fontSize: '32px' }}>trending_up</span>
                     </div>
                     <h3 className="font-medium text-[#101418] mb-2">Target Average</h3>
                     <p className="text-2xl font-bold text-green-600">90%</p>
@@ -238,7 +272,7 @@ const StudentProfile = () => {
                   </div>
                   <div className="text-center">
                     <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="material-icons text-blue-600" style={{fontSize: '32px'}}>emoji_events</span>
+                      <span className="material-icons text-blue-600" style={{ fontSize: '32px' }}>emoji_events</span>
                     </div>
                     <h3 className="font-medium text-[#101418] mb-2">Target Rank</h3>
                     <p className="text-2xl font-bold text-blue-600">#1</p>
@@ -246,7 +280,7 @@ const StudentProfile = () => {
                   </div>
                   <div className="text-center">
                     <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="material-icons text-purple-600" style={{fontSize: '32px'}}>school</span>
+                      <span className="material-icons text-purple-600" style={{ fontSize: '32px' }}>school</span>
                     </div>
                     <h3 className="font-medium text-[#101418] mb-2">Next Milestone</h3>
                     <p className="text-lg font-bold text-purple-600">Honor Roll</p>
@@ -274,8 +308,8 @@ const StudentProfile = () => {
           </div>
         </div>
       </div>
-      
-      <PermissionModal 
+
+      <PermissionModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         actionType={modalActionType}
